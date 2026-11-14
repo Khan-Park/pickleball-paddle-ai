@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run check)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)",
+      "Bash(npm test*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git switch *)",
+      "Bash(git checkout -b *)",
+      "PowerShell(npm run check)",
+      "PowerShell(npm run typecheck)",
+      "PowerShell(npm run lint)",
+      "PowerShell(npm run build)",
+      "PowerShell(npm test*)",
+      "PowerShell(git status*)",
+      "PowerShell(git diff*)",
+      "PowerShell(git log*)",
+      "PowerShell(git add *)",
+      "PowerShell(git commit *)",
+      "PowerShell(git switch *)"
+    ],
+    "ask": [
+      "Bash(npm install*)",
+      "Bash(npm i *)",
+      "Bash(npm uninstall*)",
+      "PowerShell(npm install*)",
+      "PowerShell(npm i *)",
+      "PowerShell(npm uninstall*)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean*)",
+      "Bash(rm -rf*)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "PowerShell(git push*)",
+      "PowerShell(git reset --hard*)",
+      "PowerShell(git clean*)",
+      "PowerShell(Remove-Item*-Recurse*)",
+      "PowerShell(Invoke-WebRequest*)",
+      "PowerShell(Invoke-RestMethod*)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}
