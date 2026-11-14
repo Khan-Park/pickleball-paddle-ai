@@ -1,22 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { paddleSchema, paddlesSchema } from "./schema";
+import { fakePaddle } from "./test-fixtures";
 
-// 테스트 전용 가짜 샘플. 실제 제품 데이터가 아니다.
-const sample = {
-  id: "sample-paddle-1",
-  brand: "SAMPLE",
-  model: "Test Model",
-  weight_oz: 7.8,
-  core_mm: 16,
-  shape: "hybrid",
-  length_in: 16,
-  width_in: 7.5,
-  surface: "carbon",
-  certification: { usa_pickleball: "unknown", checked_at: "2026-01-01" },
-  sources: ["https://example.com/spec"],
-  verified_at: "2026-01-01",
-};
+const sample = fakePaddle();
 
 describe("paddleSchema", () => {
   it("올바른 샘플을 통과시킨다", () => {
