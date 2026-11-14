@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { PaddleSpec } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import { hardFilter } from "./filter";
-import type { UserProfile } from "./types";
+import type { UserProfile } from "./profile";
 
 const paddle = fakePaddle;
 

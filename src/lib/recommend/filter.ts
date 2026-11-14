@@ -1,5 +1,5 @@
 import type { PaddleSpec } from "../../../data/schema";
-import type { BudgetRange, UserProfile } from "./types";
+import type { BudgetRange, UserProfile } from "./profile";
 
 /**
  * 예산 값은 0 이상의 유한한 숫자여야 한다. NaN·음수·무한대는 비교가 모두 거짓이 되어
