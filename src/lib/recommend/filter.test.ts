@@ -3,6 +3,7 @@ import type { PaddleSpec } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import { CERT_MAX_AGE_DAYS, hardFilter as hardFilterAt } from "./filter";
 import type { UserProfile } from "./profile";
+import { fakeProfile } from "./test-profiles";
 
 const paddle = fakePaddle;
 
@@ -11,7 +12,7 @@ const TODAY = "2026-06-01";
 const hardFilter = (list: readonly PaddleSpec[], profile: UserProfile) =>
   hardFilterAt(list, profile, { today: TODAY });
 
-const anyone: UserProfile = { budget: {}, needs_certification: false };
+const anyone: UserProfile = fakeProfile({ budget: {}, needs_certification: false });
 const ids = (list: PaddleSpec[]) => list.map((p) => p.id);
 
 describe("hardFilter: 예산", () => {
@@ -60,7 +61,7 @@ describe("hardFilter: 대회 인증", () => {
   ];
 
   it("인증이 필요하면 승인된 제품만 통과시킨다", () => {
-    expect(ids(hardFilter(list, { budget: {}, needs_certification: true }))).toEqual(["ok"]);
+    expect(ids(hardFilter(list, fakeProfile({ budget: {}, needs_certification: true })))).toEqual(["ok"]);
   });
 
   it("인증이 필요 없으면 모두 통과시킨다", () => {
@@ -120,17 +121,17 @@ describe("hardFilter: 예산과 인증의 조합", () => {
   ];
 
   it("두 조건을 모두 만족해야 통과한다", () => {
-    const result = hardFilter(list, { budget: { max_krw: 150000 }, needs_certification: true });
+    const result = hardFilter(list, fakeProfile({ budget: { max_krw: 150000 }, needs_certification: true }));
     expect(ids(result)).toEqual(["in-approved"]);
   });
 
   it("인증이 필요 없으면 예산 조건만 적용한다", () => {
-    const result = hardFilter(list, { budget: { max_krw: 150000 }, needs_certification: false });
+    const result = hardFilter(list, fakeProfile({ budget: { max_krw: 150000 }, needs_certification: false }));
     expect(ids(result)).toEqual(["in-approved", "in-unknown"]);
   });
 
   it("예산 제한이 없으면 인증 조건만 적용한다", () => {
-    const result = hardFilter(list, { budget: {}, needs_certification: true });
+    const result = hardFilter(list, fakeProfile({ budget: {}, needs_certification: true }));
     expect(ids(result)).toEqual(["in-approved", "out-approved"]);
   });
 });
@@ -140,7 +141,7 @@ describe("hardFilter: 대회 인증 확인일 유효기간", () => {
     id: "v",
     certification: { usa_pickleball: "approved", checked_at: "2026-01-01" },
   });
-  const needs: UserProfile = { budget: {}, needs_certification: true };
+  const needs: UserProfile = fakeProfile({ budget: {}, needs_certification: true });
   const at = (today: string, profile: UserProfile = needs, list: PaddleSpec[] = [verified]) =>
     ids(hardFilterAt(list, profile, { today }));
 
@@ -166,7 +167,7 @@ describe("hardFilter: 대회 인증 확인일 유효기간", () => {
   });
 
   it("인증이 필요 없으면 오래된 확인일도 통과한다", () => {
-    expect(at("2030-01-01", { budget: {}, needs_certification: false })).toEqual(["v"]);
+    expect(at("2030-01-01", fakeProfile({ budget: {}, needs_certification: false }))).toEqual(["v"]);
   });
 
   it("기준일 형식이 올바르지 않으면 RangeError를 던진다", () => {

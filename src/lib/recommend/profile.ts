@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paddleSchema } from "../../../data/schema";
 
 const krw = (label: string) =>
   z
@@ -26,6 +27,19 @@ export const userProfileSchema = z.object(
       ),
     /** 대회 인증(USA Pickleball 승인)이 필요한가 */
     needs_certification: z.boolean("대회 인증 필요 여부를 선택해 주세요"),
+    /** 경력. 초보일수록 관용성 가중치가 높다 (docs/design/scoring.md) */
+    skill_level: z.enum(["beginner", "intermediate", "advanced"], "경력(초보/중급/상급)을 선택해 주세요"),
+    /** 플레이 성향: 컨트롤 / 균형 / 파워 */
+    play_style: z.enum(["control", "balanced", "power"], "플레이 성향(컨트롤/균형/파워)을 선택해 주세요"),
+    /** 선호 무게. 상관없으면 no_preference */
+    weight_preference: z.enum(["light", "medium", "heavy", "no_preference"], "선호 무게를 선택해 주세요"),
+    /** 팔·손목·어깨 불편 여부. 켜면 팔 부담 축이 점수에 반영된다 */
+    arm_discomfort: z.boolean("팔 불편 여부를 선택해 주세요"),
+    /** 선호하는 패들 형태(선택). 값은 제품 스키마의 shape와 같아야 한다 */
+    preferred_shapes: z
+      .array(paddleSchema.shape.shape, "선호 형태 값이 올바르지 않습니다")
+      .min(1, "선호 형태를 고르지 않으려면 항목을 비워 주세요")
+      .optional(),
   },
   "프로필 형식이 올바르지 않습니다",
 );
