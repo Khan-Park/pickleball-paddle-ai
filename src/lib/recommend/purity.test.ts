@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import type { Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import { hardFilter } from "./filter";
-import type { UserProfile } from "./types";
+import type { UserProfile } from "./profile";
 
 // D-004, CLAUDE.md 핵심 규칙 1: 추천 엔진은 구매 링크·수수료 정보를 읽지 않는다.
 // 타입(PaddleSpec)만으로는 purchase가 달린 객체를 막지 못하므로 테스트로 보장한다.
@@ -27,7 +27,7 @@ describe("추천 엔진은 구매 링크·수수료와 무관하다", () => {
       fakePaddle({ id: "pricey", price_krw: 300000, ...link(affiliate) }),
     ];
     const profile: UserProfile = { budget: { max_krw: 100000 }, needs_certification: false };
-    const results = [undefined, false, true].map((a) => hardFilter(make(a), profile).map((p) => p.id));
+    const results = [undefined, false, true].map((a) => hardFilter(make(a), profile, { today: "2026-06-01" }).map((p) => p.id));
     expect(results).toEqual([["cheap"], ["cheap"], ["cheap"]]);
   });
 });
