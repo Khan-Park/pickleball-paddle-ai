@@ -1,27 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { PaddleSpec } from "../../../data/schema";
+import { fakePaddle } from "../../../data/test-fixtures";
 import { hardFilter } from "./filter";
 import type { UserProfile } from "./types";
 
-// 테스트 전용 가짜 샘플이다. 실제 제품 데이터가 아니다.
-function paddle(overrides: Partial<PaddleSpec> = {}): PaddleSpec {
-  return {
-    id: "sample-1",
-    brand: "SAMPLE",
-    model: "Test",
-    weight_oz: 7.8,
-    core_mm: 16,
-    shape: "hybrid",
-    length_in: 16,
-    width_in: 7.5,
-    surface: "carbon",
-    price_krw: 100000,
-    certification: { usa_pickleball: "approved", checked_at: "2026-01-01" },
-    sources: ["https://example.com/spec"],
-    verified_at: "2026-01-01",
-    ...overrides,
-  };
-}
+const paddle = fakePaddle;
 
 const anyone: UserProfile = { budget: {}, needs_certification: false };
 const ids = (list: PaddleSpec[]) => list.map((p) => p.id);
