@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest";
 import type { PaddleSpec } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
-import { hardFilter } from "./filter";
+import { CERT_MAX_AGE_DAYS, hardFilter as hardFilterAt } from "./filter";
 import type { UserProfile } from "./profile";
 
 const paddle = fakePaddle;
+
+// 픽스처 인증 확인일(2026-01-01)에서 151일 뒤. 유효기간(180일) 안이다.
+const TODAY = "2026-06-01";
+const hardFilter = (list: readonly PaddleSpec[], profile: UserProfile) =>
+  hardFilterAt(list, profile, { today: TODAY });
 
 const anyone: UserProfile = { budget: {}, needs_certification: false };
 const ids = (list: PaddleSpec[]) => list.map((p) => p.id);
@@ -127,5 +132,49 @@ describe("hardFilter: 예산과 인증의 조합", () => {
   it("예산 제한이 없으면 인증 조건만 적용한다", () => {
     const result = hardFilter(list, { budget: {}, needs_certification: true });
     expect(ids(result)).toEqual(["in-approved", "out-approved"]);
+  });
+});
+
+describe("hardFilter: 대회 인증 확인일 유효기간", () => {
+  const verified = paddle({
+    id: "v",
+    certification: { usa_pickleball: "approved", checked_at: "2026-01-01" },
+  });
+  const needs: UserProfile = { budget: {}, needs_certification: true };
+  const at = (today: string, profile: UserProfile = needs, list: PaddleSpec[] = [verified]) =>
+    ids(hardFilterAt(list, profile, { today }));
+
+  it("유효기간 상수는 사용자가 확정한 180일이다", () => {
+    expect(CERT_MAX_AGE_DAYS).toBe(180);
+  });
+
+  it("확인 후 180일째까지는 통과한다", () => {
+    expect(at("2026-06-30")).toEqual(["v"]);
+  });
+
+  it("181일째부터는 제외한다", () => {
+    expect(at("2026-07-01")).toEqual([]);
+  });
+
+  it("확인일이 기준일보다 미래이면 제외한다", () => {
+    expect(at("2025-12-31")).toEqual([]);
+  });
+
+  it("확인일 형식이 올바르지 않으면 제외한다", () => {
+    const broken = paddle({ id: "b", certification: { usa_pickleball: "approved", checked_at: "어제" } });
+    expect(at("2026-06-01", needs, [broken])).toEqual([]);
+  });
+
+  it("인증이 필요 없으면 오래된 확인일도 통과한다", () => {
+    expect(at("2030-01-01", { budget: {}, needs_certification: false })).toEqual(["v"]);
+  });
+
+  it("기준일 형식이 올바르지 않으면 RangeError를 던진다", () => {
+    expect(() => hardFilterAt([verified], needs, { today: "2026/06/30" })).toThrow(RangeError);
+  });
+
+  it("같은 입력과 기준일이면 항상 같은 결과를 낸다(현재 시각에 의존하지 않는다)", () => {
+    expect(at("2026-06-30")).toEqual(at("2026-06-30"));
+    expect(at("2099-01-01")).toEqual([]);
   });
 });

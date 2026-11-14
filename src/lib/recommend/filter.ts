@@ -1,9 +1,20 @@
 import type { PaddleSpec } from "../../../data/schema";
+import { daysBetween } from "./dates";
 import type { BudgetRange, UserProfile } from "./profile";
+
+/**
+ * 대회 인증 확인일이 이 일수를 넘으면 approved라도 '확인 필요'로 보고 대회용 추천에서 제외한다.
+ * 사용자가 180일로 확정했다. 확인 후 180일째까지는 통과한다. (docs/decisions.md D-013)
+ */
+export const CERT_MAX_AGE_DAYS = 180;
+
+/** 엔진은 현재 시각을 읽지 않는다(순수 함수). 기준일은 호출부가 YYYY-MM-DD로 넘긴다. */
+export type FilterContext = { today: string };
 
 /**
  * 예산 값은 0 이상의 유한한 숫자여야 한다. NaN·음수·무한대는 비교가 모두 거짓이 되어
  * 제한이 조용히 풀리므로 RangeError로 거부한다. (docs/decisions.md D-011)
+ * 정상 경로에서는 profile.ts의 스키마가 먼저 걸러내며, 여기는 최후 방어선이다. (D-015)
  */
 function assertValidBudget({ min_krw, max_krw }: BudgetRange): void {
   for (const [name, value] of [["min_krw", min_krw], ["max_krw", max_krw]] as const) {
@@ -13,6 +24,12 @@ function assertValidBudget({ min_krw, max_krw }: BudgetRange): void {
   }
   if (min_krw !== undefined && max_krw !== undefined && min_krw > max_krw) {
     throw new RangeError("budget.min_krw는 max_krw보다 클 수 없다");
+  }
+}
+
+function assertValidToday(today: string): void {
+  if (Number.isNaN(daysBetween(today, today))) {
+    throw new RangeError("today는 YYYY-MM-DD 형식의 유효한 날짜여야 한다");
   }
 }
 
@@ -35,12 +52,17 @@ function passesBudget(paddle: PaddleSpec, budget: BudgetRange): boolean {
 }
 
 /**
- * 대회 인증이 필요하면 승인(approved)된 제품만 통과시킨다.
- * unknown은 확인되지 않았으므로 제외한다. (docs/decisions.md D-010)
+ * 대회 인증이 필요하면 승인(approved)이고 확인일이 유효기간 안인 제품만 통과시킨다.
+ * - unknown·not_approved는 제외한다. (D-010)
+ * - 확인일이 CERT_MAX_AGE_DAYS보다 오래됐으면 제외한다. (D-013)
+ * - 확인일이 기준일보다 미래이거나 날짜 형식이 올바르지 않으면 신뢰할 수 없으므로 제외한다. (D-014)
  */
-function passesCertification(paddle: PaddleSpec, needsCertification: boolean): boolean {
+function passesCertification(paddle: PaddleSpec, needsCertification: boolean, today: string): boolean {
   if (!needsCertification) return true;
-  return paddle.certification.usa_pickleball === "approved";
+  const { usa_pickleball, checked_at } = paddle.certification;
+  if (usa_pickleball !== "approved") return false;
+  const age = daysBetween(checked_at, today);
+  return Number.isFinite(age) && age >= 0 && age <= CERT_MAX_AGE_DAYS;
 }
 
 /**
@@ -48,9 +70,14 @@ function passesCertification(paddle: PaddleSpec, needsCertification: boolean): b
  * 순수 함수이며 입력 배열을 바꾸지 않고, 원래 순서를 유지한다.
  * 구매 링크·수수료 정보는 읽지 않는다(PaddleSpec에는 해당 필드가 없다).
  */
-export function hardFilter(paddles: readonly PaddleSpec[], profile: UserProfile): PaddleSpec[] {
+export function hardFilter(
+  paddles: readonly PaddleSpec[],
+  profile: UserProfile,
+  context: FilterContext,
+): PaddleSpec[] {
   assertValidBudget(profile.budget);
+  assertValidToday(context.today);
   return paddles.filter(
-    (p) => passesBudget(p, profile.budget) && passesCertification(p, profile.needs_certification),
+    (p) => passesBudget(p, profile.budget) && passesCertification(p, profile.needs_certification, context.today),
   );
 }

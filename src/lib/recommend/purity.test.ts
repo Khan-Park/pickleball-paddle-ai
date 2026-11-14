@@ -27,7 +27,7 @@ describe("추천 엔진은 구매 링크·수수료와 무관하다", () => {
       fakePaddle({ id: "pricey", price_krw: 300000, ...link(affiliate) }),
     ];
     const profile: UserProfile = { budget: { max_krw: 100000 }, needs_certification: false };
-    const results = [undefined, false, true].map((a) => hardFilter(make(a), profile).map((p) => p.id));
+    const results = [undefined, false, true].map((a) => hardFilter(make(a), profile, { today: "2026-06-01" }).map((p) => p.id));
     expect(results).toEqual([["cheap"], ["cheap"], ["cheap"]]);
   });
 });
