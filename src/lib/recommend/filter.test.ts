@@ -76,3 +76,28 @@ describe("hardFilter: 공통 성질", () => {
     expect(ids(result)).toEqual(["b", "a"]);
   });
 });
+describe("hardFilter: 예산 값 검증", () => {
+  const list = [paddle({ id: "a", price_krw: 100000 })];
+
+  it.each([
+    ["min_krw NaN", { min_krw: Number.NaN }],
+    ["max_krw NaN", { max_krw: Number.NaN }],
+    ["min_krw 음수", { min_krw: -1 }],
+    ["max_krw 음수", { max_krw: -1 }],
+    ["max_krw 무한대", { max_krw: Number.POSITIVE_INFINITY }],
+  ])("%s는 RangeError를 던진다", (_label, budget) => {
+    expect(() => hardFilter(list, { ...anyone, budget })).toThrow(RangeError);
+  });
+
+  it("min_krw가 0이면 하한 없음으로 보고 가격 없는 제품도 포함한다", () => {
+    const noPrice = paddle({ id: "no-price", price_krw: undefined });
+    const result = hardFilter([noPrice, ...list], { ...anyone, budget: { min_krw: 0 } });
+    expect(ids(result)).toEqual(["no-price", "a"]);
+  });
+
+  it("min_krw 0과 max_krw를 함께 주면 상한은 적용되고 가격 없는 제품은 제외한다", () => {
+    const noPrice = paddle({ id: "no-price", price_krw: undefined });
+    const result = hardFilter([noPrice, ...list], { ...anyone, budget: { min_krw: 0, max_krw: 150000 } });
+    expect(ids(result)).toEqual(["a"]);
+  });
+});
