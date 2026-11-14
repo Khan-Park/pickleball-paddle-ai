@@ -70,7 +70,7 @@ describe("hardFilter: 공통 성질", () => {
 
   it("입력 배열을 바꾸지 않고 순서를 유지한다", () => {
     const list = [paddle({ id: "b", price_krw: 2 }), paddle({ id: "a", price_krw: 1 })];
-    const snapshot = [...list];
+    const snapshot = structuredClone(list); // 요소 객체까지 깊게 복사해 변경을 감지한다
     const result = hardFilter(list, { ...anyone, budget: { max_krw: 5 } });
     expect(list).toEqual(snapshot);
     expect(ids(result)).toEqual(["b", "a"]);
@@ -99,5 +99,33 @@ describe("hardFilter: 예산 값 검증", () => {
     const noPrice = paddle({ id: "no-price", price_krw: undefined });
     const result = hardFilter([noPrice, ...list], { ...anyone, budget: { min_krw: 0, max_krw: 150000 } });
     expect(ids(result)).toEqual(["a"]);
+  });
+});
+
+describe("hardFilter: 예산과 인증의 조합", () => {
+  const cert = (status: "approved" | "unknown" | "not_approved") => ({
+    usa_pickleball: status,
+    checked_at: "2026-01-01",
+  });
+  const list = [
+    paddle({ id: "in-approved", price_krw: 100000, certification: cert("approved") }),
+    paddle({ id: "in-unknown", price_krw: 100000, certification: cert("unknown") }),
+    paddle({ id: "out-approved", price_krw: 300000, certification: cert("approved") }),
+    paddle({ id: "out-unknown", price_krw: 300000, certification: cert("unknown") }),
+  ];
+
+  it("두 조건을 모두 만족해야 통과한다", () => {
+    const result = hardFilter(list, { budget: { max_krw: 150000 }, needs_certification: true });
+    expect(ids(result)).toEqual(["in-approved"]);
+  });
+
+  it("인증이 필요 없으면 예산 조건만 적용한다", () => {
+    const result = hardFilter(list, { budget: { max_krw: 150000 }, needs_certification: false });
+    expect(ids(result)).toEqual(["in-approved", "in-unknown"]);
+  });
+
+  it("예산 제한이 없으면 인증 조건만 적용한다", () => {
+    const result = hardFilter(list, { budget: {}, needs_certification: true });
+    expect(ids(result)).toEqual(["in-approved", "out-approved"]);
   });
 });
