@@ -38,3 +38,15 @@
 ## 공통 쟁점
 1. **필수 필드를 공식 자료가 안 주는 경우**: NOX 무게, Franklin 길이·폭. 제조사 공식 페이지 2곳과 USAP 목록에 없다. 국내 판매 페이지의 값은 비공식이라 사용자 판단이 필요하다.
 2. **한국 판매 모델과 해외 모델의 대응**: 셀커크 '붐스틱 코어'가 Elongated인지 Widebody인지, JOOLA '하이페리온 비전'에 'Ben Johns'가 붙는지 등.
+
+## 1차 묶음 6개 (피앤피노 수집본 기준, 2026-11-15)
+| 제품 | 파일 | 승인(USAP) | 사람이 볼 것 |
+|---|---|---|---|
+| JOOLA Power FX 16mm | `joola-power-fx-16mm` | unknown (목록에는 'Perseus POWER FX 16mm') | 같은 모델인지, 길이·폭 16.5 × 7.5 추론 |
+| JOOLA Heat Vision Scorpeus 16mm | `joola-heat-vision-scorpeus-16mm` | approved (entry 11671) | 형태: 폭 7.99in 경계(standard와 widebody 중) |
+| Spartus Spitfire Elongated 16mm | `spartus-spitfire-elongated-16mm` | approved (entry 13265) | 길이·폭 16.5 × 7.5 추론, 표면 QuadFiber 분류 |
+| Friday Original Carbon Fiber 16mm | `friday-original-carbon-fiber-16mm` | unknown (목록 모델명이 코드) | 무게(OCR 값), 형태 elongated(경계) |
+| NOX X-TREME Tempus 16mm | `nox-x-treme-tempus-16mm` | approved (entry 12147) | 제조사 페이지 대조 |
+| SKARO PKR-T700 | `skaro-pkr-t700` | unknown (목록에서 못 찾음) | 전체 길이 415mm·표면(OCR 값), 16mm가 코어 두께인지 |
+
+주의: 판매처가 cm로 적은 치수를 인치로 환산하면 반올림 때문에 길이+폭이 24in를 0.02 넘는 경우가 있다(41.9 + 19.1cm). 이때는 근거를 적고 16.5 × 7.5in로 기록하며 사람 확인 대상으로 표시한다.

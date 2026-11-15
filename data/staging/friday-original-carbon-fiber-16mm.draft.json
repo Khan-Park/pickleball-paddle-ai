@@ -1,0 +1,73 @@
+{
+  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "paddle": {
+    "id": "friday-original-carbon-fiber-16mm",
+    "brand": "Friday",
+    "model": "Original Carbon Fiber 16mm",
+    "weight_oz": 8.2,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "carbon",
+    "price_krw": 105000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%98%A4%EB%A6%AC%EC%A7%80%EB%84%90-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-16mm-3f10"
+    ],
+    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "notes": "무게는 OCR 원문 값(8.2온스)이며 발췌 이미지에서 직접 확인하지 못했다. 색상 10종, 헤드 윗면 형태가 색상별로 다름."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "평균 무게 약 232g (8.2온스), 개체별 ±5g",
+      "비고": "사용자 수집본의 OCR 원문(미검수). 발췌 이미지에서 직접 확인하지 못함 → 사람 확인 필요"
+    },
+    "core_mm": {
+      "원문": "16mm 폴리프로필렌 허니컴 코어",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "넓은 16.5 × 7.5인치 페이스",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "넓은 16.5 × 7.5인치 페이스",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "surface": {
+      "원문": "거친 카본파이버 면 / 카본 그릿 표면",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "shape": {
+      "원문": "(형태명 표기 없음. 컬러에 따라 헤드 윗면이 라운드탑·플랫탑으로 다름)",
+      "파생": "치수 규칙(D-018): 길이 16.5 ≥ 16.5, 폭 7.5 < 8.0 → elongated",
+      "비고": "경계 근처 → 사람 확인. 판매처는 '넓은 스윗스팟, 입문~중급'으로 소개해 elongated 라벨이 어색할 수 있음"
+    },
+    "certification": {
+      "원문": "판매처 표기 '미국 피클볼 협회 승인', 제품 사진에 USA Pickleball Approved 마크. USAP 목록의 Friday 모델명은 'FRIDAY-LABS-01' 같은 코드라 이 제품과 대응시키지 못함",
+      "비고": "승인 목록에서 같은 모델명을 확인하지 못해 unknown. checked_at은 기록일(README 참조)"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 105000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP018. 기본판매가(옵션·쿠폰·배송비 제외)"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:19:32"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%98%A4%EB%A6%AC%EC%A7%80%EB%84%90-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-16mm-3f10",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP018의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "무게 232g(8.2oz)을 원본 이미지에서 확인",
+    "USAP 목록의 어느 코드가 이 제품인지",
+    "형태 elongated가 맞는지(경계)"
+  ]
+}
