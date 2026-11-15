@@ -9,6 +9,7 @@
 Next.js 16(App Router) + TypeScript + Tailwind 4, 테스트 Vitest, 스키마 zod
 - 전체 검사: `npm run check` (typecheck + lint + test). 커밋 전에 반드시 통과시킨다
 - 개별: `npm run typecheck` / `lint` / `test` / `build` / `dev`
+- 배포 전: `npm run check:release` (check + 제품 데이터 점검. 확인일이 오래된 스펙·가격·인증이 있으면 실패한다)
 
 ## 코딩 전에
 - Next.js 16은 기존 지식과 다르다. 관련 가이드를 node_modules/next/dist/docs/ 에서 먼저 읽는다

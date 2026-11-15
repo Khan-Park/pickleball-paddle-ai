@@ -27,11 +27,13 @@ export function parsePaddlesJson(text: string): unknown {
 }
 
 // 공식 사이트 도메인에 흔히 붙는 꼬리말(예: sixzeropickleball.com). 이 밖의 도메인은 경고한다
-const OFFICIAL_SUFFIXES = ["", "pickleball", "pickleballs", "sports", "sport", "paddles", "paddle", "official", "usa", "us", "global", "korea", "kr"];
+const OFFICIAL_SUFFIXES = ["pickleball", "pickleballs", "sports", "sport", "paddles", "paddle", "official", "usa", "global", "korea"];
+// co.kr, com.au처럼 등록 도메인이 한 라벨 더 앞에 있는 2단 TLD의 앞부분
+const SECOND_LEVEL = new Set(["co", "com", "or", "ne", "go", "ac", "org", "net"]);
 
 /**
- * 출처 호스트의 도메인 이름(TLD 제외 라벨)이 브랜드명이거나 브랜드명+흔한 꼬리말이면 공식 사이트로 본다.
- * 부분 문자열 포함만으로는 headphones-shop.com이나 joola-reseller.com이 통과하므로 라벨 전체를 비교한다.
+ * 출처 URL의 등록 도메인 이름(TLD 제외, 하이픈 제거)이 브랜드명이거나 브랜드명+흔한 꼬리말이면 공식 사이트로 본다.
+ * 하위 라벨은 보지 않는다. joola.com.shop-deals.net 같은 위장 주소와 headphones-shop.com 같은 부분 일치를 막기 위해서다.
  * 제조사 도메인이 브랜드명과 다르면(모회사 도메인 등) 계속 경고가 나며, 사람이 확인하면 된다(경고일 뿐이다).
  */
 function looksOfficial(brand: string, url: string): boolean {
@@ -41,8 +43,10 @@ function looksOfficial(brand: string, url: string): boolean {
   } catch {
     return false;
   }
-  const labels = host.split(".").slice(0, -1);
-  return labels.some((label) => OFFICIAL_SUFFIXES.some((s) => label === brand + s || label === `${brand}-${s}`));
+  const labels = host.split(".");
+  const twoLevelTld = labels.length >= 3 && SECOND_LEVEL.has(labels[labels.length - 2]!) && labels[labels.length - 1]!.length === 2;
+  const name = labels[labels.length - (twoLevelTld ? 3 : 2)]?.replace(/-/g, "");
+  return name !== undefined && (name === brand || OFFICIAL_SUFFIXES.some((s) => name === brand + s));
 }
 
 const alnum = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");

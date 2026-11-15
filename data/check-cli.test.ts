@@ -3,9 +3,10 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fakePaddle } from "./test-fixtures";
+import { fileURLToPath } from "node:url";
+import { goodPaddle } from "./test-fixtures";
 
-const CLI = new URL("./check-cli.mts", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
+const CLI = fileURLToPath(new URL("./check-cli.mts", import.meta.url));
 
 function run(args: string[], fileContent?: string) {
   const dir = mkdtempSync(join(tmpdir(), "data-check-"));
@@ -19,9 +20,7 @@ function run(args: string[], fileContent?: string) {
   }
 }
 
-const good = JSON.stringify([
-  fakePaddle({ brand: "SAMPLE", sources: ["https://www.sample.com/s"], verified_at: "2026-05-20", price_checked_at: "2026-05-25", certification: { usa_pickleball: "approved", checked_at: "2026-05-20" } }),
-]);
+const good = JSON.stringify([goodPaddle()]);
 
 describe("data:check CLI", () => {
   it("정상 데이터는 종료 코드 0과 '통과'를 낸다", () => {
@@ -50,6 +49,11 @@ describe("data:check CLI", () => {
     expect(r.code).toBe(0);
     expect(r.out).toContain("경고:");
     expect(r.out).toContain("경고 있음");
+  });
+
+  it("--strict면 경고만 있어도 종료 코드 1이다", () => {
+    expect(run(["--strict", "2027-06-01", "<file>"], good).code).toBe(1);
+    expect(run(["--strict", "2026-06-01", "<file>"], good).code).toBe(0);
   });
 
   it("잘못된 기준일은 스택 트레이스 없이 사용법을 알리고 종료 코드 1이다", () => {

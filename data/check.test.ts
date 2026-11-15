@@ -2,14 +2,13 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { checkPaddles, DATA_MAX_AGE_DAYS, parsePaddlesJson, PRICE_MAX_AGE_DAYS, todayLocal } from "./check";
 import { paddleSchema } from "./schema";
-import { fakePaddle } from "./test-fixtures";
+import { fakePaddle, goodPaddle } from "./test-fixtures";
 
 const TODAY = "2026-06-01";
 /** TODAY에서 n일 전 날짜 */
 const ago = (n: number) => new Date(Date.UTC(2026, 5, 1) - n * 86_400_000).toISOString().slice(0, 10);
-// 출처 호스트에 브랜드명이 들어가는 정상 제품
-const good = (o = {}) =>
-  fakePaddle({ brand: "SAMPLE", sources: ["https://www.sample.com/spec"], verified_at: ago(10), price_checked_at: ago(5), certification: { usa_pickleball: "approved", checked_at: ago(10) }, ...o });
+// 출처 호스트에 브랜드명이 들어가는 정상 제품(기준일 TODAY에서 경고 없음)
+const good = goodPaddle;
 
 describe("가격 확인일 스키마", () => {
   it("가격이 있는데 확인일이 없으면 거부한다", () => {
@@ -84,6 +83,14 @@ describe("checkPaddles", () => {
     expect(warn("JOOLA", "https://www.joola.com/x")).toBe(0);
     expect(warn("Selkirk", "https://www.selkirk.co.kr/x")).toBe(0);
     expect(warn("NOX", "https://noxpickleball.com/x")).toBe(0);
+  });
+
+  it("브랜드명이 하위 라벨일 뿐인 위장 도메인은 경고하고, 하이픈 도메인은 정규화해 비교한다", () => {
+    const warn = (brand: string, url: string) => checkPaddles([good({ brand, sources: [url] })], TODAY).warnings.length;
+    expect(warn("JOOLA", "https://joola.com.shop-deals.net/x")).toBe(1);
+    expect(warn("JOOLA", "https://joola.evil.example/x")).toBe(1);
+    expect(warn("Six Zero", "https://www.six-zero.com/x")).toBe(0);
+    expect(warn("JOOLA", "https://us.joola.com/x")).toBe(0);
   });
 
   it("출처 호스트에 브랜드명이 없으면 경고, 있으면(대소문자·공백 무시) 경고 없음", () => {
