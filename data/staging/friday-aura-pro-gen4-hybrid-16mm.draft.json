@@ -1,0 +1,70 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "friday-aura-pro-gen4-hybrid-16mm",
+    "brand": "Friday",
+    "model": "Aura Pro Gen 4 Hybrid 16mm",
+    "weight_oz": 7.9,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.375,
+    "width_in": 7.625,
+    "surface": "carbon",
+    "price_krw": 244000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%95%84%EC%9A%B0%EB%9D%BC-%ED%94%84%EB%A1%9C-gen-4-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-fbd5"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "평균 무게 약 224g (7.9온스), 개체별 ±5g",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "두께 16mm / 16mm 듀얼 폼 코어",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "페이스 크기 약 41.6 × 19.4cm (16.375 × 7.625인치)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "페이스 크기 약 41.6 × 19.4cm (16.375 × 7.625인치)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "surface": {
+      "원문": "표면 T700 로우 카본파이버",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "shape": {
+      "원문": "형태 하이브리드 (일롱게이트보다 조금 짧고 넓은 형태)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "certification": {
+      "원문": "판매처 스펙 표 '인증: 미국 피클볼 협회 승인 (반발력 기준 0.43)'. USAP 목록의 Friday 모델명은 코드라 대응시키지 못함",
+      "비고": "unknown은 승인 목록에서 같은 모델명을 확인하지 못했다는 뜻. checked_at은 기록일(README 참조)"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 244000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP016. 기본판매가"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:19:31"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%95%84%EC%9A%B0%EB%9D%BC-%ED%94%84%EB%A1%9C-gen-4-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-fbd5",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP016의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "USAP 목록의 어느 코드가 이 제품인지"
+  ]
+}

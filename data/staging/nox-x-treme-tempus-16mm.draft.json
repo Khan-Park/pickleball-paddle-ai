@@ -1,0 +1,76 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "nox-x-treme-tempus-16mm",
+    "brand": "NOX",
+    "model": "X-TREME Tempus 16mm",
+    "weight_oz": 8.11,
+    "core_mm": 16,
+    "shape": "widebody",
+    "length_in": 16,
+    "width_in": 8,
+    "surface": "carbon",
+    "price_krw": 271000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/nox-%EB%85%B9%EC%8A%A4-x-treme-tempus-16mm-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%B8%94%EB%9E%99-tqy9",
+      "https://equipment.usapickleball.org/paddle-list/entry/12147/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "무게는 판매처 표기 230g(±5)을 환산한 파생값. 제조사 공식 페이지는 아직 대조하지 않음."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "무게 230g (±5)",
+      "범위_g": [
+        225,
+        235
+      ],
+      "파생": "230 ÷ 28.3495 = 8.11oz",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "코어 두께 16 mm",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "길이 × 폭 16 × 8 inch",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "길이 × 폭 16 × 8 inch",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "surface": {
+      "원문": "표면 Raw Carbon · Textured T700",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "shape": {
+      "원문": "헤드 모양 와이드바디 (Widebody)",
+      "비고": "판매처 스펙 표가 형태를 직접 표기. 치수 규칙(폭 8.0)과도 일치"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 12147: Model 'X-TREME TEMPUS 16mm', MD# PPIXTRTE1626, Status Pass, Added 10/16/2025, Depth 16mm, t700 raw carbon",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 271000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP040. 기본판매가(옵션·쿠폰·배송비 제외)"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:20:41"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/nox-%EB%85%B9%EC%8A%A4-x-treme-tempus-16mm-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%B8%94%EB%9E%99-tqy9",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP040의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "제조사 페이지(noxsport.com)와 치수 대조"
+  ]
+}

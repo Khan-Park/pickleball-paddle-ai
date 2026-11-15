@@ -1,0 +1,75 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "joola-heat-vision-scorpeus-16mm",
+    "brand": "JOOLA",
+    "model": "Heat Vision Scorpeus 16mm",
+    "weight_oz": 7.8,
+    "core_mm": 16,
+    "shape": "widebody",
+    "length_in": 16.0,
+    "width_in": 7.99,
+    "surface": "carbon",
+    "price_krw": 159000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-heat-vision-16mm-%ED%9E%88%ED%8A%B8-%EB%B9%84%EC%A0%84-%EC%B9%B4%EB%B3%B8-z47k",
+      "https://equipment.usapickleball.org/paddle-list/entry/11671/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "한 상품 페이지에 셰이프 3종(페르세우스·스콜피우스·애거시)이 있고 치수가 다르다. 이 초안은 스콜피우스. 페르세우스(41.91 × 19.1cm)는 수집 시점에 전 색상 품절."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "무게 221.1g (3종 공통)",
+      "파생": "221.1 ÷ 28.3495 = 7.80oz",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "코어 두께 16mm",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "스콜피우스 세로 길이 40.64cm",
+      "파생": "40.64 ÷ 2.54 = 16.00in",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "스콜피우스 가로 길이 20.3cm",
+      "파생": "20.3 ÷ 2.54 = 7.99in",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기. 8in(20.32cm)의 반올림일 수 있음"
+    },
+    "surface": {
+      "원문": "표면 Carbon Fiber",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "shape": {
+      "원문": "셰이프명 '스콜피우스'(제조사 고유 이름). 판매처 설명: 가로폭이 넓어 스위트스팟이 큼",
+      "파생": "폭 20.3cm(7.99in)는 8in(20.32cm)의 반올림 표기로 보고 widebody (D-019, 사용자 결정 2026-11-15). 치수 규칙을 글자 그대로 적용하면 standard",
+      "비고": "경계 사례. 제조사 자료에서 인치 표기가 확인되면 다시 본다"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 11671: Model 'Scorpeus Heat Vision 16mm', Status Pass, Added 07/18/2025, Depth 16mm, Carbon Fiber",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 159000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP006. 기본판매가(옵션·쿠폰·배송비 제외)"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:19:14"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-heat-vision-16mm-%ED%9E%88%ED%8A%B8-%EB%B9%84%EC%A0%84-%EC%B9%B4%EB%B3%B8-z47k",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP006의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "페르세우스·애거시 셰이프를 별도 제품으로 추가할지"
+  ]
+}

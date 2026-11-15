@@ -1,0 +1,75 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "nox-x-foam-jc6-16mm",
+    "brand": "NOX",
+    "model": "X-Foam JC6 16mm (Judit Castillo)",
+    "weight_oz": 8.11,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "carbon",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://noxsport.com/en/products/pala-pickleball-x-foam-jc6-16mm",
+      "https://equipment.usapickleball.org/paddle-list/entry/12041/",
+      "https://pnpino.com/products/nox-%EB%85%B9%EC%8A%A4-x-foam-jc6-16mm-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EA%B3%A8%EB%93%9C-%EC%A3%BC%EB%94%94%EC%8A%A4-%EC%B9%B4%EC%8A%A4%ED%8B%B0%EC%9A%94-%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98-nmi0"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "SKU PPIXFOJC626. weight_oz는 판매처 표기 230g(±5)을 oz로 환산한 값(230 ÷ 28.3495 = 8.11, 파생값). 제조사 페이지에는 무게가 없다. 가격은 피앤피노 기본판매가(옵션·쿠폰·배송비 제외).",
+    "price_krw": 394000,
+    "price_checked_at": "2026-11-15"
+  },
+  "evidence": {
+    "core_mm": {
+      "원문": "Core (mm): 16"
+    },
+    "length_in": {
+      "원문": "Paddle Length: 16.5 (in)"
+    },
+    "width_in": {
+      "원문": "Paddle Width: 7.5 (in)"
+    },
+    "weight_oz": {
+      "원문": "무게 230g (±5)",
+      "범위_g": [
+        225,
+        235
+      ],
+      "파생": "230g ÷ 28.3495 = 8.11oz",
+      "비고": "사용자 수집본(피앤피노 pnpino.com, 2026-11-15)의 상세 이미지를 원본과 대조해 읽음. 국내 판매처 표기이며 제조사 공식 값이 아님 (PNP048 스펙 표)"
+    },
+    "shape": {
+      "원문": "(제조사 페이지에 형태명 없음)",
+      "파생": "치수 규칙(decisions D-018)으로 elongated: 길이 16.5 ≥ 16.5, 폭 7.5 < 8.0",
+      "비고": "경계 근처(길이가 임계값 16.5와 같음). 판매처 스펙 표도 '롱바디 (Elongated)', '16.5 × 7.5 inch'로 표기해 일치"
+    },
+    "surface": {
+      "원문": "USAP 승인 목록 entry 12041: Material 't700 raw carbon' (제조사 페이지 본문에는 소재 표기 없음)",
+      "비고": "USAP 목록 값으로 carbon 분류"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 12041: Model 'X-FOAM JC6', Status Pass, Added 09/23/2025, Depth 16MM, Shape 'Rectangle w/Round Corners'. 제조사 페이지: 'double USAPA and UPA-A certification. Homologated for official competition.'",
+      "비고": "2026-11-15에 USAP 승인 목록에서 직접 대조해 approved(승인 목록의 모델명에는 mm 표기가 없고 Depth 16MM)"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 394000원, 판매중",
+      "비고": "사용자 수집본 엑셀 '상품목록' PNP048"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:20:50"
+    }
+  },
+  "source_meta": {
+    "url": "https://noxsport.com/en/products/pala-pickleball-x-foam-jc6-16mm",
+    "read_at": "2026-11-15",
+    "method": "앱 내 브라우저로 공식 페이지 텍스트를 직접 읽음. 참고 가격(미사용): 189,99 € (정가 224,95 €)"
+  },
+  "open_questions": [
+    "무게가 제조사 공식 값이 아니라 판매처 표기라는 점을 받아들일지(확인표에서 결정)"
+  ]
+}

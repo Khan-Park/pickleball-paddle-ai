@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+/** 규정상 패들의 길이+폭 한도(인치) */
+export const MAX_LENGTH_PLUS_WIDTH_IN = 24;
+/**
+ * 표기 반올림 허용 오차(인치). 제조사·판매처가 치수를 0.1cm나 0.01in 단위로 반올림해 적으면
+ * 규정 안의 패들도 합이 24.02in처럼 보인다(예: 41.5 + 19.5cm, 16.34 + 7.68in). (docs/decisions.md D-020)
+ */
+export const SIZE_ROUNDING_TOLERANCE_IN = 0.05;
+
 /** 제품 1개의 스키마. 모든 값은 사람이 출처를 확인한 것이어야 한다(추정 금지). */
 export const paddleSchema = z
   .object({
@@ -26,8 +34,8 @@ export const paddleSchema = z
     purchase: z.object({ url: z.url(), is_affiliate: z.boolean() }).optional(),
     notes: z.string().optional(),
   })
-  .refine((p) => p.length_in + p.width_in <= 24, {
-    message: "길이+폭은 24인치 이하여야 한다",
+  .refine((p) => p.length_in + p.width_in <= MAX_LENGTH_PLUS_WIDTH_IN + SIZE_ROUNDING_TOLERANCE_IN + 1e-9, {
+    message: "길이+폭은 24인치 이하여야 한다(표기 반올림 허용 오차 0.05인치)",
     path: ["length_in"],
   })
   .refine((p) => p.price_krw === undefined || p.price_checked_at !== undefined, {

@@ -1,0 +1,77 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "franklin-signature-fiberglass-16mm",
+    "brand": "Franklin",
+    "model": "Signature Series Fiberglass 16mm",
+    "weight_oz": 8.1,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "fiberglass",
+    "price_krw": 139000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%94%84%EB%9E%AD%ED%81%B4%EB%A6%B0-%ED%94%BC%ED%81%B4%EB%B3%BC-%EB%9D%BC%EC%BC%93-%ED%8C%A8%EB%93%A4-%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98-%ED%8C%8C%EC%9D%B4%EB%B2%84%EA%B8%80%EB%9D%BC%EC%8A%A4-16mm-%EB%B8%94%EB%A3%A8-usap-%EA%B3%B5%EC%9D%B8-gwuy",
+      "https://equipment.usapickleball.org/paddle-list/entry/3799/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "표면이 파이버글라스인 16mm 모델. weight_oz는 표기 범위의 중간값(파생값)."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "무게 7.9 ~ 8.3 oz (약 224 ~ 235 g)",
+      "범위_oz": [
+        7.9,
+        8.3
+      ],
+      "파생": "범위 중간값 8.1",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "16mm 폴리프로필렌 코어",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "패들 크기 16.5 X 7.5 in (약 41.9 X 19.1cm)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "패들 크기 16.5 X 7.5 in (약 41.9 X 19.1cm)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "surface": {
+      "원문": "시그니처 시리즈 파이버글라스 / 파이버글라스 페이스",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "shape": {
+      "원문": "(형태명 표기 없음)",
+      "파생": "치수 규칙(D-018): 길이 16.5 ≥ 16.5, 폭 7.5 < 8.0 → elongated",
+      "비고": "경계 근처 → 사람 확인"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 3799: Model 'Franklin Signature Series 16MM', MD# 52985, Status Pass, Added 03/02/2022, Depth 16MM, Fiberglass. 판매처 웹 원문도 'USA Pickleball 공인 패들'",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 139000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP009. 기본판매가"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:19:18"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/%ED%94%84%EB%9E%AD%ED%81%B4%EB%A6%B0-%ED%94%BC%ED%81%B4%EB%B3%BC-%EB%9D%BC%EC%BC%93-%ED%8C%A8%EB%93%A4-%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98-%ED%8C%8C%EC%9D%B4%EB%B2%84%EA%B8%80%EB%9D%BC%EC%8A%A4-16mm-%EB%B8%94%EB%A3%A8-usap-%EA%B3%B5%EC%9D%B8-gwuy",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP009의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "형태 elongated 확인(경계)"
+  ]
+}

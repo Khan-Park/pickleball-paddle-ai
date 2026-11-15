@@ -1,0 +1,74 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "picklepoppers-pop-n-rookie-16mm",
+    "brand": "Picklepoppers",
+    "model": "POP N ROOKIE 16mm",
+    "weight_oz": 7.95,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.3,
+    "width_in": 7.4,
+    "surface": "fiberglass",
+    "price_krw": 29900,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%94%BC%ED%81%B4%ED%8C%8C%ED%8D%BC%EC%8A%A4-16mm-%EB%A3%A8%ED%82%A4-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%8B%A8%ED%92%88-usap-%EA%B3%B5%EC%9D%B8-1523",
+      "https://equipment.usapickleball.org/paddle-list/entry/11062/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "입문용 저가 제품. weight_oz는 표기 범위의 중간값(파생값). 이미지의 치수 그림에는 폭이 7.5\"로, 스펙 문구에는 7.4W\"로 적혀 있어 문구 값을 썼다."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "중량 7.8 - 8.1oz (221.1 - 229.7g)",
+      "범위_oz": [
+        7.8,
+        8.1
+      ],
+      "파생": "범위 중간값 7.95",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "16mm thick honeycomb interior / 16mm 허니콤 구조",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "사이즈 16.3H\" x 7.4W\" (41.4 × 18.8cm)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "사이즈 16.3H\" x 7.4W\" (41.4 × 18.8cm)",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "surface": {
+      "원문": "소재 Fiberglass / 파이버글라스 표면",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "shape": {
+      "원문": "타입 : Hybrid",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기. 판매처가 형태를 직접 표기(치수 규칙 결과와도 일치)"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 11062: Brand 'PICKLE POPPERS', Model 'Rookie' (목록 등재 확인, 상세 Status는 열어 보지 않음). 상품명에도 'USAP 공인'",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 29900원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP133. 기본판매가"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:23:53"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/%ED%94%BC%ED%81%B4%ED%8C%8C%ED%8D%BC%EC%8A%A4-16mm-%EB%A3%A8%ED%82%A4-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%8B%A8%ED%92%88-usap-%EA%B3%B5%EC%9D%B8-1523",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP133의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": []
+}

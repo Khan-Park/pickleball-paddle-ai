@@ -18,6 +18,15 @@ describe("paddleSchema", () => {
     expect(paddleSchema.safeParse({ ...sample, length_in: 17, width_in: 8 }).success).toBe(false);
   });
 
+  it("길이+폭은 표기 반올림 허용 오차 0.05인치까지 통과한다(D-020)", () => {
+    const ok = (length_in: number, width_in: number) => paddleSchema.safeParse({ ...sample, length_in, width_in }).success;
+    expect(ok(16.5, 7.5)).toBe(true); // 24.00
+    expect(ok(16.34, 7.68)).toBe(true); // 24.02: 판매처 표기 반올림 사례
+    expect(ok(16.5, 7.55)).toBe(true); // 24.05: 경계 포함
+    expect(ok(16.5, 7.56)).toBe(false); // 24.06
+    expect(ok(16.5, 7.6)).toBe(false); // 24.10
+  });
+
   it("알 수 없는 형태를 거부한다", () => {
     expect(paddleSchema.safeParse({ ...sample, shape: "round" }).success).toBe(false);
   });

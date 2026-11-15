@@ -1,0 +1,76 @@
+{
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
+  "paddle": {
+    "id": "selkirk-boomstik-st-elongated-16mm",
+    "brand": "Selkirk",
+    "model": "Boomstik ST Elongated 16mm",
+    "weight_oz": 8.15,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.45,
+    "surface": "carbon",
+    "price_krw": 519000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/selkirk-%EC%85%80%EC%BB%A4%ED%81%AC-%EB%B6%90%EC%8A%A4%ED%8B%B1-st-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-boomstik-st-16mm-ghy0",
+      "https://equipment.usapickleball.org/paddle-list/entry/13858/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "한 상품 페이지에 엘롱게이티드·와이드바디 2종이 있다. 이 초안은 엘롱게이티드(레드·블루 판매중). 와이드바디(15.95 × 8.0in)는 수집 시점에 전 색상 품절. 7.5g 탈착식 MOI 웨이트 포함."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "무게 평균 8.0–8.3 oz",
+      "범위_oz": [
+        8.0,
+        8.3
+      ],
+      "파생": "범위 중간값 8.15",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "16mm PureFoam BoomCore",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "전체 길이: 엘롱게이티드 16.5\"",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "width_in": {
+      "원문": "너비: 일롱게이티드 7.45\"",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기"
+    },
+    "surface": {
+      "원문": "표면 InfiniGrit Ultra (판매처 이미지 '공식 제품 사양'). USAP 목록 entry 13858: Material 'Carbon Fiber'",
+      "비고": "소재는 USAP 목록 값으로 carbon 분류"
+    },
+    "shape": {
+      "원문": "옵션 '엘롱게이티드'",
+      "비고": "판매 옵션이 형태를 직접 표기"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 13858: Model 'Boomstik ST Elongated', Status Pass, Added 10/01/2026, Depth 16",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 519000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP007. 기본판매가"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:19:17"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/selkirk-%EC%85%80%EC%BB%A4%ED%81%AC-%EB%B6%90%EC%8A%A4%ED%8B%B1-st-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-boomstik-st-16mm-ghy0",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP007의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "와이드바디를 별도 제품으로 추가할지"
+  ]
+}
