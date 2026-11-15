@@ -185,3 +185,23 @@ describe("조건 완화 힌트", () => {
     expect(r.relaxation[0]).not.toHaveProperty("suggested_max_krw");
   });
 });
+
+describe("경력별 무게 보정 (D-021)", () => {
+  // 실제 데이터에서 본 사례를 가짜 제품으로 재현: 스펙은 같고 무게만 다른 넓은 형 16mm 두 개
+  const heavy = fakePaddle({ id: "heavy-wide", core_mm: 16, weight_oz: 8.75, shape: "widebody" });
+  const medium = fakePaddle({ id: "medium-wide", core_mm: 16, weight_oz: 8.1, shape: "widebody" });
+
+  it("초보·균형 사용자에게는 중간 무게가 무거운 것보다 위에 온다", () => {
+    expect(top([heavy, medium], fakeProfile({ skill_level: "beginner", play_style: "balanced" }))).toBe("medium-wide");
+  });
+
+  it("초보에게 무거운 패들이 나오면 주의 문구를 단다", () => {
+    const r = recommend([heavy], fakeProfile({ skill_level: "beginner" }), ctx);
+    expect(r.items[0]!.cautions.some((c) => c.includes("무거운 편"))).toBe(true);
+  });
+
+  it("상급자에게는 무게 보정이 적용되지 않는다", () => {
+    const r = recommend([heavy], fakeProfile({ skill_level: "advanced" }), ctx);
+    expect(r.items[0]!.axes.map((a) => a.axis)).not.toContain("skill_weight");
+  });
+});

@@ -38,6 +38,13 @@ const TEMPLATES: Record<string, Template> = {
     caution: (v) =>
       `팔 불편이 있다면 무게 ${v.weight_oz}oz, 코어 ${v.core_mm}mm 사양은 부담이 될 수 있으니 신중히 골라 주세요`,
   },
+  "skill_weight.band": {
+    reason: (v) => `무게 ${v.weight_oz}oz로 다루기 쉬운 중간 무게대입니다`,
+    caution: (v) =>
+      v.band === "heavy"
+        ? `무게 ${v.weight_oz}oz로 무거운 편이라 경력이 짧다면 다루기 부담스러울 수 있습니다`
+        : `무게 ${v.weight_oz}oz로 가벼운 편이라 타구가 가볍게 느껴질 수 있습니다`,
+  },
   "weight_preference.band": {
     reason: (v) => `원하시는 ${WEIGHT_PREF_KO[String(v.preference)] ?? ""} 무게대(${v.weight_oz}oz)에 맞습니다`,
     caution: (v) => `원하시는 ${WEIGHT_PREF_KO[String(v.preference)] ?? ""} 무게대와 차이가 있습니다(${v.weight_oz}oz)`,

@@ -4,7 +4,7 @@
  * 근거 표기: "가설" = 소매점·브랜드 가이드의 일반적 설명에서 가져온 초기값(출처마다 범위가 다르고
  * 판매처 자료라 편향 가능). 실제 제품 데이터와 사용자 피드백으로 보정하고, 바꿀 때 SCORING_VERSION을 올린다.
  */
-export const SCORING_VERSION = "0.1.0";
+export const SCORING_VERSION = "0.2.0";
 
 export type ShapeKey = "standard" | "hybrid" | "elongated" | "widebody";
 
@@ -47,6 +47,14 @@ export const ARM_COMFORT = {
 /** 무게 선호: 구간 밖으로 벗어난 만큼 감점(0.5oz당 0.5 = 1oz당 1.0), 하한 0 */
 export const WEIGHT_PREFERENCE = { penaltyPerOz: 1 } as const;
 
+/**
+ * 경력별 무게 적합(skill_weight): 초보·중급에게만 켜진다. 권장 무게대(WEIGHT_BAND의 medium) 안이면 1,
+ * 벗어난 만큼 감점한다. 가설: 초보는 중간 무게대가 다루기 쉽다(docs/spec.md). 실제 데이터에서 초보·균형
+ * 사용자에게 8.75oz 패들이 1순위로 나온 사례를 보고 추가했다(D-021).
+ * 사용자가 무게 선호를 직접 골랐으면 weight_preference 축이 대신하므로 이 축은 끈다.
+ */
+export const SKILL_WEIGHT = { penaltyPerOz: 2 } as const;
+
 /** 형태 선호: 선호 형태면 1, 아니면 이 값(강제 제외 아님) */
 export const SHAPE_PREFERENCE = { nonPreferredScore: 0.4 } as const;
 
@@ -71,6 +79,8 @@ export const AXIS_WEIGHTS = {
   power_control: 0.35,
   forgiveness: { beginner: 0.3, intermediate: 0.15, advanced: 0.05 },
   arm_comfort: 0.35,
+  /** 상급자는 제외(가중치 없음) */
+  skill_weight: { beginner: 0.2, intermediate: 0.1 },
   weight_preference: 0.15,
   shape_preference: 0.15,
 } as const;
