@@ -385,49 +385,5 @@
     ],
     "verified_at": "2026-11-15",
     "notes": "규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션."
-  },
-  {
-    "id": "prokennex-power",
-    "brand": "ProKennex",
-    "model": "Power",
-    "weight_oz": 7.94,
-    "core_mm": 13,
-    "shape": "standard",
-    "length_in": 16.0,
-    "width_in": 7.88,
-    "surface": "fiberglass",
-    "price_krw": 99000,
-    "price_checked_at": "2026-11-15",
-    "certification": {
-      "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
-    },
-    "sources": [
-      "https://pnpino.com/products/%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4-power-%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4%ED%94%BC%ED%81%B4%EB%B3%BC%ED%8C%A8%EB%93%A4-wh-1881"
-    ],
-    "verified_at": "2026-11-15",
-    "notes": "입문용. 13mm는 '패들두께' 표기(코어 두께와 다를 수 있음). 소재 PP+GF의 GF를 유리섬유로 해석."
-  },
-  {
-    "id": "skaro-pkr-t700",
-    "brand": "SKARO",
-    "model": "PKR-T700",
-    "weight_oz": 7.41,
-    "core_mm": 16,
-    "shape": "hybrid",
-    "length_in": 16.34,
-    "width_in": 7.4,
-    "surface": "carbon",
-    "price_krw": 29500,
-    "price_checked_at": "2026-11-15",
-    "certification": {
-      "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
-    },
-    "sources": [
-      "https://pnpino.com/products/%EC%8A%A4%EC%B9%B4%EB%A1%9C-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-1%EA%B0%9C-pkr-t700-%ED%97%88%EB%8B%88%EC%BB%B4%EC%BD%94%EC%96%B4-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-187p"
-    ],
-    "verified_at": "2026-11-15",
-    "notes": "입문용 저가 제품. 전체 길이(415mm)와 표면 소재는 OCR 원문 값이라 원본 이미지 확인이 필요하다. 16mm는 '두께' 표기."
   }
 ]
