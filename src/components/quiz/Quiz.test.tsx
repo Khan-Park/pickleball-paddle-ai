@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { loadAnswers } from "@/lib/quiz/storage";
+import { loadAnswers, saveAnswers } from "@/lib/quiz/storage";
 import { ShapeIcon } from "@/components/ShapeIcon";
 import { Quiz } from "./Quiz";
 
@@ -106,5 +106,63 @@ describe("질문 화면", () => {
     click(/강한 파워/);
     expect(push).not.toHaveBeenCalled();
     expect(loadAnswers()).toBeNull();
+  });
+});
+
+describe("질문 화면: 이어서 답하기와 이동", () => {
+  const done = { experience: "over_3y", play_style: "power", weight: "heavy", arm: "no", shapes: [], budget: "200k_to_300k", tournament: "no" } as const;
+
+  it("저장된 답변이 있으면 불러와 마지막 질문부터 보여 주고, 고른 답이 표시된다", () => {
+    saveAnswers({ ...done, shapes: [] });
+    render(<Quiz />);
+    expect(heading()).toContain("대회에 나갈 계획");
+    expect(screen.getByText("7 / 7")).toBeDefined();
+    expect(screen.getByRole("button", { name: /아니요/ }).getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("결과에서 돌아와 한 가지만 바꾸고 '다음'으로 나머지를 지나갈 수 있다", () => {
+    saveAnswers({ ...done, shapes: [] });
+    render(<Quiz />);
+    click(/← 이전/);
+    expect(heading()).toContain("예산");
+    click(/10만~20만 원/);
+    expect(heading()).toContain("대회에 나갈 계획");
+    click("결과 보기");
+    expect(push).toHaveBeenCalledWith("/result");
+    expect(loadAnswers()).toMatchObject({ budget: "100k_to_200k", experience: "over_3y", tournament: "no" });
+  });
+
+  it("이미 답한 질문에는 '다음' 버튼이 있어 같은 답을 다시 누르지 않아도 된다", () => {
+    render(<Quiz />);
+    expect(screen.queryByRole("button", { name: "다음" })).toBeNull();
+    click(/3년 이상/);
+    click(/강한 파워/);
+    click(/← 이전/);
+    click(/← 이전/);
+    expect(heading()).toContain("얼마나 해 보셨나요");
+    click("다음");
+    expect(heading()).toContain("어떤 플레이");
+    click("다음");
+    expect(heading()).toContain("무게");
+    expect(screen.queryByRole("button", { name: "다음" })).toBeNull();
+  });
+
+  it("질문이 바뀌면 새 질문 제목으로 포커스가 옮겨 가고, 처음 열었을 때는 포커스를 가져가지 않는다", () => {
+    render(<Quiz />);
+    const legend = () => screen.getByRole("group").querySelector("legend")!;
+    expect(document.activeElement).not.toBe(legend());
+    click(/3년 이상/);
+    expect(document.activeElement).toBe(legend());
+    expect(legend().textContent).toContain("어떤 플레이");
+  });
+
+  it("'처음부터 다시 답하기'는 저장된 답변을 지우고 첫 질문으로 돌아간다", () => {
+    saveAnswers({ ...done, shapes: [] });
+    render(<Quiz />);
+    click("처음부터 다시 답하기");
+    expect(heading()).toContain("얼마나 해 보셨나요");
+    expect(screen.getByText("1 / 7")).toBeDefined();
+    expect(loadAnswers()).toBeNull();
+    expect(screen.queryByRole("button", { name: "처음부터 다시 답하기" })).toBeNull();
   });
 });

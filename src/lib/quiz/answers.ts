@@ -11,6 +11,13 @@ const BUDGET = {
   any: {},
 } as const;
 
+/** 값이 선택지 안에 있어야 하는 답. 경력·무게·성향은 변환 결과가 undefined가 되어 프로필 검증에서 걸린다 */
+const INVALID_CHECKS: { id: "budget" | "arm" | "tournament"; allowed: string[] }[] = [
+  { id: "budget", allowed: Object.keys(BUDGET) },
+  { id: "arm", allowed: ["yes", "no"] },
+  { id: "tournament", allowed: ["yes", "no"] },
+];
+
 export type AnswersResult = ProfileParseResult | { success: false; missing: QuestionId[] };
 
 /**
@@ -26,11 +33,15 @@ export function answersToProfile(answers: QuizAnswers): AnswersResult {
       .map((q) => q.id);
     return { success: false, missing };
   }
-  const visible = new Set(visibleQuestions(answers).map((q) => q.id));
-  const beginner = answers.experience === "under_1y";
+  // 저장된 답이 손상됐거나 옛 값이면(선택지에 없는 값) 조용히 기본값으로 바꾸지 않고 다시 묻는다.
+  // 예산·팔 불편·대회 답은 아래 변환에서 기본값으로 떨어질 수 있어 여기서 먼저 확인한다
+  const invalid = INVALID_CHECKS.filter(({ id, allowed }) => !allowed.includes(String(answers[id]))).map(({ id }) => id);
+  if (invalid.length > 0) return { success: false, missing: invalid };
+
   // "잘 모르겠어요"는 초보에게만 보이는 선택지다. 초보가 아닌데 남아 있으면 균형으로 본다(설계상 같은 뜻)
   const style = answers.play_style === "unsure" ? "balanced" : answers.play_style;
-  const shapes = visible.has("shapes") && !beginner ? answers.shapes : undefined;
+  // 선호 모양을 쓸지는 진행형 규칙(visibleQuestions) 한 곳에서만 정한다
+  const shapes = visibleQuestions(answers).some((q) => q.id === "shapes") ? answers.shapes : undefined;
 
   return parseUserProfile({
     skill_level: SKILL[answers.experience!],

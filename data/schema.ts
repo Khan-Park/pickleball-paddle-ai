@@ -49,5 +49,14 @@ export const paddlesSchema = z.array(paddleSchema).refine(
 );
 
 export type Paddle = z.infer<typeof paddleSchema>;
-/** 추천 엔진이 사용하는 타입: 구매 링크·수수료 정보를 제외한다 */
-export type PaddleSpec = Omit<Paddle, "purchase">;
+/**
+ * 추천 엔진이 사용하는 타입. 점수와 필터에 쓰는 스펙 필드만 담는다.
+ * 구매 링크·수수료 정보(purchase)는 물론 출처·메모도 들어 있지 않아, 엔진이 읽을 방법이 없다.
+ */
+export type PaddleSpec = Pick<
+  Paddle,
+  "id" | "weight_oz" | "core_mm" | "shape" | "length_in" | "width_in" | "surface" | "price_krw" | "certification"
+>;
+
+/** 결과 화면에 보여 줄 정보. 출처 URL과 내부 메모(notes)는 브라우저로 보내지 않는다 */
+export type PaddleDisplay = PaddleSpec & Pick<Paddle, "brand" | "model" | "price_checked_at" | "purchase">;

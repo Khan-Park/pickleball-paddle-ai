@@ -156,3 +156,18 @@ describe("실제 data/paddles.json", () => {
     expect(checkPaddles(raw, "2999-12-31").errors).toEqual([]);
   });
 });
+
+describe("구매 링크 점검", () => {
+  const withLink = (url: string, is_affiliate: boolean) => goodPaddle({ purchase: { url, is_affiliate } });
+
+  it("쿠팡 주소인데 제휴가 아니라고 적으면 오류(대가 표시가 빠지는 것을 막는다)", () => {
+    const r = checkPaddles([withLink("https://link.coupang.com/a/abc", false)], TODAY);
+    expect(r.errors).toHaveLength(1);
+    expect(r.errors[0]).toContain("is_affiliate");
+  });
+
+  it("쿠팡 제휴 링크와 다른 판매처의 일반 링크는 통과", () => {
+    expect(checkPaddles([withLink("https://link.coupang.com/a/abc", true)], TODAY).errors).toEqual([]);
+    expect(checkPaddles([withLink("https://shop.example.com/p/1", false)], TODAY).errors).toEqual([]);
+  });
+});

@@ -3,29 +3,42 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Paddle, PaddleSpec } from "../../../data/schema";
+import type { PaddleDisplay, PaddleSpec } from "../../../data/schema";
 import { answersToProfile } from "@/lib/quiz/answers";
 import { loadAnswersRaw, parseAnswers } from "@/lib/quiz/storage";
 import type { UserProfile } from "@/lib/recommend/profile";
 import { recommend, type RelaxationHint } from "@/lib/recommend/recommend";
-import { NOTICE, todayLocal, won } from "./labels";
+import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal, won, type AffiliateProgram } from "./labels";
 import { ResultCard } from "./ResultCard";
 
 const subscribe = () => () => {};
 const readToday = () => todayLocal();
 
-/** 엔진에는 구매 링크가 없는 스펙만 넘긴다. 링크는 결과가 나온 뒤 paddle_id로 붙인다(핵심 규칙 1) */
-function toSpec(paddle: Paddle): PaddleSpec {
-  const { purchase: _purchase, ...spec } = paddle;
-  void _purchase;
-  return spec;
+/**
+ * 엔진에는 점수와 필터에 쓰는 스펙만 골라 넘긴다. 구매 링크는 결과가 나온 뒤 paddle_id로 붙인다(핵심 규칙 1).
+ * 필드를 하나씩 적어 넣는다. 화면용 필드가 늘어도 엔진으로 새지 않는다.
+ */
+function toSpec(p: PaddleDisplay): PaddleSpec {
+  return {
+    id: p.id,
+    weight_oz: p.weight_oz,
+    core_mm: p.core_mm,
+    shape: p.shape,
+    length_in: p.length_in,
+    width_in: p.width_in,
+    surface: p.surface,
+    price_krw: p.price_krw,
+    certification: p.certification,
+  };
 }
 
 /** 조건 완화 힌트를 눌렀을 때의 프로필. 저장된 답변은 바꾸지 않는다 */
 function relax(profile: UserProfile, hint: RelaxationHint): UserProfile {
   if (hint.kind === "certification") return { ...profile, needs_certification: false };
   if (hint.kind === "both") return { ...profile, budget: {}, needs_certification: false };
-  return { ...profile, budget: hint.suggested_max_krw !== undefined ? { max_krw: hint.suggested_max_krw } : {} };
+  // 상한만 올린다. 사용자가 정한 하한(최소 예산)은 그대로 둔다
+  if (hint.suggested_max_krw !== undefined) return { ...profile, budget: { ...profile.budget, max_krw: hint.suggested_max_krw } };
+  return { ...profile, budget: {} };
 }
 
 function hintLabel(hint: RelaxationHint): string {
@@ -34,7 +47,7 @@ function hintLabel(hint: RelaxationHint): string {
   return hint.suggested_max_krw !== undefined ? `예산을 ${won(hint.suggested_max_krw)}까지 올려서 다시 보기` : "예산 조건을 빼고 다시 보기";
 }
 
-export function Result({ paddles }: { paddles: Paddle[] }) {
+export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   const router = useRouter();
   // 서버와 첫 렌더에서는 undefined(아직 모름), 브라우저에서는 저장된 문자열 또는 null
   const raw = useSyncExternalStore<string | null | undefined>(subscribe, loadAnswersRaw, () => undefined);
@@ -68,11 +81,31 @@ export function Result({ paddles }: { paddles: Paddle[] }) {
     );
   }
 
-  // 화면에 제휴 링크가 하나라도 있으면 추천 카드보다 먼저 알린다
-  const hasAffiliate = result.items.some((item) => byId.get(item.paddle_id)?.purchase?.is_affiliate);
+  // 화면에 제휴 링크가 하나라도 있으면 게시물의 첫 부분에서 먼저 알린다(심사지침 Ⅴ.6, 쿠팡 파트너스 가이드)
+  const programs = new Set<AffiliateProgram>();
+  for (const item of result.items) {
+    const purchase = byId.get(item.paddle_id)?.purchase;
+    if (purchase?.is_affiliate) programs.add(affiliateProgram(purchase.url));
+  }
+  const hasAffiliate = programs.size > 0;
 
   return (
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
+      {/* 경제적 이해관계 표시: 제목보다 앞, 본문보다 큰 글자와 다른 색, 접히지 않는 위치 */}
+      {hasAffiliate ? (
+        <div className="rounded-lg border-2 border-navy bg-card p-4" data-testid="affiliate-page-notice">
+          <p className="text-sm font-bold text-navy">광고</p>
+          {(["coupang", "other"] as const)
+            .filter((program) => programs.has(program))
+            .map((program) => (
+              <p key={program} className="mt-1 text-base font-semibold leading-relaxed text-navy">
+                {DISCLOSURE[program]}
+              </p>
+            ))}
+          <p className="mt-2 text-sm leading-relaxed text-ink">{NOTICE.ranking}</p>
+        </div>
+      ) : null}
+
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold leading-snug text-navy">
           {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
@@ -84,13 +117,6 @@ export function Result({ paddles }: { paddles: Paddle[] }) {
       </header>
 
       {/* 화면에 제휴 링크가 하나라도 있으면 추천 카드보다 먼저 알린다 */}
-      {hasAffiliate ? (
-        <div className="rounded-lg border border-line bg-card p-4 text-sm font-medium leading-relaxed text-ink" data-testid="affiliate-page-notice">
-          <p>{NOTICE.affiliatePage}</p>
-          <p>{NOTICE.ranking}</p>
-        </div>
-      ) : null}
-
       {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
       {result.items.map((item, i) => {

@@ -1,3 +1,4 @@
+import { SHAPE_LABEL } from "../shared/shape-labels";
 import type { AxisReason } from "./axes";
 
 /**
@@ -5,12 +6,7 @@ import type { AxisReason } from "./axes";
  * 팔 불편 관련 문구는 '도움이 될 수 있는 사양'까지만 말하고 의학적 효과를 단정하지 않는다(CLAUDE.md 규칙 5).
  * 스펙에서 추정한 경향이므로 단정형("~합니다")보다 "편입니다"를 쓴다.
  */
-const SHAPE_KO: Record<string, string> = {
-  standard: "표준형",
-  hybrid: "하이브리드형",
-  elongated: "길쭉한 형",
-  widebody: "넓은 형",
-};
+const SHAPE_KO: Record<string, string> = SHAPE_LABEL;
 const STYLE_KO: Record<string, string> = { control: "컨트롤", balanced: "균형", power: "파워" };
 const WEIGHT_PREF_KO: Record<string, string> = { light: "가벼운", medium: "중간", heavy: "묵직한" };
 
