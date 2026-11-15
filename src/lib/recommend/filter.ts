@@ -1,12 +1,9 @@
 import type { PaddleSpec } from "../../../data/schema";
-import { daysBetween } from "./dates";
+import { CERT_MAX_AGE_DAYS } from "../shared/limits";
+import { daysBetween } from "../shared/dates";
 import type { BudgetRange, UserProfile } from "./profile";
 
-/**
- * 대회 인증 확인일이 이 일수를 넘으면 approved라도 '확인 필요'로 보고 대회용 추천에서 제외한다.
- * 사용자가 180일로 확정했다. 확인 후 180일째까지는 통과한다. (docs/decisions.md D-013)
- */
-export const CERT_MAX_AGE_DAYS = 180;
+export { CERT_MAX_AGE_DAYS };
 
 /** 엔진은 현재 시각을 읽지 않는다(순수 함수). 기준일은 호출부가 YYYY-MM-DD로 넘긴다. */
 export type FilterContext = { today: string };

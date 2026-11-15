@@ -2,6 +2,10 @@
   "name": "pickleball-paddle-ai",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +13,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "data:check": "node data/check-cli.mts",
+    "check:release": "npm run check && node data/check-cli.mts --strict",
     "check": "npm run typecheck && npm run lint && npm test"
   },
   "dependencies": {

@@ -12,7 +12,9 @@ export const paddleSchema = z
     length_in: z.number().positive(),
     width_in: z.number().positive(),
     surface: z.enum(["carbon", "fiberglass", "composite", "other"]),
+    /** 확인 시점의 참고가. 판매처마다 편차가 크므로 price_checked_at과 함께 기록한다 */
     price_krw: z.number().int().positive().optional(),
+    price_checked_at: z.iso.date().optional(),
     certification: z.object({
       usa_pickleball: z.enum(["approved", "not_approved", "unknown"]),
       checked_at: z.iso.date(),
@@ -27,6 +29,10 @@ export const paddleSchema = z
   .refine((p) => p.length_in + p.width_in <= 24, {
     message: "길이+폭은 24인치 이하여야 한다",
     path: ["length_in"],
+  })
+  .refine((p) => p.price_krw === undefined || p.price_checked_at !== undefined, {
+    message: "가격(price_krw)을 넣으면 가격 확인일(price_checked_at)도 필요하다",
+    path: ["price_checked_at"],
   });
 
 export const paddlesSchema = z.array(paddleSchema).refine(
