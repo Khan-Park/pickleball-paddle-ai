@@ -1,69 +1,41 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const POINTS = [
+  { title: "스펙을 근거로", body: "무게, 코어 두께, 형태 같은 공개된 스펙으로 맞는 정도를 계산합니다." },
+  { title: "이유와 주의점을 함께", body: "왜 추천하는지, 어떤 점은 맞지 않을 수 있는지 같이 보여 줍니다." },
+  { title: "수수료와 무관한 순위", body: "구매 링크나 수수료는 추천 순위에 영향을 주지 않습니다." },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-10 px-5 py-12">
+      <header className="flex flex-col gap-3">
+        <p className="text-sm font-semibold text-accent">피클볼 패들 추천</p>
+        <h1 className="text-3xl font-bold leading-snug text-navy">질문 몇 개로 나에게 맞는 패들 찾기</h1>
+        <p className="text-base leading-relaxed text-muted">
+          경력, 플레이 성향, 예산을 알려 주시면 맞는 패들 3개를 이유와 함께 보여 드립니다. 1분이면 됩니다.
+        </p>
+      </header>
+
+      <Link
+        href="/quiz"
+        className="rounded-lg bg-navy px-5 py-4 text-center text-base font-semibold text-white outline-offset-4 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-accent"
+      >
+        질문 시작하기
+      </Link>
+
+      <ul className="flex flex-col gap-3">
+        {POINTS.map((p) => (
+          <li key={p.title} className="rounded-lg border border-line bg-card p-4">
+            <h2 className="text-base font-semibold text-ink">{p.title}</h2>
+            <p className="mt-1 text-sm leading-relaxed text-muted">{p.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      <p className="text-xs leading-relaxed text-muted">
+        제조사와 판매처가 공개한 스펙을 기준으로 한 추천입니다. 실제 타구감은 사람마다 다를 수 있습니다.
+      </p>
+    </main>
   );
 }
