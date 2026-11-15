@@ -51,6 +51,13 @@ describe("data:check CLI", () => {
     expect(r.out).toContain("경고 있음");
   });
 
+  it("--staging은 저장소의 초안을 점검하고 통과하면 종료 코드 0이다", () => {
+    const r = run(["--staging"]);
+    expect(r.code).toBe(0);
+    expect(r.out).toContain("초안");
+    expect(r.out).toContain("보류 필드");
+  });
+
   it("--strict면 경고만 있어도 종료 코드 1이다", () => {
     expect(run(["--strict", "2027-06-01", "<file>"], good).code).toBe(1);
     expect(run(["--strict", "2026-06-01", "<file>"], good).code).toBe(0);

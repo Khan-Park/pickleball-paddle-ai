@@ -1,0 +1,33 @@
+{
+  "status": "보류 - 공식 페이지에 무게(필수 필드)가 없음. 제조사 카탈로그 등에서 확인되면 재개",
+  "paddle": {
+    "id": "nox-x-foam-jc6-16mm",
+    "brand": "NOX",
+    "model": "X-Foam JC6 16mm (Judit Castillo)",
+    "weight_oz": null,
+    "core_mm": 16,
+    "shape": null,
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": null,
+    "certification": { "usa_pickleball": "unknown", "checked_at": "2026-11-15" },
+    "sources": ["https://noxsport.com/en/products/pala-pickleball-x-foam-jc6-16mm"],
+    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "notes": "SKU PPIXFOJC626. 제조사 페이지는 연식을 표기하지 않음(판매처만 2026 표기)."
+  },
+  "evidence": {
+    "core_mm": { "원문": "Core (mm): 16" },
+    "length_in": { "원문": "Paddle Length: 16.5 (in)" },
+    "width_in": { "원문": "Paddle Width: 7.5 (in)" },
+    "weight_oz": { "원문": "(공식 페이지에 없음)", "비고": "판매처 값(Pickleball Central 평균 8.1oz, 범위 7.9-8.3oz)은 비공식이라 쓰지 않음" },
+    "shape": { "원문": "(공식 페이지에 형태명 없음)", "비고": "길이 16.5in라 치수 규칙상 elongated 후보. 규칙 확정 후 판단" },
+    "surface": { "원문": "(읽은 영역에 표면 소재 표기 없음)" },
+    "certification": { "원문": "Pickleball paddle with double USAPA and UPA-A certification. Homologated for official competition.", "비고": "제조사 표기. 승인 목록과 대조하지 않아 unknown으로 둠. checked_at은 기록일(README 참조)" }
+  },
+  "source_meta": {
+    "url": "https://noxsport.com/en/products/pala-pickleball-x-foam-jc6-16mm",
+    "read_at": "2026-11-15",
+    "method": "앱 내 브라우저로 공식 페이지 텍스트를 직접 읽음. 참고 가격(미사용): 189,99 € (정가 224,95 €)"
+  },
+  "open_questions": ["공식 무게 출처(카탈로그 PDF 등)가 있는지", "표면 소재 표기 위치"]
+}

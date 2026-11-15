@@ -13,17 +13,21 @@
     "certification": { "usa_pickleball": "unknown", "checked_at": "2026-11-15" },
     "sources": ["https://www.selkirk.com/products/selkirk-labs-project-boomstik"],
     "verified_at": "TODO: 사람이 원문과 대조한 날짜",
-    "notes": "무게는 제조사 표기 범위 8.0-8.3oz의 중간값. 제조사 표기는 'Average weight'. MOI 튜닝 시스템 사전 장착 버전(해외 배송 모델 포함 여부는 미확인)."
+    "notes": "weight_oz는 제조사 표기 범위 8.0-8.3oz의 중간값(파생값). 제조사 표기는 'Average weight'. MOI 튜닝 시스템 사전 장착 버전(해외 배송 모델 포함 여부는 미확인)."
   },
   "evidence": {
-    "weight_oz": { "원문": "Average weight: 8.0 - 8.3 0z", "비고": "범위 중간값 8.15 사용(합의된 규칙). 원문에 'oz'가 '0z'로 오타 표기" },
+    "weight_oz": { "원문": "Average weight: 8.0 - 8.3 0z", "범위_oz": [8.0, 8.3], "파생": "범위 중간값 8.15(합의된 규칙). 원문에 'oz'가 '0z'로 오타 표기" },
     "core_mm": { "원문": "Core thickness: 16mm" },
     "shape": { "원문": "Elongated (제품 옵션 Shape: Elongated / Widebody)", "비고": "제조사가 형태명을 직접 표기" },
     "length_in": { "원문": "Paddle height: 16.5”", "비고": "제조사는 length 대신 height로 표기" },
     "width_in": { "원문": "Paddle width: 7.45”" },
     "surface": { "원문": "Face material: Multistrata T700 Carbon (3 layers)", "비고": "표면은 InfiniGrit 처리. 스키마의 carbon으로 분류" },
+    "certification": { "원문": "(제품 페이지 스펙 영역에 표기 없음)", "비고": "unknown은 USAP 승인 목록과 대조하지 않았다는 뜻. checked_at은 기록일이며 확인일이 아님(README 참조)" }
+  },
+  "source_meta": {
     "url": "https://www.selkirk.com/products/selkirk-labs-project-boomstik",
-    "read_at": "2026-11-15 (앱 내 브라우저로 'Description & Specs' 영역 직접 읽음)"
+    "read_at": "2026-11-15",
+    "method": "앱 내 브라우저로 'Description & Specs' 아코디언의 textContent를 직접 읽음"
   },
   "open_questions": [
     "한국 판매명 '셀커크 붐스틱 코어'가 Elongated인지 Widebody인지 확인 필요(둘 다 별도 제품으로 초안 작성)",

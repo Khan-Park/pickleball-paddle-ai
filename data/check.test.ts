@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { checkPaddles, DATA_MAX_AGE_DAYS, parsePaddlesJson, PRICE_MAX_AGE_DAYS, todayLocal } from "./check";
+import { readdirSync, readFileSync } from "node:fs";
+import { checkDraft, checkPaddles, DATA_MAX_AGE_DAYS, parsePaddlesJson, PRICE_MAX_AGE_DAYS, todayLocal } from "./check";
 import { paddleSchema } from "./schema";
 import { fakePaddle, goodPaddle } from "./test-fixtures";
 
@@ -109,6 +109,43 @@ describe("todayLocal / parsePaddlesJson", () => {
   it("BOM이 있어도 읽는다", () => {
     expect(parsePaddlesJson("\uFEFF[]")).toEqual([]);
     expect(parsePaddlesJson("[]")).toEqual([]);
+  });
+});
+
+describe("checkDraft (staging 초안)", () => {
+  const draft = (paddle: object) => ({ paddle });
+  const base = goodPaddle();
+
+  it("null·TODO 필드는 보류로 모으고 오류로 보지 않는다", () => {
+    const r = checkDraft(draft({ ...base, shape: "TODO: 규칙 결정 후", length_in: null, verified_at: "TODO" }));
+    expect(r.errors).toEqual([]);
+    expect(r.pending.sort()).toEqual(["length_in", "shape", "verified_at"]);
+  });
+
+  it("채워진 필드가 스키마에 어긋나면 오류로 알린다", () => {
+    expect(checkDraft(draft({ ...base, id: "Bad ID" })).errors.join()).toContain("id");
+    expect(checkDraft(draft({ ...base, core_mm: 99 })).errors.join()).toContain("core_mm");
+    expect(checkDraft(draft({ ...base, length_in: 17, width_in: 8 })).errors.join()).toContain("24인치");
+    expect(checkDraft(draft({ ...base, sources: ["not a url"] })).errors.length).toBeGreaterThan(0);
+  });
+
+  it("paddle 객체가 없으면 오류", () => {
+    expect(checkDraft({}).errors).toEqual(["paddle 객체가 없다"]);
+    expect(checkDraft(null).errors).toEqual(["paddle 객체가 없다"]);
+  });
+
+  it("저장소의 모든 staging 초안이 스키마와 구조 규칙을 지킨다", () => {
+    const dir = new URL("./staging/", import.meta.url);
+    const files = readdirSync(dir).filter((f) => f.endsWith(".draft.json"));
+    expect(files.length).toBeGreaterThan(0);
+    for (const f of files) {
+      const d = parsePaddlesJson(readFileSync(new URL(f, dir), "utf8")) as Record<string, Record<string, unknown>>;
+      expect(checkDraft(d).errors, f).toEqual([]);
+      expect(Object.keys(d), f).toEqual(expect.arrayContaining(["status", "paddle", "evidence", "source_meta"]));
+      // evidence의 키는 paddle 필드명만 쓴다(url·read_at 같은 메타는 source_meta에)
+      for (const key of Object.keys(d.evidence!)) expect(Object.keys(d.paddle!), `${f}:${key}`).toContain(key);
+      expect(d.source_meta, f).toMatchObject({ url: expect.any(String), read_at: expect.any(String) });
+    }
   });
 });
 

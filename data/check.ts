@@ -1,6 +1,6 @@
 import { daysBetween } from "../src/lib/shared/dates.ts";
 import { CERT_MAX_AGE_DAYS } from "../src/lib/shared/limits.ts";
-import { paddlesSchema } from "./schema.ts";
+import { paddleSchema, paddlesSchema } from "./schema.ts";
 
 /** 스펙 확인일이 이 일수를 넘으면 재확인을 권한다(docs/spec.md). 대회 인증은 엔진과 같은 CERT_MAX_AGE_DAYS를 쓴다 */
 export const DATA_MAX_AGE_DAYS = 180;
@@ -96,4 +96,34 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
     }
   }
   return { count: parsed.data.length, errors, warnings };
+}
+
+export type DraftReport = {
+  /** 아직 채워지지 않은 필드(null 또는 "TODO..."). 보류 상태이며 오류가 아니다 */
+  pending: string[];
+  /** 채워진 필드 중 스키마에 어긋난 것 */
+  errors: string[];
+};
+
+const isPending = (v: unknown) => v === null || (typeof v === "string" && v.startsWith("TODO"));
+
+/**
+ * data/staging의 초안 1개를 점검한다. null·"TODO" 필드는 보류로 모아 보고하고,
+ * 나머지 필드가 paddleSchema(id 형식, 길이+폭 24in, 인증·출처 형식 등)에 맞는지 검사한다.
+ */
+export function checkDraft(draft: unknown): DraftReport {
+  const paddle = (draft as { paddle?: unknown } | null)?.paddle;
+  if (typeof paddle !== "object" || paddle === null || Array.isArray(paddle)) {
+    return { pending: [], errors: ["paddle 객체가 없다"] };
+  }
+  const pending = Object.entries(paddle as Record<string, unknown>)
+    .filter(([, v]) => isPending(v))
+    .map(([k]) => k);
+  const result = paddleSchema.safeParse(paddle);
+  const errors = result.success
+    ? []
+    : result.error.issues
+        .filter((i) => !pending.includes(String(i.path[0])))
+        .map((i) => `${i.path.join(".") || "(전체)"}: ${i.message}`);
+  return { pending, errors };
 }

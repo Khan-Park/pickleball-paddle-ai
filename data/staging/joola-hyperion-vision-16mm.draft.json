@@ -13,7 +13,7 @@
     "certification": { "usa_pickleball": "unknown", "checked_at": "2026-11-15" },
     "sources": ["https://joola.com/products/hyperion-vision-16mm"],
     "verified_at": "TODO: 사람이 원문과 대조한 날짜",
-    "notes": "제조사 페이지는 'USAP certified: Yes'라고 표기하지만 USA Pickleball 승인 목록과 대조하지 않아 unknown으로 둠. 무게는 제조사 표기 'Average Weight'."
+    "notes": "제조사 페이지는 'USAP certified: Yes'라고 표기하지만 USA Pickleball 승인 목록과 대조하지 않아 unknown으로 둠. 무게는 제조사 표기 'Average Weight'(단일 값)."
   },
   "evidence": {
     "weight_oz": { "원문": "Average Weight:7.8oz" },
@@ -22,9 +22,12 @@
     "width_in": { "원문": "Paddle Width:7.3in" },
     "surface": { "원문": "Surface: Carbon Fiber" },
     "shape": { "원문": "Shape: Hyperion", "비고": "제조사 시리즈형 이름이라 standard/hybrid/elongated/widebody로 바로 대응되지 않음" },
-    "certification": { "원문": "USAP certified: Yes", "비고": "제조사 표기. 확인일 없음" },
+    "certification": { "원문": "USAP certified: Yes", "비고": "제조사 표기만 있음. unknown은 USAP 목록과 대조하지 않았다는 뜻이며 checked_at은 기록일이지 확인일이 아님(README 참조)" }
+  },
+  "source_meta": {
     "url": "https://joola.com/products/hyperion-vision-16mm",
-    "read_at": "2026-11-15 (앱 내 브라우저로 공식 페이지 직접 읽음)"
+    "read_at": "2026-11-15",
+    "method": "앱 내 브라우저로 공식 페이지 textContent를 직접 읽음"
   },
   "open_questions": [
     "형태 분류: 길이 16.4 x 폭 7.3in. 규칙은 이 묶음의 치수를 모두 본 뒤 정함",
