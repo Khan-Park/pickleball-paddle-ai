@@ -13,6 +13,7 @@ export function fakePaddle(overrides: Partial<Paddle> = {}): Paddle {
     width_in: 7.5,
     surface: "carbon",
     price_krw: 100000,
+    price_checked_at: "2026-01-01",
     certification: { usa_pickleball: "approved", checked_at: "2026-01-01" },
     sources: ["https://example.com/spec"],
     verified_at: "2026-01-01",
