@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "picklepoppers-pop-n-rookie-16mm",
     "brand": "Picklepoppers",
@@ -20,7 +20,7 @@
       "https://pnpino.com/products/%ED%94%BC%ED%81%B4%ED%8C%8C%ED%8D%BC%EC%8A%A4-16mm-%EB%A3%A8%ED%82%A4-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%8B%A8%ED%92%88-usap-%EA%B3%B5%EC%9D%B8-1523",
       "https://equipment.usapickleball.org/paddle-list/entry/11062/"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "입문용 저가 제품. weight_oz는 표기 범위의 중간값(파생값). 이미지의 치수 그림에는 폭이 7.5\"로, 스펙 문구에는 7.4W\"로 적혀 있어 문구 값을 썼다."
   },
   "evidence": {

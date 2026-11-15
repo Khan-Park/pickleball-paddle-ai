@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "selkirk-boomstik-st-elongated-16mm",
     "brand": "Selkirk",
@@ -20,7 +20,7 @@
       "https://pnpino.com/products/selkirk-%EC%85%80%EC%BB%A4%ED%81%AC-%EB%B6%90%EC%8A%A4%ED%8B%B1-st-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-boomstik-st-16mm-ghy0",
       "https://equipment.usapickleball.org/paddle-list/entry/13858/"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "한 상품 페이지에 엘롱게이티드·와이드바디 2종이 있다. 이 초안은 엘롱게이티드(레드·블루 판매중). 와이드바디(15.95 × 8.0in)는 수집 시점에 전 색상 품절. 7.5g 탈착식 MOI 웨이트 포함."
   },
   "evidence": {

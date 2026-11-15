@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "prokennex-power",
     "brand": "ProKennex",
@@ -19,7 +19,7 @@
     "sources": [
       "https://pnpino.com/products/%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4-power-%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4%ED%94%BC%ED%81%B4%EB%B3%BC%ED%8C%A8%EB%93%A4-wh-1881"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "입문용. 13mm는 '패들두께' 표기(코어 두께와 다를 수 있음). 소재 PP+GF의 GF를 유리섬유로 해석."
   },
   "evidence": {

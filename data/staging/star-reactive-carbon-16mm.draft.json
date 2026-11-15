@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "star-reactive-carbon-16mm",
     "brand": "STAR",
@@ -20,7 +20,7 @@
       "https://pnpino.com/products/%EC%8A%A4%ED%83%80%EC%8A%A4%ED%8F%AC%EC%B8%A0-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-reactive-%EC%B9%B4%EB%B3%B8-16mm-%EB%B8%94%EB%A3%A8-k0xw",
       "https://equipment.usapickleball.org/paddle-list/entry/13222/"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "무게 250g으로 무거운 편. 치수는 cm 정수 표기(41×19)를 환산한 값이라 형태 경계 판단이 불확실하다."
   },
   "evidence": {

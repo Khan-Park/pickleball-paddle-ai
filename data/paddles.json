@@ -271,5 +271,163 @@
     ],
     "verified_at": "2026-11-15",
     "notes": "weight_oz는 판매처 표기 범위의 중간값, width_in은 표기 범위(7.5~7.7in)의 중간값(둘 다 파생값). 길이·폭은 OCR 원문 값."
+  },
+  {
+    "id": "selkirk-boomstik-st-elongated-16mm",
+    "brand": "Selkirk",
+    "model": "Boomstik ST Elongated 16mm",
+    "weight_oz": 8.15,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.45,
+    "surface": "carbon",
+    "price_krw": 519000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/selkirk-%EC%85%80%EC%BB%A4%ED%81%AC-%EB%B6%90%EC%8A%A4%ED%8B%B1-st-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-boomstik-st-16mm-ghy0",
+      "https://equipment.usapickleball.org/paddle-list/entry/13858/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "한 상품 페이지에 엘롱게이티드·와이드바디 2종이 있다. 이 초안은 엘롱게이티드(레드·블루 판매중). 와이드바디(15.95 × 8.0in)는 수집 시점에 전 색상 품절. 7.5g 탈착식 MOI 웨이트 포함."
+  },
+  {
+    "id": "franklin-signature-fiberglass-16mm",
+    "brand": "Franklin",
+    "model": "Signature Series Fiberglass 16mm",
+    "weight_oz": 8.1,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "fiberglass",
+    "price_krw": 139000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%94%84%EB%9E%AD%ED%81%B4%EB%A6%B0-%ED%94%BC%ED%81%B4%EB%B3%BC-%EB%9D%BC%EC%BC%93-%ED%8C%A8%EB%93%A4-%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98-%ED%8C%8C%EC%9D%B4%EB%B2%84%EA%B8%80%EB%9D%BC%EC%8A%A4-16mm-%EB%B8%94%EB%A3%A8-usap-%EA%B3%B5%EC%9D%B8-gwuy",
+      "https://equipment.usapickleball.org/paddle-list/entry/3799/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "표면이 파이버글라스인 16mm 모델. weight_oz는 표기 범위의 중간값(파생값)."
+  },
+  {
+    "id": "picklepoppers-pop-n-rookie-16mm",
+    "brand": "Picklepoppers",
+    "model": "POP N ROOKIE 16mm",
+    "weight_oz": 7.95,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.3,
+    "width_in": 7.4,
+    "surface": "fiberglass",
+    "price_krw": 29900,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%94%BC%ED%81%B4%ED%8C%8C%ED%8D%BC%EC%8A%A4-16mm-%EB%A3%A8%ED%82%A4-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%8B%A8%ED%92%88-usap-%EA%B3%B5%EC%9D%B8-1523",
+      "https://equipment.usapickleball.org/paddle-list/entry/11062/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "입문용 저가 제품. weight_oz는 표기 범위의 중간값(파생값). 이미지의 치수 그림에는 폭이 7.5\"로, 스펙 문구에는 7.4W\"로 적혀 있어 문구 값을 썼다."
+  },
+  {
+    "id": "star-reactive-carbon-16mm",
+    "brand": "STAR",
+    "model": "Reactive Carbon 16mm (NXRG009)",
+    "weight_oz": 8.82,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.14,
+    "width_in": 7.48,
+    "surface": "carbon",
+    "price_krw": 90000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%EC%8A%A4%ED%83%80%EC%8A%A4%ED%8F%AC%EC%B8%A0-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-reactive-%EC%B9%B4%EB%B3%B8-16mm-%EB%B8%94%EB%A3%A8-k0xw",
+      "https://equipment.usapickleball.org/paddle-list/entry/13222/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "무게 250g으로 무거운 편. 치수는 cm 정수 표기(41×19)를 환산한 값이라 형태 경계 판단이 불확실하다."
+  },
+  {
+    "id": "friday-aura-pro-gen4-hybrid-16mm",
+    "brand": "Friday",
+    "model": "Aura Pro Gen 4 Hybrid 16mm",
+    "weight_oz": 7.9,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.375,
+    "width_in": 7.625,
+    "surface": "carbon",
+    "price_krw": 244000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%95%84%EC%9A%B0%EB%9D%BC-%ED%94%84%EB%A1%9C-gen-4-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-fbd5"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션."
+  },
+  {
+    "id": "prokennex-power",
+    "brand": "ProKennex",
+    "model": "Power",
+    "weight_oz": 7.94,
+    "core_mm": 13,
+    "shape": "standard",
+    "length_in": 16.0,
+    "width_in": 7.88,
+    "surface": "fiberglass",
+    "price_krw": 99000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4-power-%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4%ED%94%BC%ED%81%B4%EB%B3%BC%ED%8C%A8%EB%93%A4-wh-1881"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "입문용. 13mm는 '패들두께' 표기(코어 두께와 다를 수 있음). 소재 PP+GF의 GF를 유리섬유로 해석."
+  },
+  {
+    "id": "skaro-pkr-t700",
+    "brand": "SKARO",
+    "model": "PKR-T700",
+    "weight_oz": 7.41,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.34,
+    "width_in": 7.4,
+    "surface": "carbon",
+    "price_krw": 29500,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%EC%8A%A4%EC%B9%B4%EB%A1%9C-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-1%EA%B0%9C-pkr-t700-%ED%97%88%EB%8B%88%EC%BB%B4%EC%BD%94%EC%96%B4-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-187p"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "입문용 저가 제품. 전체 길이(415mm)와 표면 소재는 OCR 원문 값이라 원본 이미지 확인이 필요하다. 16mm는 '두께' 표기."
   }
 ]
