@@ -50,3 +50,14 @@
 | SKARO PKR-T700 | `skaro-pkr-t700` | unknown (목록에서 못 찾음) | 전체 길이 415mm·표면(OCR 값), 16mm가 코어 두께인지 |
 
 주의: 판매처가 cm로 적은 치수를 인치로 환산하면 반올림 때문에 길이+폭이 24in를 0.02 넘는 경우가 있다(41.9 + 19.1cm). 이때는 근거를 적고 16.5 × 7.5in로 기록하며 사람 확인 대상으로 표시한다.
+
+## 2차 묶음 6개 (2026-11-15)
+| 제품 | 파일 | 상태 | 비고 |
+|---|---|---|---|
+| Six Zero Coral Pro Hybrid 16mm | `six-zero-coral-pro-hybrid-16mm` | 초안 | 길이·폭은 OCR 값, 폭은 범위 7.5~7.7in의 중간값. 판매처는 UPA-A 인증으로 표기, USAP는 unknown |
+| Six Zero Boulder Opal Hybrid 14mm | `six-zero-boulder-opal-hybrid-14mm` | 초안 | 규격 전부 OCR 값(이미지 대조 전). USAP unknown |
+| 11SIX24 Hurache-X Power 2 Elongated 16mm | `11six24-hurache-x-power-2-elongated-16mm` | **보류** | 폭 없음 |
+| Honolulu J6CR Elongated 16mm | `honolulu-j6cr-elongated-16mm` | **보류** | 무게 없음. USAP 목록 등재(entry 12459) |
+| TRION V-1 Power / V-1 Control | `trion-v-1-power-16mm`, `trion-v-1-control-16mm` | **보류** | 패들 폭 없음(형태도 못 정함) |
+
+참고: 고가 신형 패들 중에는 판매처가 USAP가 아니라 **UPA-A 인증**만 표기하는 제품이 있다(Coral Pro, Hurache-X Power 2, J6CR). 우리 스키마의 대회 인증은 USA Pickleball 기준이므로 UPA-A만으로는 approved로 올리지 않는다.
