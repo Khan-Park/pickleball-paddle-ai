@@ -14,6 +14,7 @@
 
 ## 건드릴 파일
 - data/staging/ (초안·README), data/check.ts·check-cli.mts·테스트(staging 검사), docs/tasks, docs/decisions.md(형태 분류 규칙 결정 시)
+- data/shape.ts(형태 분류 규칙 D-018), data/schema.ts·schema.test.ts(길이+폭 반올림 허용 오차 D-020, 사용자 결정)
 
 ## 건드리지 말 것
 - `data/paddles.json`을 사람 승인 없이 수정하지 않는다
