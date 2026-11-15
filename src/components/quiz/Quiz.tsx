@@ -90,7 +90,7 @@ export function Quiz() {
                 }`}
               >
                 <span className="flex items-center gap-4">
-                  {question.id === "shapes" ? <ShapeIcon shape={option.value as ShapeValue} className="shrink-0 text-navy" /> : null}
+                  {question.id === "shapes" ? <ShapeIcon shape={option.value} className="shrink-0 text-navy" /> : null}
                   <span>
                     <span className="block text-base font-semibold text-ink">
                       {selected ? "✓ " : ""}

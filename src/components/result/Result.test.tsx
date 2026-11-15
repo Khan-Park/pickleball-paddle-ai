@@ -68,12 +68,42 @@ describe("결과 화면", () => {
     saveAnswers(beginner);
     render(<Result paddles={[p({ id: "linked", brand: "가짜", model: "링크", purchase: { url: "https://example.com/buy", is_affiliate: true } })]} />);
     const link = screen.getByRole("link", { name: /판매처에서 보기/ });
-    expect(link.getAttribute("rel")).toContain("sponsored");
+    expect(link.getAttribute("rel")).toBe("sponsored noopener");
     const disclosure = screen.getByTestId("affiliate-disclosure");
     expect(disclosure.textContent).toBe(NOTICE.affiliate);
     expect(disclosure.parentElement).toBe(link.parentElement);
     // 문서 순서상 대가 표시가 링크보다 앞에 온다
     expect(disclosure.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("화면 낭독기로 링크만 읽어도 광고임을 알 수 있다(이름에 '광고', 대가 표시와 연결)", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "linked", brand: "가짜", model: "링크", purchase: { url: "https://example.com/buy", is_affiliate: true } })]} />);
+    const link = screen.getByRole("link", { name: /^광고\s*·\s*판매처에서 보기/ });
+    const describedBy = link.getAttribute("aria-describedby");
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy!)).toBe(screen.getByTestId("affiliate-disclosure"));
+  });
+
+  it("제휴 링크가 있는 카드는 제목 근처에 '광고 포함'을 먼저 보여 주고, 없는 카드에는 붙이지 않는다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={PADDLES.map((x, i) => (i === 0 ? { ...x, purchase: { url: "https://example.com/a", is_affiliate: true } } : x))} />);
+    const badges = screen.getAllByTestId("affiliate-badge");
+    expect(badges).toHaveLength(1);
+    const card = badges[0]!.closest("article")!;
+    expect(card.querySelector("h2")!.textContent).toBe("가짜 와이드 16");
+    // 제목 묶음(header) 안에 있어 추천 이유보다 먼저 나온다
+    expect(badges[0]!.closest("header")).not.toBeNull();
+  });
+
+  it("순위 안내 문장은 한 화면에 한 번만 나온다", () => {
+    saveAnswers(beginner);
+    const count = () => screen.getAllByText(NOTICE.ranking).length;
+    render(<Result paddles={PADDLES} />);
+    expect(count()).toBe(1);
+    cleanup();
+    render(<Result paddles={PADDLES.map((x) => ({ ...x, purchase: { url: `https://example.com/${x.id}`, is_affiliate: true } }))} />);
+    expect(count()).toBe(1);
   });
 
   it("대가 표시는 조건부 표현을 쓰지 않고 '광고'임을 밝힌다", () => {
@@ -98,7 +128,10 @@ describe("결과 화면", () => {
   it("제휴가 아닌 일반 링크에는 대가 표시를 붙이지 않는다", () => {
     saveAnswers(beginner);
     render(<Result paddles={[p({ id: "plain", brand: "가짜", model: "일반 링크", purchase: { url: "https://example.com/p", is_affiliate: false } })]} />);
-    expect(screen.getByRole("link", { name: /판매처에서 보기/ }).getAttribute("rel")).not.toContain("sponsored");
+    const link = screen.getByRole("link", { name: /^판매처에서 보기/ });
+    expect(link.getAttribute("rel")).toBe("noopener noreferrer");
+    expect(link.getAttribute("aria-describedby")).toBeNull();
+    expect(screen.queryByTestId("affiliate-badge")).toBeNull();
     expect(screen.queryByTestId("affiliate-disclosure")).toBeNull();
     expect(screen.queryByTestId("affiliate-page-notice")).toBeNull();
   });
