@@ -50,9 +50,10 @@ describe("질문 화면", () => {
     expect(heading()).toContain("모양");
     const next = screen.getByRole("button", { name: "다음" }) as HTMLButtonElement;
     expect(next.disabled).toBe(true);
-    click(/길쭉한 형/);
-    click(/하이브리드형/);
-    expect(screen.getByRole("button", { name: /길쭉한 형/ }).getAttribute("aria-pressed")).toBe("true");
+    // 하이브리드형의 설명에도 "길쭉한 형"이 들어 있어 이름의 시작으로 구분한다
+    click(/^길쭉한 형/);
+    click(/^하이브리드형/);
+    expect(screen.getByRole("button", { name: /^✓ 길쭉한 형/ }).getAttribute("aria-pressed")).toBe("true");
     click("다음");
     click(/20만~30만 원/);
     click("네");

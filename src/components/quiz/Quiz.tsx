@@ -70,7 +70,7 @@ export function Quiz() {
       </div>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="text-2xl font-bold leading-snug text-navy">{question.title}</legend>
+        <legend className="mb-4 text-2xl font-bold leading-snug text-navy">{question.title}</legend>
         {question.note ? <p className="text-sm leading-relaxed text-muted">{question.note}</p> : null}
 
         <div className="flex flex-col gap-3">

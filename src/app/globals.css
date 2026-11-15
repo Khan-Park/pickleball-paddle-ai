@@ -32,4 +32,7 @@ body {
   color: var(--ink);
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
+  /* 한국어 문장이 낱말 중간에서 끊기지 않게 한다 */
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
