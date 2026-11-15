@@ -50,7 +50,23 @@ export const WEIGHT_PREFERENCE = { penaltyPerOz: 1 } as const;
 /** 형태 선호: 선호 형태면 1, 아니면 이 값(강제 제외 아님) */
 export const SHAPE_PREFERENCE = { nonPreferredScore: 0.4 } as const;
 
-/** 합산 가중치(T-005에서 사용). 비활성 축은 합산에서 제외한다 */
+/** 화면 라벨 기준(총점 0~100). 가설. 숫자는 화면에 보이지 않는다(거짓 정밀도 방지) */
+export const LABEL_THRESHOLDS = { veryGood: 80, good: 60 } as const;
+
+/** 이유·주의 문구 선택 기준(축 점수 0~1). 가설 */
+export const EXPLANATION = {
+  /** 이 점수 이상인 축만 '추천 이유' 후보 */
+  reasonMinScore: 0.6,
+  /** 이 점수 미만인 축은 '주의' 문구로 따로 보여 준다 */
+  cautionBelowScore: 0.4,
+  /** 추천 이유로 보여 줄 최대 개수(기여가 큰 순) */
+  maxReasons: 3,
+} as const;
+
+/** 기본 추천 개수 */
+export const DEFAULT_LIMIT = 3;
+
+/** 합산 가중치. 비활성 축은 합산에서 제외한다 */
 export const AXIS_WEIGHTS = {
   power_control: 0.35,
   forgiveness: { beginner: 0.3, intermediate: 0.15, advanced: 0.05 },
