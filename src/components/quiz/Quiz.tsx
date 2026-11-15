@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { answersToProfile } from "@/lib/quiz/answers";
 import { visibleQuestions, type QuizAnswers, type QuizQuestion, type ShapeValue } from "@/lib/quiz/questions";
 import { saveAnswers } from "@/lib/quiz/storage";
+import { ShapeIcon } from "@/components/ShapeIcon";
 
 /** 질문 화면. 한 번에 질문 하나를 보여 주고, 다 답하면 답변을 저장한 뒤 결과 화면으로 간다 */
 export function Quiz() {
@@ -88,11 +89,16 @@ export function Quiz() {
                   selected ? "border-accent bg-accent-soft" : "border-line bg-card hover:border-accent"
                 }`}
               >
-                <span className="block text-base font-semibold text-ink">
-                  {selected ? "✓ " : ""}
-                  {option.label}
+                <span className="flex items-center gap-4">
+                  {question.id === "shapes" ? <ShapeIcon shape={option.value} className="shrink-0 text-navy" /> : null}
+                  <span>
+                    <span className="block text-base font-semibold text-ink">
+                      {selected ? "✓ " : ""}
+                      {option.label}
+                    </span>
+                    {option.hint ? <span className="mt-1 block text-sm text-muted">{option.hint}</span> : null}
+                  </span>
                 </span>
-                {option.hint ? <span className="mt-1 block text-sm text-muted">{option.hint}</span> : null}
               </button>
             );
           })}

@@ -2,6 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { loadAnswers } from "@/lib/quiz/storage";
+import { ShapeIcon } from "@/components/ShapeIcon";
 import { Quiz } from "./Quiz";
 
 const push = vi.fn();
@@ -60,6 +61,23 @@ describe("질문 화면", () => {
 
     expect(push).toHaveBeenCalledWith("/result");
     expect(loadAnswers()).toMatchObject({ experience: "over_3y", shapes: ["elongated", "hybrid"], tournament: "yes" });
+  });
+
+  it("선호 모양 질문에만 형태 그림 4개가 나오고, 그림은 화면 낭독기에 숨긴다", () => {
+    const { container } = render(<Quiz />);
+    click(/1~3년/);
+    expect(container.querySelectorAll("svg[data-shape]")).toHaveLength(0);
+    click(/균형/);
+    click("중간");
+    click("없어요");
+    const icons = [...container.querySelectorAll("svg[data-shape]")];
+    expect(icons.map((s) => s.getAttribute("data-shape")).sort()).toEqual(["elongated", "hybrid", "standard", "widebody"]);
+    for (const icon of icons) expect(icon.getAttribute("aria-hidden")).toBe("true");
+  });
+
+  it("형태 그림은 모르는 값이면 아무것도 그리지 않는다(화면이 깨지지 않는다)", () => {
+    const { container } = render(<ShapeIcon shape="round" />);
+    expect(container.querySelector("svg")).toBeNull();
   });
 
   it("선호 모양은 건너뛸 수 있다", () => {

@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { Paddle } from "../../../data/schema";
 import type { Recommendation } from "@/lib/recommend/recommend";
 import { daysBetween } from "@/lib/shared/dates";
@@ -20,18 +21,31 @@ export function CertBadge({ certification }: { certification: Paddle["certificat
 
 /** 구매 버튼과 대가 표시는 항상 한 묶음이다(CLAUDE.md 핵심 규칙 3). 링크가 없으면 아무것도 그리지 않는다 */
 export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"]; name: string }) {
+  const disclosureId = useId();
   if (!purchase) return null;
+  const affiliate = purchase.is_affiliate;
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
+      {/* 대가 표시는 링크보다 먼저, 같은 묶음 안에서 보여 준다 */}
+      {affiliate ? (
+        <p id={disclosureId} className="text-sm font-medium text-ink" data-testid="affiliate-disclosure">
+          {NOTICE.affiliate}
+        </p>
+      ) : null}
+      {/*
+        제휴 링크: 화면 낭독기가 링크만 읽어도 광고임을 알 수 있게 이름에 "광고"를 넣고 대가 표시와 연결한다.
+        rel에 noreferrer를 넣지 않는다. 제휴 프로그램이 유입 경로를 요구하는지 약관으로 확인하기 전이라서다(T-012).
+      */}
       <a
         href={purchase.url}
         target="_blank"
-        rel={purchase.is_affiliate ? "sponsored noopener noreferrer" : "noopener noreferrer"}
+        rel={affiliate ? "sponsored noopener" : "noopener noreferrer"}
+        aria-describedby={affiliate ? disclosureId : undefined}
         className="rounded-lg bg-navy px-4 py-3 text-center text-base font-semibold text-white outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
       >
+        {affiliate ? <span className="sr-only">광고 · </span> : null}
         판매처에서 보기<span className="sr-only"> ({name}, 새 창)</span>
       </a>
-      {purchase.is_affiliate ? <p className="text-xs text-muted">{NOTICE.affiliate}</p> : null}
     </div>
   );
 }
@@ -47,6 +61,12 @@ export function ResultCard({ rank, item, paddle, today }: Props) {
       <header className="flex flex-col gap-1">
         <p className="text-sm font-semibold text-accent">
           {rank}순위 · {item.label}
+          {/* 제휴 링크가 있는 카드는 제목 근처에서 먼저 광고임을 알린다 */}
+          {paddle.purchase?.is_affiliate ? (
+            <span className="ml-2 rounded border border-line px-1.5 py-0.5 text-xs font-medium text-ink" data-testid="affiliate-badge">
+              광고 포함
+            </span>
+          ) : null}
         </p>
         <h2 className="text-xl font-bold leading-snug text-navy">{name}</h2>
       </header>

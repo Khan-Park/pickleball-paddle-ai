@@ -68,6 +68,9 @@ export function Result({ paddles }: { paddles: Paddle[] }) {
     );
   }
 
+  // 화면에 제휴 링크가 하나라도 있으면 추천 카드보다 먼저 알린다
+  const hasAffiliate = result.items.some((item) => byId.get(item.paddle_id)?.purchase?.is_affiliate);
+
   return (
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
       <header className="flex flex-col gap-2">
@@ -79,6 +82,14 @@ export function Result({ paddles }: { paddles: Paddle[] }) {
           <p className="text-sm text-muted">조건에 맞는 제품이 {result.items.length}개뿐이라 있는 만큼만 보여 드립니다.</p>
         ) : null}
       </header>
+
+      {/* 화면에 제휴 링크가 하나라도 있으면 추천 카드보다 먼저 알린다 */}
+      {hasAffiliate ? (
+        <div className="rounded-lg border border-line bg-card p-4 text-sm font-medium leading-relaxed text-ink" data-testid="affiliate-page-notice">
+          <p>{NOTICE.affiliatePage}</p>
+          <p>{NOTICE.ranking}</p>
+        </div>
+      ) : null}
 
       {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
@@ -118,7 +129,8 @@ export function Result({ paddles }: { paddles: Paddle[] }) {
 
       <footer className="flex flex-col gap-1 text-xs leading-relaxed text-muted">
         <p>{NOTICE.spec}</p>
-        <p>{NOTICE.ranking}</p>
+        {/* 제휴 안내가 위에 있으면 같은 문장을 거기서 이미 보여 줬다 */}
+        {hasAffiliate ? null : <p>{NOTICE.ranking}</p>}
         <p>{NOTICE.price}</p>
       </footer>
 
