@@ -22,16 +22,29 @@ export function saveAnswers(answers: QuizAnswers): void {
   }
 }
 
-/** 저장된 답변. 없거나 형식이 깨졌으면 null. 값의 유효성은 answersToProfile이 다시 검증한다 */
-export function loadAnswers(): QuizAnswers | null {
+/** 저장된 원문(JSON 문자열). 없으면 null. 같은 내용이면 같은 문자열이라 구독 스냅샷으로 쓸 수 있다 */
+export function loadAnswersRaw(): string | null {
   try {
-    const raw = storage()?.getItem(KEY);
-    if (!raw) return null;
+    return storage()?.getItem(KEY) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** JSON 문자열을 답변으로 바꾼다. 형식이 깨졌으면 null. 값의 유효성은 answersToProfile이 다시 검증한다 */
+export function parseAnswers(raw: string | null): QuizAnswers | null {
+  if (!raw) return null;
+  try {
     const parsed: unknown = JSON.parse(raw);
     return typeof parsed === "object" && parsed !== null && !Array.isArray(parsed) ? (parsed as QuizAnswers) : null;
   } catch {
     return null;
   }
+}
+
+/** 저장된 답변. 없거나 형식이 깨졌으면 null */
+export function loadAnswers(): QuizAnswers | null {
+  return parseAnswers(loadAnswersRaw());
 }
 
 export function clearAnswers(): void {
