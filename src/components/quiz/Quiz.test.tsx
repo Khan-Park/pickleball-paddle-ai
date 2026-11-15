@@ -62,6 +62,18 @@ describe("질문 화면", () => {
     expect(loadAnswers()).toMatchObject({ experience: "over_3y", shapes: ["elongated", "hybrid"], tournament: "yes" });
   });
 
+  it("선호 모양 질문에만 형태 그림 4개가 나오고, 그림은 화면 낭독기에 숨긴다", () => {
+    const { container } = render(<Quiz />);
+    click(/1~3년/);
+    expect(container.querySelectorAll("svg[data-shape]")).toHaveLength(0);
+    click(/균형/);
+    click("중간");
+    click("없어요");
+    const icons = [...container.querySelectorAll("svg[data-shape]")];
+    expect(icons.map((s) => s.getAttribute("data-shape")).sort()).toEqual(["elongated", "hybrid", "standard", "widebody"]);
+    for (const icon of icons) expect(icon.getAttribute("aria-hidden")).toBe("true");
+  });
+
   it("선호 모양은 건너뛸 수 있다", () => {
     render(<Quiz />);
     click(/1~3년/);

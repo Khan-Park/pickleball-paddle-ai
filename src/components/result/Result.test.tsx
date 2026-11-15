@@ -64,12 +64,43 @@ describe("결과 화면", () => {
     expect(screen.queryByText(NOTICE.affiliate)).toBeNull();
   });
 
-  it("제휴 링크가 있으면 버튼 바로 아래에 대가 표시를 함께 그린다", () => {
+  it("제휴 링크가 있으면 같은 묶음 안에서 링크보다 먼저 대가 표시를 그린다", () => {
     saveAnswers(beginner);
     render(<Result paddles={[p({ id: "linked", brand: "가짜", model: "링크", purchase: { url: "https://example.com/buy", is_affiliate: true } })]} />);
     const link = screen.getByRole("link", { name: /판매처에서 보기/ });
     expect(link.getAttribute("rel")).toContain("sponsored");
-    expect(link.parentElement!.textContent).toContain(NOTICE.affiliate);
+    const disclosure = screen.getByTestId("affiliate-disclosure");
+    expect(disclosure.textContent).toBe(NOTICE.affiliate);
+    expect(disclosure.parentElement).toBe(link.parentElement);
+    // 문서 순서상 대가 표시가 링크보다 앞에 온다
+    expect(disclosure.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("대가 표시는 조건부 표현을 쓰지 않고 '광고'임을 밝힌다", () => {
+    for (const text of [NOTICE.affiliate, NOTICE.affiliatePage]) {
+      expect(text).toContain("광고");
+      expect(text).toContain("수수료를 받습니다");
+      expect(text).not.toMatch(/받을 수 있|소정의/);
+    }
+  });
+
+  it("제휴 링크가 있는 추천이 하나라도 있으면 카드보다 먼저 페이지 안내를 보여 주고, 없으면 보여 주지 않는다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={PADDLES.map((x, i) => (i === 0 ? { ...x, purchase: { url: "https://example.com/a", is_affiliate: true } } : x))} />);
+    const notice = screen.getByTestId("affiliate-page-notice");
+    expect(notice.textContent).toContain(NOTICE.affiliatePage);
+    expect(notice.compareDocumentPosition(screen.getAllByRole("article")[0]!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    cleanup();
+    render(<Result paddles={PADDLES} />);
+    expect(screen.queryByTestId("affiliate-page-notice")).toBeNull();
+  });
+
+  it("제휴가 아닌 일반 링크에는 대가 표시를 붙이지 않는다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "plain", brand: "가짜", model: "일반 링크", purchase: { url: "https://example.com/p", is_affiliate: false } })]} />);
+    expect(screen.getByRole("link", { name: /판매처에서 보기/ }).getAttribute("rel")).not.toContain("sponsored");
+    expect(screen.queryByTestId("affiliate-disclosure")).toBeNull();
+    expect(screen.queryByTestId("affiliate-page-notice")).toBeNull();
   });
 
   it("구매 링크 유무는 순위에 영향을 주지 않는다", () => {

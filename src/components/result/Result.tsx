@@ -80,7 +80,14 @@ export function Result({ paddles }: { paddles: Paddle[] }) {
         ) : null}
       </header>
 
-      {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
+      {/* 화면에 제휴 링크가 하나라도 있으면 추천 카드보다 먼저 알린다 */}
+      {result.items.some((item) => byId.get(item.paddle_id)?.purchase?.is_affiliate) ? (
+        <p className="rounded-lg border border-line bg-card p-4 text-sm font-medium leading-relaxed text-ink" data-testid="affiliate-page-notice">
+          {NOTICE.affiliatePage} {NOTICE.ranking}
+        </p>
+      ) : null}
+
+      {profile.arm_discomfort ?<p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
       {result.items.map((item, i) => {
         const paddle = byId.get(item.paddle_id);

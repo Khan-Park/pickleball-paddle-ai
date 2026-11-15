@@ -22,7 +22,13 @@ export function CertBadge({ certification }: { certification: Paddle["certificat
 export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"]; name: string }) {
   if (!purchase) return null;
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
+      {/* 대가 표시는 링크보다 먼저, 같은 묶음 안에서 보여 준다 */}
+      {purchase.is_affiliate ? (
+        <p className="text-sm font-medium text-ink" data-testid="affiliate-disclosure">
+          {NOTICE.affiliate}
+        </p>
+      ) : null}
       <a
         href={purchase.url}
         target="_blank"
@@ -31,7 +37,6 @@ export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"];
       >
         판매처에서 보기<span className="sr-only"> ({name}, 새 창)</span>
       </a>
-      {purchase.is_affiliate ? <p className="text-xs text-muted">{NOTICE.affiliate}</p> : null}
     </div>
   );
 }
