@@ -29,12 +29,11 @@
 ## 파일럿 4개 결과
 | 제품 | 파일 | 상태 | 비고 |
 |---|---|---|---|
-| Selkirk LABS Project Boomstik (Elongated, Widebody) | `selkirk-...-elongated`, `-widebody` | 초안 | 무게(범위)·코어·치수·표면 공식 확인. 승인(USAP)은 unknown |
-| JOOLA Hyperion Vision 16mm | `joola-hyperion-vision-16mm` | 초안 | 모든 스펙 공식 확인. 형태명 'Hyperion'은 스키마 값이 아니라 **shape 분류 규칙 결정 대기** |
-| NOX X-Foam JC6 16mm | `nox-x-foam-jc6-16mm` | **보류** | 공식 페이지에 코어·길이·폭·인증 문구는 있으나 **무게·표면·형태명이 없음** |
-| Franklin FS Tour Tempo 16mm | `franklin-fs-tour-tempo-16mm` | **보류** | 공식 페이지에 무게 범위·코어·표면·인증 문구는 있으나 **길이·폭이 없고 패들 형태 정보도 없음**(페이지의 "traditional shape and feel"은 핸들 설명) |
+| Selkirk LABS Project Boomstik (Elongated, Widebody) | `selkirk-...-elongated`, `-widebody` | 초안 | 무게(범위)·코어·치수·표면 공식 확인. 승인 approved(USAP entry 11440, 11441) |
+| JOOLA Hyperion Vision 16mm | `joola-hyperion-vision-16mm` | 초안 | 모든 스펙 공식 확인. 형태는 치수 규칙(D-018)으로 hybrid(경계 근처, 사람 확인). USAP 목록에서 'Hyperion Vision'을 못 찾아 unknown |
+| NOX X-Foam JC6 16mm | `nox-x-foam-jc6-16mm` | **보류** | 코어·치수·표면(USAP 목록)·승인(USAP entry 12041) 확인, 형태 elongated(치수 규칙, 경계 근처). **무게만 없음** |
+| Franklin FS Tour Tempo 16mm | `franklin-fs-tour-tempo-16mm` | **보류** | 무게 범위·코어·표면·승인(USAP entry 6692) 확인. **길이·폭 없음**이라 형태도 보류(페이지의 "traditional shape and feel"은 핸들 설명) |
 
 ## 공통 쟁점
-1. **형태(shape) 분류 규칙**: 제조사 이름(Hyperion 등)이 우리 enum과 안 맞는 경우가 있다. 치수 기반 규칙이 필요하다(제안은 별도 논의). 지금까지 확인된 치수: Boomstik Elongated 16.5×7.45, Widebody 15.95×8, JOOLA 16.4×7.3, NOX 16.5×7.5.
-2. **필수 필드를 공식 페이지가 안 주는 경우**: NOX는 무게, Franklin은 길이·폭. 보류하거나 다른 신뢰할 만한 출처를 찾는다.
-3. **USA Pickleball 승인**: 제조사 표기만으로는 `approved`로 올리지 않는다. 승인 목록 대조 절차가 필요하다.
+1. **필수 필드를 공식 자료가 안 주는 경우**: NOX 무게, Franklin 길이·폭. 제조사 공식 페이지 2곳과 USAP 목록에 없다. 국내 판매 페이지의 값은 비공식이라 사용자 판단이 필요하다.
+2. **한국 판매 모델과 해외 모델의 대응**: 셀커크 '붐스틱 코어'가 Elongated인지 Widebody인지, JOOLA '하이페리온 비전'에 'Ben Johns'가 붙는지 등.
