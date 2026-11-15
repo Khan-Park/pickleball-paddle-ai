@@ -28,8 +28,7 @@
       "원문": "(수집본의 웹 원문·OCR·발췌 이미지에서 찾지 못함)"
     },
     "core_mm": {
-      "원문": "상품명 '... Elongated 16mm'",
-      "비고": "수집본 웹 원문(상품명). 스펙 표의 코어 두께 행은 발췌 이미지에서 보지 못함"
+      "원문": "USAP 목록 entry 12459: Depth 16MM (상품명에도 16mm)"
     },
     "length_in": {
       "원문": "규격 41.8 × 19.1cm (16.48 × 7.52in)",
@@ -48,8 +47,8 @@
       "비고": "사용자 수집본(피앤피노, 2026-11-15) 상세 이미지를 눈으로 대조함. 판매처 표기. 판매처 스펙 표가 형태를 직접 표기. 길이 16.48은 치수 규칙 임계값 16.5의 경계"
     },
     "certification": {
-      "원문": "USAP 승인 목록 entry 12459: Brand 'HONOLULU PICKLEBALL COMPANY', Model 'J6CR', Added 12/11/2025. 판매처 표기는 'UPA-A Pro Certified'",
-      "비고": "2026-11-15에 USA Pickleball 승인 목록 등재를 직접 확인(상세 페이지의 Status는 열어 보지 않음)"
+      "원문": "USAP 승인 목록 entry 12459: Brand 'HONOLULU PICKLEBALL COMPANY', Model 'J6CR', Status Pass, Added 12/11/2025, Depth 16MM, Carbon fiber. 판매처 표기는 'UPA-A Pro Certified'",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
     },
     "price_krw": {
       "원문": "피앤피노 판매가 339000원, 판매중",
@@ -65,7 +64,6 @@
     "method": "사용자 수집본(피앤피노 248종) PNP031의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
   },
   "open_questions": [
-    "무게: 제조사 자료 필요",
-    "USAP entry 12459 상세의 Status(Pass) 확인"
+    "무게: 제조사 자료 필요"
   ]
 }

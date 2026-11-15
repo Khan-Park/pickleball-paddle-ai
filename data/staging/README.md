@@ -61,3 +61,20 @@
 | TRION V-1 Power / V-1 Control | `trion-v-1-power-16mm`, `trion-v-1-control-16mm` | **보류** | 패들 폭 없음(형태도 못 정함) |
 
 참고: 고가 신형 패들 중에는 판매처가 USAP가 아니라 **UPA-A 인증**만 표기하는 제품이 있다(Coral Pro, Hurache-X Power 2, J6CR). 우리 스키마의 대회 인증은 USA Pickleball 기준이므로 UPA-A만으로는 approved로 올리지 않는다.
+
+## 3차 묶음 10개 (2026-11-15)
+| 제품 | 파일 | 상태 | 비고 |
+|---|---|---|---|
+| Selkirk Boomstik ST Elongated 16mm | `selkirk-boomstik-st-elongated-16mm` | 초안 | USAP approved(13858). 무게 OCR 글자 깨짐 |
+| Franklin Signature Fiberglass 16mm | `franklin-signature-fiberglass-16mm` | 초안 | USAP approved(3799). 표면 fiberglass |
+| Friday Aura Pro Gen 4 Hybrid 16mm | `friday-aura-pro-gen4-hybrid-16mm` | 입력 대기 | 길이+폭 24.02in(허용 오차 결정 필요) |
+| Vatic Pro V-SOL Tour Bloom 16mm | `vatic-pro-v-sol-tour-bloom-16mm` | **보류** | 표면 소재 없음. USAP approved(13671) |
+| STAR Reactive Carbon 16mm | `star-reactive-carbon-16mm` | 초안 | USAP approved(13222). 250g, 형태 경계 |
+| Luzz Glider 2026 Hybrid 16mm | `luzz-glider-2026-hybrid-16mm` | 입력 대기 | 이미지 대조 완료. 길이+폭 24.02in |
+| JOOLA Ben Johns Perseus Pro 3S Dual 14mm | `joola-ben-johns-perseus-pro-3s-dual-14mm` | 초안 | USAP approved(10356). 14mm |
+| ProKennex Power | `prokennex-power` | 초안 | 13mm는 패들 두께 표기, 형태 경계 |
+| ProKennex Kinetic Pro Speed | `prokennex-kinetic-pro-speed` | **보류** | 코어 두께·표면 없음 |
+| Picklepoppers POP N ROOKIE 16mm | `picklepoppers-pop-n-rookie-16mm` | 초안 | USAP approved(11062). fiberglass |
+
+3차는 Luzz를 빼고 원본 이미지를 직접 보지 않았다. 값은 OCR 원문이며 초안에 "사람 확인 필요"로 표시했다.
+쟁점: 판매처가 적은 치수의 합이 24.02in인 제품이 있다(Luzz 16.34 + 7.68in, Friday 41.6 + 19.4cm). 0.1cm 단위 반올림 탓으로 보이며, 스키마의 24in 한도에 허용 오차를 둘지 결정이 필요하다.

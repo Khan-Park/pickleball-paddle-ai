@@ -1,0 +1,75 @@
+{
+  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "paddle": {
+    "id": "star-reactive-carbon-16mm",
+    "brand": "STAR",
+    "model": "Reactive Carbon 16mm (NXRG009)",
+    "weight_oz": 8.82,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.14,
+    "width_in": 7.48,
+    "surface": "carbon",
+    "price_krw": 90000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%EC%8A%A4%ED%83%80%EC%8A%A4%ED%8F%AC%EC%B8%A0-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-reactive-%EC%B9%B4%EB%B3%B8-16mm-%EB%B8%94%EB%A3%A8-k0xw",
+      "https://equipment.usapickleball.org/paddle-list/entry/13222/"
+    ],
+    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "notes": "무게 250g으로 무거운 편. 치수는 cm 정수 표기(41×19)를 환산한 값이라 형태 경계 판단이 불확실하다."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "250g",
+      "파생": "250 ÷ 28.3495 = 8.82oz",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상품 페이지 웹 원문. 판매처 표기"
+    },
+    "core_mm": {
+      "원문": "16mm 폴리프로필렌 허니콤 코어",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상품 페이지 웹 원문. 판매처 표기"
+    },
+    "length_in": {
+      "원문": "41×19cm",
+      "파생": "41 ÷ 2.54 = 16.14in",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상품 페이지 웹 원문. 판매처 표기. cm 정수 표기라 정밀도가 낮다"
+    },
+    "width_in": {
+      "원문": "41×19cm",
+      "파생": "19 ÷ 2.54 = 7.48in",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상품 페이지 웹 원문. 판매처 표기"
+    },
+    "surface": {
+      "원문": "카본 페이스",
+      "비고": "사용자 수집본(피앤피노, 2026-11-15) 상품 페이지 웹 원문. 판매처 표기"
+    },
+    "shape": {
+      "원문": "(형태명 표기 없음. OCR에 '모서리를 부드럽게 처리한 직사각형 헤드')",
+      "파생": "치수 규칙(D-018): 길이 16.14 (16.1~16.49), 폭 7.48 < 8.0 → hybrid",
+      "비고": "경계 근처 → 사람 확인 (길이가 임계값 16.1과 0.04 차이)"
+    },
+    "certification": {
+      "원문": "USAP 승인 목록 entry 13222: Brand 'STAR SPORTS', Model 'REACTIVE', MD# NXRG009, Status Pass, Added 06/01/2026, Depth 16mm, Carbon Fiber. 판매처 웹 원문 'USAP 공인(PBCoR .43)'",
+      "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 90000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP027. 기본판매가"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:19:45"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/%EC%8A%A4%ED%83%80%EC%8A%A4%ED%8F%AC%EC%B8%A0-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-reactive-%EC%B9%B4%EB%B3%B8-16mm-%EB%B8%94%EB%A3%A8-k0xw",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP027의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "형태: hybrid와 standard 중(길이 16.14in 경계, cm 정수 표기)"
+  ]
+}

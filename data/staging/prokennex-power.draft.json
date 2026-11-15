@@ -1,0 +1,76 @@
+{
+  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "paddle": {
+    "id": "prokennex-power",
+    "brand": "ProKennex",
+    "model": "Power",
+    "weight_oz": 7.94,
+    "core_mm": 13,
+    "shape": "standard",
+    "length_in": 16.0,
+    "width_in": 7.88,
+    "surface": "fiberglass",
+    "price_krw": 99000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4-power-%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4%ED%94%BC%ED%81%B4%EB%B3%BC%ED%8C%A8%EB%93%A4-wh-1881"
+    ],
+    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "notes": "입문용. 규격 전부가 OCR 원문 값. 13mm는 패들 두께 표기."
+  },
+  "evidence": {
+    "weight_oz": {
+      "원문": "무게 225g",
+      "파생": "225 ÷ 28.3495 = 7.94oz",
+      "비고": "사용자 수집본의 OCR 원문(미검수). 이번에는 원본 이미지를 직접 보지 않았다 → 사람 확인 필요"
+    },
+    "core_mm": {
+      "원문": "패들두께 13 mm",
+      "비고": "사용자 수집본의 OCR 원문(미검수). 이번에는 원본 이미지를 직접 보지 않았다 → 사람 확인 필요. '패들두께' 표기라 코어 두께와 다를 수 있음"
+    },
+    "length_in": {
+      "원문": "패들길이 16inch",
+      "비고": "사용자 수집본의 OCR 원문(미검수). 이번에는 원본 이미지를 직접 보지 않았다 → 사람 확인 필요"
+    },
+    "width_in": {
+      "원문": "패들넓이 7 7/8 inch",
+      "파생": "7 + 7/8 = 7.875 → 7.88in",
+      "비고": "사용자 수집본의 OCR 원문(미검수). 이번에는 원본 이미지를 직접 보지 않았다 → 사람 확인 필요"
+    },
+    "surface": {
+      "원문": "소재 PP+GF",
+      "비고": "사용자 수집본의 OCR 원문(미검수). 이번에는 원본 이미지를 직접 보지 않았다 → 사람 확인 필요. GF를 유리섬유(파이버글라스)로 해석"
+    },
+    "shape": {
+      "원문": "(형태명 표기 없음)",
+      "파생": "치수 규칙(D-018): 폭 7.88 < 8.0, 길이 16.0 < 16.1 → standard",
+      "비고": "경계 근처 → 사람 확인 (폭이 8.0과 0.12, 길이가 16.1과 0.1 차이)"
+    },
+    "certification": {
+      "원문": "USAP 목록에서 ProKennex 'Power'로 검색되지 않음",
+      "비고": "unknown은 승인 목록에서 같은 모델명을 확인하지 못했다는 뜻. checked_at은 기록일(README 참조)"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 99000원, 판매중",
+      "비고": "수집본 엑셀 '상품목록' PNP112. 기본판매가"
+    },
+    "price_checked_at": {
+      "원문": "수집일시 2026-11-15 14:22:40"
+    }
+  },
+  "source_meta": {
+    "url": "https://pnpino.com/products/%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4-power-%ED%94%84%EB%A1%9C%EC%BC%80%EB%84%A5%EC%8A%A4%ED%94%BC%ED%81%B4%EB%B3%BC%ED%8C%A8%EB%93%A4-wh-1881",
+    "read_at": "2026-11-15",
+    "method": "사용자 수집본(피앤피노 248종) PNP112의 엑셀 원문과 상세 이미지. 제조사 공식 페이지는 아직 대조하지 않음"
+  },
+  "open_questions": [
+    "규격 전부를 원본 이미지에서 확인",
+    "13mm가 코어 두께인지",
+    "형태: standard와 widebody 중(폭 7 7/8in)",
+    "USAP 승인 여부"
+  ]
+}
