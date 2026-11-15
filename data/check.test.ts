@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { checkPaddles, DATA_MAX_AGE_DAYS, PRICE_MAX_AGE_DAYS } from "./check";
+import { checkPaddles, DATA_MAX_AGE_DAYS, parsePaddlesJson, PRICE_MAX_AGE_DAYS, todayLocal } from "./check";
 import { paddleSchema } from "./schema";
 import { fakePaddle } from "./test-fixtures";
 
@@ -77,17 +77,38 @@ describe("checkPaddles", () => {
     expect(checkPaddles([good({ certification: { ...old, usa_pickleball: "unknown" } })], TODAY).warnings).toEqual([]);
   });
 
+  it("브랜드명이 부분 문자열로만 들어간 호스트는 공식 도메인으로 보지 않는다", () => {
+    const warn = (brand: string, url: string) => checkPaddles([good({ brand, sources: [url] })], TODAY).warnings.length;
+    expect(warn("HEAD", "https://headphones-shop.com/x")).toBe(1);
+    expect(warn("JOOLA", "https://joola-reseller.example/x")).toBe(1);
+    expect(warn("JOOLA", "https://www.joola.com/x")).toBe(0);
+    expect(warn("Selkirk", "https://www.selkirk.co.kr/x")).toBe(0);
+    expect(warn("NOX", "https://noxpickleball.com/x")).toBe(0);
+  });
+
   it("출처 호스트에 브랜드명이 없으면 경고, 있으면(대소문자·공백 무시) 경고 없음", () => {
-    expect(checkPaddles([good({ sources: ["https://shop.example.com/x"] })], TODAY).warnings[0]).toContain("브랜드명");
+    expect(checkPaddles([good({ sources: ["https://shop.example.com/x"] })], TODAY).warnings[0]).toContain("공식 도메인");
     expect(checkPaddles([good({ brand: "Six Zero", sources: ["https://us.sixzeropickleball.com/p"] })], TODAY).warnings).toEqual([]);
     expect(checkPaddles([good({ brand: "글룩스", sources: ["https://shop.example.com/x"] })], TODAY).warnings).toEqual([]);
   });
 });
 
+describe("todayLocal / parsePaddlesJson", () => {
+  it("todayLocal은 UTC가 아니라 로컬 날짜를 쓴다", () => {
+    expect(todayLocal(new Date(2026, 10, 15, 8, 0, 0))).toBe("2026-11-15"); // 로컬 오전 8시
+    expect(todayLocal(new Date(2026, 0, 5, 23, 59, 59))).toBe("2026-01-05");
+  });
+
+  it("BOM이 있어도 읽는다", () => {
+    expect(parsePaddlesJson("\uFEFF[]")).toEqual([]);
+    expect(parsePaddlesJson("[]")).toEqual([]);
+  });
+});
+
 describe("실제 data/paddles.json", () => {
   it("스키마 오류와 미래 날짜가 없다(경고는 허용)", () => {
-    const raw: unknown = JSON.parse(readFileSync(new URL("./paddles.json", import.meta.url), "utf8"));
-    const today = new Date().toISOString().slice(0, 10);
-    expect(checkPaddles(raw, today).errors).toEqual([]);
+    const raw = parsePaddlesJson(readFileSync(new URL("./paddles.json", import.meta.url), "utf8"));
+    // 기준일을 먼 미래로 고정해 실행 시각과 무관하게 한다(미래 날짜 검사는 위 단위 테스트가 맡는다)
+    expect(checkPaddles(raw, "2999-12-31").errors).toEqual([]);
   });
 });
