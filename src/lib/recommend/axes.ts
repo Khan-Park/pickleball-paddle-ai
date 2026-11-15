@@ -1,8 +1,8 @@
 import type { PaddleSpec } from "../../../data/schema";
 import type { UserProfile } from "./profile";
-import { ARM_COMFORT, FORGIVENESS, LEAN, SHAPE_PREFERENCE, WEIGHT_BAND, WEIGHT_PREFERENCE } from "./scoring-config";
+import { ARM_COMFORT, FORGIVENESS, LEAN, SHAPE_PREFERENCE, SKILL_WEIGHT, WEIGHT_BAND, WEIGHT_PREFERENCE } from "./scoring-config";
 
-export type AxisId = "power_control" | "forgiveness" | "arm_comfort" | "weight_preference" | "shape_preference";
+export type AxisId = "power_control" | "forgiveness" | "arm_comfort" | "skill_weight" | "weight_preference" | "shape_preference";
 
 /** 점수에 쓴 규칙. rule은 추천 이유 템플릿의 키, values는 문장에 채울 값이다 */
 export type AxisReason = { rule: string; values: Record<string, number | string> };
@@ -68,6 +68,25 @@ export function armComfortAxis(paddle: PaddleSpec, profile: UserProfile): AxisRe
   };
 }
 
+/** 권장 무게대(medium)에서 벗어난 정도(oz). 안이면 0 */
+function outsideMediumBand(weightOz: number): number {
+  return Math.max(0, WEIGHT_BAND.lightBelowOz - weightOz, weightOz - WEIGHT_BAND.heavyAboveOz);
+}
+
+/**
+ * 경력별 무게 적합. 상급자이거나 사용자가 무게 선호를 직접 골랐으면 null(축 제외).
+ * 초보·중급에게 권장 무게대를 벗어난 패들을 감점한다. (D-021)
+ */
+export function skillWeightAxis(paddle: PaddleSpec, profile: UserProfile): AxisResult | null {
+  if (profile.skill_level === "advanced" || profile.weight_preference !== "no_preference") return null;
+  const w = paddle.weight_oz;
+  return {
+    axis: "skill_weight",
+    score: Math.max(0, 1 - outsideMediumBand(w) * SKILL_WEIGHT.penaltyPerOz),
+    reason: { rule: "skill_weight.band", values: { weight_oz: w, band: weightBand(w), skill_level: profile.skill_level } },
+  };
+}
+
 /** no_preference면 null */
 export function weightPreferenceAxis(paddle: PaddleSpec, profile: UserProfile): AxisResult | null {
   const pref = profile.weight_preference;
@@ -78,7 +97,7 @@ export function weightPreferenceAxis(paddle: PaddleSpec, profile: UserProfile): 
       ? Math.max(0, w - WEIGHT_BAND.lightBelowOz)
       : pref === "heavy"
         ? Math.max(0, WEIGHT_BAND.heavyAboveOz - w)
-        : Math.max(0, WEIGHT_BAND.lightBelowOz - w, w - WEIGHT_BAND.heavyAboveOz);
+        : outsideMediumBand(w);
   return {
     axis: "weight_preference",
     score: Math.max(0, 1 - outside * WEIGHT_PREFERENCE.penaltyPerOz),
@@ -103,6 +122,7 @@ export function computeAxes(paddle: PaddleSpec, profile: UserProfile): AxisResul
     powerControlAxis(paddle, profile),
     forgivenessAxis(paddle),
     armComfortAxis(paddle, profile),
+    skillWeightAxis(paddle, profile),
     weightPreferenceAxis(paddle, profile),
     shapePreferenceAxis(paddle, profile),
   ].filter((r): r is AxisResult => r !== null);

@@ -8,6 +8,7 @@ import {
   lean,
   powerControlAxis,
   shapePreferenceAxis,
+  skillWeightAxis,
   weightBand,
   weightPreferenceAxis,
 } from "./axes";
@@ -216,5 +217,31 @@ describe("속성: 범위·결정성", () => {
 describe("SCORING_VERSION", () => {
   it("버전 문자열이 있다", () => {
     expect(SCORING_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
+  });
+});
+
+describe("skill_weight (D-021)", () => {
+  const at = (w: number, profile = fakeProfile({ skill_level: "beginner" })) => skillWeightAxis(fakePaddle({ weight_oz: w }), profile);
+
+  it("상급자이거나 무게 선호를 직접 골랐으면 축을 제외한다", () => {
+    expect(at(8.8, fakeProfile({ skill_level: "advanced" }))).toBeNull();
+    expect(at(8.8, fakeProfile({ skill_level: "beginner", weight_preference: "heavy" }))).toBeNull();
+    expect(at(8.8, fakeProfile({ skill_level: "intermediate" }))).not.toBeNull();
+    // 무게 선호를 고르면 weight_preference 축만 남는다(중복 감점 없음)
+    const axes = computeAxes(fakePaddle({ weight_oz: 8.8 }), fakeProfile({ weight_preference: "medium" })).map((a) => a.axis);
+    expect(axes).toContain("weight_preference");
+    expect(axes).not.toContain("skill_weight");
+  });
+
+  it("권장 무게대(7.3~8.4oz) 안이면 1, 벗어나면 1oz당 2.0 감점, 하한 0", () => {
+    near(at(7.3)!.score, 1);
+    near(at(8.4)!.score, 1);
+    near(at(8.75)!.score, 0.3);
+    near(at(7.0)!.score, 0.4);
+    expect(at(9.5)!.score).toBe(0);
+  });
+
+  it("이유에 무게와 무게대를 담는다", () => {
+    expect(at(8.75)!.reason).toEqual({ rule: "skill_weight.band", values: { weight_oz: 8.75, band: "heavy", skill_level: "beginner" } });
   });
 });

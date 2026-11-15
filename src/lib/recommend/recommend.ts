@@ -37,7 +37,10 @@ export type RecommendResult = {
 export type RecommendOptions = { limit?: number };
 
 function axisWeight(axis: AxisId, profile: UserProfile): number {
-  return axis === "forgiveness" ? AXIS_WEIGHTS.forgiveness[profile.skill_level] : AXIS_WEIGHTS[axis];
+  if (axis === "forgiveness") return AXIS_WEIGHTS.forgiveness[profile.skill_level];
+  // skill_weight 축은 상급자에게 만들어지지 않는다(axes.ts). 방어적으로 0을 돌려준다
+  if (axis === "skill_weight") return profile.skill_level === "advanced" ? 0 : AXIS_WEIGHTS.skill_weight[profile.skill_level];
+  return AXIS_WEIGHTS[axis];
 }
 
 export function labelFor(score: number): MatchLabel {
