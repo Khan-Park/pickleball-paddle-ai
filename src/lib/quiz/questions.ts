@@ -3,6 +3,8 @@
  * 문구는 한국어, 과장 표현과 의학적 단정을 쓰지 않는다.
  */
 
+import { SHAPE_LABEL } from "../shared/shape-labels";
+
 export type QuestionId = "experience" | "play_style" | "weight" | "arm" | "shapes" | "budget" | "tournament";
 
 export type ShapeValue = "standard" | "hybrid" | "elongated" | "widebody";
@@ -81,10 +83,10 @@ const QUESTIONS: Record<QuestionId, QuizQuestion> = {
     note: "여러 개를 골라도 됩니다. 잘 모르면 건너뛰세요.",
     multiple: true,
     options: [
-      { value: "standard", label: "표준형", hint: "가장 흔한 모양" },
-      { value: "widebody", label: "넓은 형", hint: "면이 넓어 빗맞아도 안정적" },
-      { value: "hybrid", label: "하이브리드형", hint: "표준형과 길쭉한 형의 중간" },
-      { value: "elongated", label: "길쭉한 형", hint: "더 멀리 닿고 파워에 유리" },
+      { value: "standard", label: SHAPE_LABEL.standard, hint: "가장 흔한 모양" },
+      { value: "widebody", label: SHAPE_LABEL.widebody, hint: "면이 넓어 빗맞아도 안정적" },
+      { value: "hybrid", label: SHAPE_LABEL.hybrid, hint: "표준형과 길쭉한 형의 중간" },
+      { value: "elongated", label: SHAPE_LABEL.elongated, hint: "더 멀리 닿고 파워에 유리" },
     ],
   },
   budget: {

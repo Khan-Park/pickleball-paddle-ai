@@ -121,3 +121,21 @@ describe("answersToProfile", () => {
     expect(JSON.stringify(full)).toBe(before);
   });
 });
+
+describe("answersToProfile: 손상된 저장값", () => {
+  const full: QuizAnswers = { experience: "over_3y", play_style: "power", weight: "heavy", arm: "no", shapes: ["elongated"], budget: "200k_to_300k", tournament: "yes" };
+  const bad = (o: object) => answersToProfile({ ...full, ...o } as QuizAnswers);
+
+  it("예산·팔 불편·대회 답이 선택지에 없는 값이면 기본값으로 바꾸지 않고 다시 묻는다", () => {
+    expect(bad({ budget: "under100" })).toEqual({ success: false, missing: ["budget"] });
+    expect(bad({ arm: "maybe" })).toEqual({ success: false, missing: ["arm"] });
+    expect(bad({ tournament: true })).toEqual({ success: false, missing: ["tournament"] });
+    expect(bad({ budget: 1, arm: "", tournament: "y" })).toEqual({ success: false, missing: ["budget", "arm", "tournament"] });
+  });
+
+  it("경력·무게·성향이 모르는 값이면 프로필 검증에서 실패한다", () => {
+    expect(bad({ experience: "pro" }).success).toBe(false);
+    expect(bad({ weight: "superheavy" }).success).toBe(false);
+    expect(bad({ play_style: "fast" }).success).toBe(false);
+  });
+});

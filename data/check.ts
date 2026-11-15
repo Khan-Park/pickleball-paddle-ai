@@ -1,11 +1,11 @@
-import { daysBetween } from "../src/lib/shared/dates.ts";
-import { CERT_MAX_AGE_DAYS } from "../src/lib/shared/limits.ts";
+import { daysBetween, todayLocal } from "../src/lib/shared/dates.ts";
+import { CERT_MAX_AGE_DAYS, PRICE_MAX_AGE_DAYS } from "../src/lib/shared/limits.ts";
 import { paddleSchema, paddlesSchema } from "./schema.ts";
 
 /** 스펙 확인일이 이 일수를 넘으면 재확인을 권한다(docs/spec.md). 대회 인증은 엔진과 같은 CERT_MAX_AGE_DAYS를 쓴다 */
 export const DATA_MAX_AGE_DAYS = 180;
-/** 가격 확인일 기준. 가설: 가격은 자주 바뀌고 직구는 편차가 커서 30일로 둔다 */
-export const PRICE_MAX_AGE_DAYS = 30;
+// 가격 확인일 기준과 오늘 날짜 함수는 화면과 같이 쓰도록 src/lib/shared에 둔다
+export { PRICE_MAX_AGE_DAYS, todayLocal };
 
 export type CheckReport = {
   count: number;
@@ -14,12 +14,6 @@ export type CheckReport = {
   /** 재확인 권고. 데이터는 쓸 수 있다 */
   warnings: string[];
 };
-
-/** 이 컴퓨터의 로컬 날짜(YYYY-MM-DD). 한국 시간 오전에도 오늘 날짜가 나온다(UTC 아님) */
-export function todayLocal(now: Date = new Date()): string {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-}
 
 /** paddles.json 텍스트를 읽는다. Windows PowerShell이 붙이는 UTF-8 BOM은 제거한다 */
 export function parsePaddlesJson(text: string): unknown {
@@ -47,6 +41,15 @@ function looksOfficial(brand: string, url: string): boolean {
   const twoLevelTld = labels.length >= 3 && SECOND_LEVEL.has(labels[labels.length - 2]!) && labels[labels.length - 1]!.length === 2;
   const name = labels[labels.length - (twoLevelTld ? 3 : 2)]?.replace(/-/g, "");
   return name !== undefined && (name === brand || OFFICIAL_SUFFIXES.some((s) => name === brand + s));
+}
+
+function isCoupangUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === "coupang.com" || host.endsWith(".coupang.com");
+  } catch {
+    return false;
+  }
 }
 
 const alnum = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -88,6 +91,11 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
     }
     if (p.price_checked_at !== undefined && age(p.price_checked_at) > PRICE_MAX_AGE_DAYS) {
       warnings.push(`${p.id}: 가격 확인 후 ${age(p.price_checked_at)}일 지났다. 가격 재확인이 필요하다(기준 ${PRICE_MAX_AGE_DAYS}일)`);
+    }
+
+    // 쿠팡 파트너스 링크는 경제적 이해관계 표시 대상이다. is_affiliate가 false면 화면에 대가 표시가 빠진다
+    if (p.purchase && !p.purchase.is_affiliate && isCoupangUrl(p.purchase.url)) {
+      errors.push(`${p.id}: 구매 링크가 쿠팡 주소인데 is_affiliate가 false이다. 파트너스 링크면 true로 바꿔 대가 표시가 나오게 해야 한다`);
     }
 
     const brand = alnum(p.brand);

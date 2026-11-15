@@ -5,7 +5,7 @@ import type { Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import type { QuizAnswers } from "@/lib/quiz/questions";
 import { saveAnswers } from "@/lib/quiz/storage";
-import { NOTICE, todayLocal } from "./labels";
+import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal } from "./labels";
 import { Result } from "./Result";
 
 const replace = vi.fn();
@@ -61,7 +61,8 @@ describe("결과 화면", () => {
     saveAnswers(beginner);
     render(<Result paddles={PADDLES} />);
     expect(screen.queryByRole("link", { name: /판매처에서 보기/ })).toBeNull();
-    expect(screen.queryByText(NOTICE.affiliate)).toBeNull();
+    expect(screen.queryByText(DISCLOSURE.coupang)).toBeNull();
+    expect(screen.queryByText(DISCLOSURE.other)).toBeNull();
   });
 
   it("제휴 링크가 있으면 같은 묶음 안에서 링크보다 먼저 대가 표시를 그린다", () => {
@@ -70,7 +71,7 @@ describe("결과 화면", () => {
     const link = screen.getByRole("link", { name: /판매처에서 보기/ });
     expect(link.getAttribute("rel")).toBe("sponsored noopener");
     const disclosure = screen.getByTestId("affiliate-disclosure");
-    expect(disclosure.textContent).toBe(NOTICE.affiliate);
+    expect(disclosure.textContent).toBe(DISCLOSURE.other);
     expect(disclosure.parentElement).toBe(link.parentElement);
     // 문서 순서상 대가 표시가 링크보다 앞에 온다
     expect(disclosure.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -85,7 +86,7 @@ describe("결과 화면", () => {
     expect(document.getElementById(describedBy!)).toBe(screen.getByTestId("affiliate-disclosure"));
   });
 
-  it("제휴 링크가 있는 카드는 제목 근처에 '광고 포함'을 먼저 보여 주고, 없는 카드에는 붙이지 않는다", () => {
+  it("제휴 링크가 있는 카드는 제목 근처에 '광고'를 먼저 보여 주고, 없는 카드에는 붙이지 않는다", () => {
     saveAnswers(beginner);
     render(<Result paddles={PADDLES.map((x, i) => (i === 0 ? { ...x, purchase: { url: "https://example.com/a", is_affiliate: true } } : x))} />);
     const badges = screen.getAllByTestId("affiliate-badge");
@@ -106,19 +107,41 @@ describe("결과 화면", () => {
     expect(count()).toBe(1);
   });
 
-  it("대가 표시는 조건부 표현을 쓰지 않고 '광고'임을 밝힌다", () => {
-    for (const text of [NOTICE.affiliate, NOTICE.affiliatePage]) {
-      expect(text).toContain("광고");
-      expect(text).toContain("수수료를 받습니다");
-      expect(text).not.toMatch(/받을 수 있|소정의/);
+  it("쿠팡 링크에는 쿠팡 파트너스 권장 문구를 그대로 쓴다", () => {
+    expect(DISCLOSURE.coupang).toBe("이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.");
+    expect(affiliateProgram("https://link.coupang.com/a/abc")).toBe("coupang");
+    expect(affiliateProgram("https://www.coupang.com/vp/products/1")).toBe("coupang");
+    expect(affiliateProgram("https://notcoupang.com/x")).toBe("other");
+    expect(affiliateProgram("https://coupang.com.evil.example/x")).toBe("other");
+    expect(affiliateProgram("주소 아님")).toBe("other");
+
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "cp", brand: "가짜", model: "쿠팡", purchase: { url: "https://link.coupang.com/a/abc", is_affiliate: true } })]} />);
+    expect(screen.getByTestId("affiliate-disclosure").textContent).toBe(DISCLOSURE.coupang);
+    expect(screen.getByTestId("affiliate-page-notice").textContent).toContain(DISCLOSURE.coupang);
+  });
+
+  it("대가 표시는 한국어로 수수료를 받는다는 사실을 단정형으로 밝힌다", () => {
+    for (const text of [DISCLOSURE.coupang, DISCLOSURE.other]) {
+      expect(text).toContain("수수료를 제공받습니다");
+      expect(text).not.toMatch(/받을 수 있|AD|Sponsor/);
     }
+  });
+
+  it("페이지 안내는 제목보다 앞에 있고 '광고'라고 밝히며, 접힌 영역 안에 있지 않다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={PADDLES.map((x, i) => (i === 0 ? { ...x, purchase: { url: "https://example.com/a", is_affiliate: true } } : x))} />);
+    const notice = screen.getByTestId("affiliate-page-notice");
+    expect(notice.textContent).toMatch(/^광고/);
+    expect(notice.compareDocumentPosition(screen.getByRole("heading", { level: 1 })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(notice.closest("details")).toBeNull();
   });
 
   it("제휴 링크가 있는 추천이 하나라도 있으면 카드보다 먼저 페이지 안내를 보여 주고, 없으면 보여 주지 않는다", () => {
     saveAnswers(beginner);
     render(<Result paddles={PADDLES.map((x, i) => (i === 0 ? { ...x, purchase: { url: "https://example.com/a", is_affiliate: true } } : x))} />);
     const notice = screen.getByTestId("affiliate-page-notice");
-    expect(notice.textContent).toContain(NOTICE.affiliatePage);
+    expect(notice.textContent).toContain(DISCLOSURE.other);
     expect(notice.compareDocumentPosition(screen.getAllByRole("article")[0]!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     cleanup();
     render(<Result paddles={PADDLES} />);
@@ -184,5 +207,30 @@ describe("결과 화면", () => {
     saveAnswers(beginner);
     render(<Result paddles={[p({ id: "old", brand: "가짜", model: "오래된 가격", price_checked_at: "2020-01-01" })]} />);
     expect(screen.getByText("가격 변동 가능")).toBeDefined();
+  });
+});
+
+describe("대회 승인 배지와 조건 완화", () => {
+  it("확인한 지 180일이 넘은 승인은 '확인'이 아니라 '재확인 필요'로 보여 준다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "stale", brand: "가짜", model: "오래된 승인", certification: { usa_pickleball: "approved", checked_at: "2020-01-01" } })]} />);
+    expect(screen.getByText(/승인 재확인 필요/)).toBeDefined();
+    expect(screen.queryByText(/✓ USA Pickleball 승인 확인/)).toBeNull();
+  });
+
+  it("확인일이 미래인 승인도 '확인'으로 보여 주지 않는다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "future", brand: "가짜", model: "미래 날짜", certification: { usa_pickleball: "approved", checked_at: "2999-01-01" } })]} />);
+    expect(screen.queryByText(/✓ USA Pickleball 승인 확인/)).toBeNull();
+  });
+
+  it("예산을 올려 다시 볼 때 사용자가 정한 최소 예산은 그대로 둔다", () => {
+    saveAnswers({ experience: "over_3y", play_style: "balanced", weight: "any", arm: "no", shapes: [], budget: "200k_to_300k", tournament: "no" });
+    const cheap = p({ id: "cheap", brand: "가짜", model: "저가", price_krw: 30000 });
+    const pricey = p({ id: "pricey", brand: "가짜", model: "고가", price_krw: 350000 });
+    render(<Result paddles={[cheap, pricey]} />);
+    fireEvent.click(screen.getByRole("button", { name: /350,000원까지 올려서 다시 보기/ }));
+    const names = screen.getAllByRole("article").map((a) => a.querySelector("h2")!.textContent);
+    expect(names).toEqual(["가짜 고가"]);
   });
 });

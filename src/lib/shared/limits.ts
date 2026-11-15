@@ -4,3 +4,6 @@
  * 엔진(filter.ts)과 데이터 점검(data/check.ts)이 같은 값을 쓰도록 import 없는 이 파일에 둔다.
  */
 export const CERT_MAX_AGE_DAYS = 180;
+
+/** 가격 확인일 기준. 가설: 가격은 자주 바뀌고 직구는 편차가 커서 30일로 둔다. 데이터 점검과 결과 화면이 같이 쓴다 */
+export const PRICE_MAX_AGE_DAYS = 30;
