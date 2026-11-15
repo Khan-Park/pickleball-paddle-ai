@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 형태는 치수 규칙에 의한 파생값",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "joola-hyperion-vision-16mm",
     "brand": "JOOLA",
@@ -18,7 +18,7 @@
       "https://joola.com/products/hyperion-vision-16mm",
       "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-vision-hyperion-16mm-%EB%B9%84%EC%A0%84-%ED%95%98%EC%9D%B4%ED%8E%98%EB%A6%AC%EC%98%A8-1955"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "제조사 페이지는 'USAP certified: Yes'라고 표기하지만 USA Pickleball 승인 목록과 대조하지 않아 unknown으로 둠. 무게는 제조사 표기 'Average Weight'(단일 값).",
     "price_krw": 129000,
     "price_checked_at": "2026-11-15"

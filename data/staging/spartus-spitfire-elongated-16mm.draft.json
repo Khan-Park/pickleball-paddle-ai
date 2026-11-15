@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "spartus-spitfire-elongated-16mm",
     "brand": "Spartus",
@@ -20,7 +20,7 @@
       "https://pnpino.com/products/spartus-%EC%8A%A4%ED%8C%8C%EB%A5%B4%ED%88%AC%EC%8A%A4-%EC%8A%A4%ED%95%8F%ED%8C%8C%EC%9D%B4%EC%96%B4-%EC%9D%BC%EB%A1%B1%EA%B2%8C%EC%9D%B4%ED%8A%B8-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-spitfire-elongated-16mm-704i-pnpino",
       "https://equipment.usapickleball.org/paddle-list/entry/13265/"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값."
   },
   "evidence": {

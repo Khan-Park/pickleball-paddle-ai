@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "nox-x-foam-jc6-16mm",
+    "brand": "NOX",
+    "model": "X-Foam JC6 16mm (Judit Castillo)",
+    "weight_oz": 8.11,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "carbon",
+    "price_krw": 394000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://noxsport.com/en/products/pala-pickleball-x-foam-jc6-16mm",
+      "https://equipment.usapickleball.org/paddle-list/entry/12041/",
+      "https://pnpino.com/products/nox-%EB%85%B9%EC%8A%A4-x-foam-jc6-16mm-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EA%B3%A8%EB%93%9C-%EC%A3%BC%EB%94%94%EC%8A%A4-%EC%B9%B4%EC%8A%A4%ED%8B%B0%EC%9A%94-%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98-nmi0"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "SKU PPIXFOJC626. weight_oz는 판매처 표기 230g(±5)을 oz로 환산한 값(230 ÷ 28.3495 = 8.11, 파생값). 제조사 페이지에는 무게가 없다. 가격은 피앤피노 기본판매가(옵션·쿠폰·배송비 제외)."
+  },
+  {
+    "id": "nox-x-treme-tempus-16mm",
+    "brand": "NOX",
+    "model": "X-TREME Tempus 16mm",
+    "weight_oz": 8.11,
+    "core_mm": 16,
+    "shape": "widebody",
+    "length_in": 16,
+    "width_in": 8,
+    "surface": "carbon",
+    "price_krw": 271000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/nox-%EB%85%B9%EC%8A%A4-x-treme-tempus-16mm-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%B8%94%EB%9E%99-tqy9",
+      "https://equipment.usapickleball.org/paddle-list/entry/12147/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "무게는 판매처 표기 230g(±5)을 환산한 파생값. 제조사 공식 페이지는 아직 대조하지 않음."
+  },
+  {
+    "id": "joola-heat-vision-scorpeus-16mm",
+    "brand": "JOOLA",
+    "model": "Heat Vision Scorpeus 16mm",
+    "weight_oz": 7.8,
+    "core_mm": 16,
+    "shape": "widebody",
+    "length_in": 16.0,
+    "width_in": 7.99,
+    "surface": "carbon",
+    "price_krw": 159000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-heat-vision-16mm-%ED%9E%88%ED%8A%B8-%EB%B9%84%EC%A0%84-%EC%B9%B4%EB%B3%B8-z47k",
+      "https://equipment.usapickleball.org/paddle-list/entry/11671/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "한 상품 페이지에 셰이프 3종(페르세우스·스콜피우스·애거시)이 있고 치수가 다르다. 이 초안은 스콜피우스. 페르세우스(41.91 × 19.1cm)는 수집 시점에 전 색상 품절."
+  },
+  {
+    "id": "joola-hyperion-vision-16mm",
+    "brand": "JOOLA",
+    "model": "Hyperion Vision 16mm",
+    "weight_oz": 7.8,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.4,
+    "width_in": 7.3,
+    "surface": "carbon",
+    "price_krw": 129000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://joola.com/products/hyperion-vision-16mm",
+      "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-vision-hyperion-16mm-%EB%B9%84%EC%A0%84-%ED%95%98%EC%9D%B4%ED%8E%98%EB%A6%AC%EC%98%A8-1955"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "제조사 페이지는 'USAP certified: Yes'라고 표기하지만 USA Pickleball 승인 목록과 대조하지 않아 unknown으로 둠. 무게는 제조사 표기 'Average Weight'(단일 값)."
+  },
+  {
+    "id": "spartus-spitfire-elongated-16mm",
+    "brand": "Spartus",
+    "model": "Spitfire Elongated 16mm",
+    "weight_oz": 7.87,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "carbon",
+    "price_krw": 199000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://pnpino.com/products/spartus-%EC%8A%A4%ED%8C%8C%EB%A5%B4%ED%88%AC%EC%8A%A4-%EC%8A%A4%ED%95%8F%ED%8C%8C%EC%9D%B4%EC%96%B4-%EC%9D%BC%EB%A1%B1%EA%B2%8C%EC%9D%B4%ED%8A%B8-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-spitfire-elongated-16mm-704i-pnpino",
+      "https://equipment.usapickleball.org/paddle-list/entry/13265/"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값."
+  },
+  {
+    "id": "franklin-fs-tour-tempo-16mm",
+    "brand": "Franklin",
+    "model": "FS Tour Series Tempo 16mm",
+    "weight_oz": 8.75,
+    "core_mm": 16,
+    "shape": "widebody",
+    "length_in": 15.87,
+    "width_in": 7.99,
+    "surface": "carbon",
+    "price_krw": 280000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-15"
+    },
+    "sources": [
+      "https://franklinsports.com/fs-tour-paddle-series",
+      "https://equipment.usapickleball.org/paddle-list/entry/6692/",
+      "https://pnpino.com/products/%ED%94%84%EB%9E%AD%ED%81%B4%EB%A6%B0-%ED%94%BC%ED%81%B4%EB%B3%BC-%EB%9D%BC%EC%BC%93-%ED%8C%A8%EB%93%A4-fs%ED%88%AC%EC%96%B4-%ED%85%9C%ED%8F%AC-16mm-%ED%8C%A8%EB%93%A4-52982c1-%EB%B8%94%EB%A3%A8-1831"
+    ],
+    "verified_at": "2026-11-15",
+    "notes": "weight_oz는 제조사 표기 범위 8.6-8.9oz의 중간값(파생값). 길이·폭은 판매처 표기 40.3cm × 20.3cm를 인치로 환산(÷2.54, 파생값). 국내 품번 52982C1(블루). 가격은 피앤피노 기본판매가."
+  }
+]

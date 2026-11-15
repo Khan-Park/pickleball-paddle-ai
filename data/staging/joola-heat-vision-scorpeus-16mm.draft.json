@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 규격은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "joola-heat-vision-scorpeus-16mm",
     "brand": "JOOLA",
@@ -20,7 +20,7 @@
       "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-heat-vision-16mm-%ED%9E%88%ED%8A%B8-%EB%B9%84%EC%A0%84-%EC%B9%B4%EB%B3%B8-z47k",
       "https://equipment.usapickleball.org/paddle-list/entry/11671/"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "한 상품 페이지에 셰이프 3종(페르세우스·스콜피우스·애거시)이 있고 치수가 다르다. 이 초안은 스콜피우스. 페르세우스(41.91 × 19.1cm)는 수집 시점에 전 색상 품절."
   },
   "evidence": {

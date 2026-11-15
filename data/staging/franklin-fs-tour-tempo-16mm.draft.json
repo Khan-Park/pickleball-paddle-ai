@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음). 길이·폭은 국내 판매처(피앤피노) 표기",
+  "status": "승격됨 - 2026-11-15 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "franklin-fs-tour-tempo-16mm",
     "brand": "Franklin",
@@ -19,7 +19,7 @@
       "https://equipment.usapickleball.org/paddle-list/entry/6692/",
       "https://pnpino.com/products/%ED%94%84%EB%9E%AD%ED%81%B4%EB%A6%B0-%ED%94%BC%ED%81%B4%EB%B3%BC-%EB%9D%BC%EC%BC%93-%ED%8C%A8%EB%93%A4-fs%ED%88%AC%EC%96%B4-%ED%85%9C%ED%8F%AC-16mm-%ED%8C%A8%EB%93%A4-52982c1-%EB%B8%94%EB%A3%A8-1831"
     ],
-    "verified_at": "TODO: 사람이 원문과 대조한 날짜",
+    "verified_at": "2026-11-15",
     "notes": "weight_oz는 제조사 표기 범위 8.6-8.9oz의 중간값(파생값). 길이·폭은 판매처 표기 40.3cm × 20.3cm를 인치로 환산(÷2.54, 파생값). 국내 품번 52982C1(블루). 가격은 피앤피노 기본판매가.",
     "price_krw": 280000,
     "price_checked_at": "2026-11-15"
