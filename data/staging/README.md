@@ -23,7 +23,8 @@
    - 키워드(Weight, Core, Length, Width, USAP 등) 주변 문맥만 뽑아 읽으면 토큰이 적게 든다.
 3. **읽을 수 없는 사이트**: 네이버 쇼핑은 접근 제한, 쿠팡은 봇 차단 화면(우회하지 않는다). 이 사이트들은 사용자가 캡처·제품명을 준다.
 4. **USA Pickleball 승인 확인**: `https://equipment.usapickleball.org/paddle-list/`는 앱 내 브라우저로 읽힌다. 브랜드·모델 검색은 `?gv_search=&filter_5=<브랜드>&filter_55=<모델>&mode=all` 주소로 되고(같은 페이지에서 `fetch`로 결과 HTML을 받아 파싱 가능), 결과의 `entry/<번호>`에 Status(Pass)·Added·Depth·Material이 있다. 길이·폭은 없다. 같은 이름의 다른 모델(예: `C45 Tempo`)이 섞이므로 모델명을 정확히 대조하고, 찾아도 모델명이 다르면(`Hyperion Double Vision`) 승인으로 보지 않는다. 대조하면 `approved`와 `checked_at`(대조한 날), `sources`에 `entry` URL을 적는다.
-5. 형태는 제조사가 패들 형태를 적었으면 그대로, 아니면 `data/shape.ts`(D-018)로 정한다. 경계 근처는 사람이 확인한다.
+5. **사용자 수집본(피앤피노 248종)**: 제조사 페이지에 없는 값은 이 자료의 상세 이미지에서 찾을 수 있다. 엑셀의 OCR 열은 미검수이므로 zip에서 해당 상품의 `02_상세규격` 원본 이미지를 꺼내 눈으로 대조한 값만 쓴다. 판매처 표기는 `evidence`에 '판매처 표기'로 구분하고, g·cm는 oz·in로 환산해 `파생`에 계산식을 적는다. 위치는 `docs/data/product-candidates.md` 참조.
+6. 형태는 제조사가 패들 형태를 적었으면 그대로, 아니면 `data/shape.ts`(D-018)로 정한다. 경계 근처는 사람이 확인한다.
 4. 값마다 `원문` 구절과 URL을 `evidence`·`source_meta`에 남긴다. 공식 페이지에 없는 값은 비공식 출처로 채우지 않고 `null`로 둔다.
 
 ## 파일럿 4개 결과
@@ -31,8 +32,8 @@
 |---|---|---|---|
 | Selkirk LABS Project Boomstik (Elongated, Widebody) | `selkirk-...-elongated`, `-widebody` | 초안 | 무게(범위)·코어·치수·표면 공식 확인. 승인 approved(USAP entry 11440, 11441) |
 | JOOLA Hyperion Vision 16mm | `joola-hyperion-vision-16mm` | 초안 | 모든 스펙 공식 확인. 형태는 치수 규칙(D-018)으로 hybrid(경계 근처, 사람 확인). USAP 목록에서 'Hyperion Vision'을 못 찾아 unknown |
-| NOX X-Foam JC6 16mm | `nox-x-foam-jc6-16mm` | **보류** | 코어·치수·표면(USAP 목록)·승인(USAP entry 12041) 확인, 형태 elongated(치수 규칙, 경계 근처). **무게만 없음** |
-| Franklin FS Tour Tempo 16mm | `franklin-fs-tour-tempo-16mm` | **보류** | 무게 범위·코어·표면·승인(USAP entry 6692) 확인. **길이·폭 없음**이라 형태도 보류(페이지의 "traditional shape and feel"은 핸들 설명) |
+| NOX X-Foam JC6 16mm | `nox-x-foam-jc6-16mm` | 초안 | 코어·치수·표면·승인 확인, 형태 elongated. 무게는 **판매처(피앤피노) 표기 230g ±5**를 환산한 8.11oz, 가격 394,000원 |
+| Franklin FS Tour Tempo 16mm | `franklin-fs-tour-tempo-16mm` | 초안(형태 결정 대기) | 무게 범위·코어·표면·승인 확인. 길이·폭은 **판매처(피앤피노) 표기 40.3 × 20.3cm**를 환산한 15.87 × 7.99in. 폭이 widebody 경계라 형태는 사람 결정. 가격 280,000원 |
 
 ## 공통 쟁점
 1. **필수 필드를 공식 자료가 안 주는 경우**: NOX 무게, Franklin 길이·폭. 제조사 공식 페이지 2곳과 USAP 목록에 없다. 국내 판매 페이지의 값은 비공식이라 사용자 판단이 필요하다.
