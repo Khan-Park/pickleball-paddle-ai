@@ -10,8 +10,8 @@
     "length_in": null,
     "width_in": null,
     "surface": "carbon",
-    "certification": { "usa_pickleball": "unknown", "checked_at": "2026-11-15" },
-    "sources": ["https://franklinsports.com/fs-tour-paddle-series"],
+    "certification": { "usa_pickleball": "approved", "checked_at": "2026-11-15" },
+    "sources": ["https://franklinsports.com/fs-tour-paddle-series", "https://equipment.usapickleball.org/paddle-list/entry/6692/"],
     "verified_at": "TODO: 사람이 원문과 대조한 날짜",
     "notes": "weight_oz는 제조사 표기 범위 8.6-8.9oz의 중간값(파생값). 한국 판매 품번 52982C1이 이 페이지의 어느 옵션인지는 미확인."
   },
@@ -22,12 +22,12 @@
     "shape": { "원문": "(공식 페이지에 패들 형태 정보 없음)", "비고": "페이지의 'traditional shape and feel'은 5인치 핸들에 대한 표현이지 패들 형태가 아님" },
     "length_in": { "원문": "(공식 페이지에 없음)" },
     "width_in": { "원문": "(공식 페이지에 없음)", "비고": "검색 요약에 폭 8in이 나왔으나 공식 페이지 원문이 아니라 쓰지 않음" },
-    "certification": { "원문": "All Tempo and Dynasty paddles are officially authorized for competitive and tournament play by USA Pickleball (USAPA).", "비고": "제조사 표기. 승인 목록과 대조하지 않아 unknown으로 둠. checked_at은 기록일(README 참조)" }
+    "certification": { "원문": "USAP 승인 목록 entry 6692: Model 'FS Tour Tempo 16MM', MD# 52982, Status Pass, Added 10/26/2023, Material Polypropylene, Depth 16MM, Shape 'Rectangle w/Round Corners', Carbon Fiber", "비고": "2026-11-15에 USAP 승인 목록에서 직접 대조해 approved. MD# 52982는 국내 판매 품번(52982C1)의 앞부분과 같음(색상 변형 가능성, 미확인). 'C45 Tempo 16MM'은 별개 모델" }
   },
   "source_meta": {
     "url": "https://franklinsports.com/fs-tour-paddle-series",
     "read_at": "2026-11-15",
     "method": "앱 내 브라우저로 공식 페이지 textContent를 직접 읽음. 참고 가격(미사용): STARTING AT $149.99"
   },
-  "open_questions": ["길이·폭의 공식 출처", "품번 52982C1과 Tempo 16mm의 대응", "형태 판단 근거"]
+  "open_questions": ["길이·폭의 공식 출처: franklinsports.com의 두 제품 페이지와 USAP 목록(상세에 길이·폭 없음) 모두에 없음. 국내 판매 상세에는 '크기 20x40cm'가 보이나 다른 시리즈 표기라 쓰지 않음", "국내 판매 품번 52982C1과 USAP MD# 52982의 정확한 대응(색상 변형 여부)"]
 }

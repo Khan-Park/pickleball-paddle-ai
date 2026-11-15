@@ -22,6 +22,8 @@
    - 스펙이 접힌 아코디언(Selkirk의 "Description & Specs")에 있으면 `innerText`에는 안 보이고 `textContent`에만 보인다. `Description & Specs` 위치부터 약 4500자를 잘라 읽는다.
    - 키워드(Weight, Core, Length, Width, USAP 등) 주변 문맥만 뽑아 읽으면 토큰이 적게 든다.
 3. **읽을 수 없는 사이트**: 네이버 쇼핑은 접근 제한, 쿠팡은 봇 차단 화면(우회하지 않는다). 이 사이트들은 사용자가 캡처·제품명을 준다.
+4. **USA Pickleball 승인 확인**: `https://equipment.usapickleball.org/paddle-list/`는 앱 내 브라우저로 읽힌다. 브랜드·모델 검색은 `?gv_search=&filter_5=<브랜드>&filter_55=<모델>&mode=all` 주소로 되고(같은 페이지에서 `fetch`로 결과 HTML을 받아 파싱 가능), 결과의 `entry/<번호>`에 Status(Pass)·Added·Depth·Material이 있다. 길이·폭은 없다. 같은 이름의 다른 모델(예: `C45 Tempo`)이 섞이므로 모델명을 정확히 대조하고, 찾아도 모델명이 다르면(`Hyperion Double Vision`) 승인으로 보지 않는다. 대조하면 `approved`와 `checked_at`(대조한 날), `sources`에 `entry` URL을 적는다.
+5. 형태는 제조사가 패들 형태를 적었으면 그대로, 아니면 `data/shape.ts`(D-018)로 정한다. 경계 근처는 사람이 확인한다.
 4. 값마다 `원문` 구절과 URL을 `evidence`·`source_meta`에 남긴다. 공식 페이지에 없는 값은 비공식 출처로 채우지 않고 `null`로 둔다.
 
 ## 파일럿 4개 결과

@@ -10,8 +10,8 @@
     "length_in": 15.95,
     "width_in": 8,
     "surface": "carbon",
-    "certification": { "usa_pickleball": "unknown", "checked_at": "2026-11-15" },
-    "sources": ["https://www.selkirk.com/products/selkirk-labs-project-boomstik"],
+    "certification": { "usa_pickleball": "approved", "checked_at": "2026-11-15" },
+    "sources": ["https://www.selkirk.com/products/selkirk-labs-project-boomstik", "https://equipment.usapickleball.org/paddle-list/entry/11441/"],
     "verified_at": "TODO: 사람이 원문과 대조한 날짜",
     "notes": "weight_oz는 제조사 표기 범위 8.0-8.4oz의 중간값(파생값). 제조사 표기는 'Average weight'."
   },
@@ -22,7 +22,7 @@
     "length_in": { "원문": "Paddle height: 15.95”" },
     "width_in": { "원문": "Paddle width: 8”" },
     "surface": { "원문": "Face material: Multistrata T700 Carbon (3 layers)" },
-    "certification": { "원문": "(제품 페이지 스펙 영역에 표기 없음)", "비고": "unknown은 USAP 승인 목록과 대조하지 않았다는 뜻. checked_at은 기록일이며 확인일이 아님(README 참조)" }
+    "certification": { "원문": "USAP 승인 목록 entry 11441: Model 'Project Boomstik Widebody 16mm', Status Pass, Added 06/03/2025, Depth 16MM, Shape 'Square w/Round Corners'", "비고": "2026-11-15에 USA Pickleball 승인 목록에서 직접 대조해 approved" }
   },
   "source_meta": {
     "url": "https://www.selkirk.com/products/selkirk-labs-project-boomstik",
@@ -32,7 +32,6 @@
   "open_questions": [
     "한국 판매명 '셀커크 붐스틱 코어'가 어느 형태인지 확인 필요",
     "한 에이전트 보고에 Widebody가 '현재 구매 불가'일 수 있다는 검색 요약이 있었음(미확인). 판매 중인지 확인 필요",
-    "USA Pickleball 승인은 제품 페이지에서 확인하지 못함 → unknown 유지",
     "가격은 사용자가 직접 확인"
   ]
 }
