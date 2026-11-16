@@ -45,7 +45,7 @@ export default function Home() {
       <ul data-testid="trust-points" {...rise(3, "flex flex-col gap-3")}>
         {TRUST_POINTS.map((p) => (
           <li key={p.title} className="flex gap-3">
-            <span aria-hidden="true" className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-caption font-bold text-white">
+            <span aria-hidden="true" className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-caption font-bold text-on-accent">
               ✓
             </span>
             <span>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/shared/site";
 import "./globals.css";
 
@@ -20,6 +20,15 @@ export const metadata: Metadata = {
     images: [OG_IMAGE],
   },
   twitter: { card: "summary_large_image", title: SITE_TITLE, description: SITE_DESCRIPTION, images: [OG_IMAGE] },
+};
+
+/** 밝은·어두운 화면 모두 지원한다(T-028). 화면 위(주소창 등) 색은 바탕색(surface)과 맞춘다 */
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6f7f9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1520" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

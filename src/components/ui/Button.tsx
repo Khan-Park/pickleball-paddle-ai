@@ -12,7 +12,7 @@ const BASE =
 
 const VARIANT: Record<ButtonVariant, string> = {
   // 한 화면에 주 버튼은 하나만 둔다(docs/plan/phase2.md 7.2)
-  primary: "rounded-control bg-accent text-white hover:brightness-110",
+  primary: "rounded-control bg-accent text-on-accent hover:brightness-110",
   secondary: "rounded-control border border-line bg-card text-ink hover:border-accent",
   text: "rounded-control text-muted underline underline-offset-4 hover:text-ink",
 };

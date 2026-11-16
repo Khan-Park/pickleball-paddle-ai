@@ -73,7 +73,7 @@ export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"];
         target="_blank"
         rel={affiliate ? "sponsored noopener" : "noopener noreferrer"}
         aria-describedby={affiliate ? disclosureId : undefined}
-        className="inline-flex min-h-13 items-center justify-center rounded-control bg-accent px-4 text-center text-body font-bold text-white outline-offset-2 transition-transform duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98]"
+        className="inline-flex min-h-13 items-center justify-center rounded-control bg-accent px-4 text-center text-body font-bold text-on-accent outline-offset-2 transition-transform duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98]"
       >
         {affiliate ? <span className="sr-only">광고 · </span> : null}
         판매처에서 보기 ↗<span className="sr-only"> ({name}, 새 창)</span>

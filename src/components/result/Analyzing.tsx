@@ -56,7 +56,7 @@ export function Analyzing({ count, mode, onDone }: { count: number; mode: Analyz
               <span
                 aria-hidden="true"
                 className={`flex size-6 shrink-0 items-center justify-center rounded-full border text-small font-bold transition-colors duration-[var(--duration-fast)] ${
-                  state === "done" ? "border-accent bg-accent text-white" : state === "active" ? "border-accent text-accent" : "border-line text-transparent"
+                  state === "done" ? "border-accent bg-accent text-on-accent" : state === "active" ? "border-accent text-accent" : "border-line text-transparent"
                 }`}
               >
                 {state === "done" ? "✓" : "•"}

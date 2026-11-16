@@ -208,7 +208,7 @@ export function Quiz() {
                   <span
                     aria-hidden="true"
                     className={`flex size-6 shrink-0 items-center justify-center rounded-full border text-small font-bold ${
-                      selected ? "border-accent bg-accent text-white" : "border-line text-transparent"
+                      selected ? "border-accent bg-accent text-on-accent" : "border-line text-transparent"
                     }`}
                   >
                     ✓
