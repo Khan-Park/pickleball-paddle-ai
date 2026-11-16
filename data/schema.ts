@@ -33,6 +33,16 @@ export const paddleSchema = z
     }),
     /** 스펙을 확인한 출처 URL (제조사 공식 페이지 우선). 최소 1개 */
     sources: z.array(z.url()).min(1),
+    /**
+     * 제조사 공식 페이지를 찾았지만 이 모델이 없을 때 사람이 남기는 기록(D-024). 있으면 '공식 도메인 아님' 경고 대신 이 사유를 쓴다.
+     * 출처를 꾸며 넣지 않기 위한 필드다. 공식 페이지가 생기면 sources에 넣고 이 필드를 지운다.
+     */
+    official_source_unavailable: z
+      .object({
+        reason: z.string().min(1),
+        checked_at: z.iso.date(),
+      })
+      .optional(),
     verified_at: z.iso.date(),
     /** 구매 링크. 추천 엔진은 이 필드를 읽지 않는다 (PaddleSpec 타입 사용) */
     purchase: z
