@@ -40,3 +40,15 @@ describe("질문 화면: 저장된 답변을 불러온 경우", () => {
     expect(alert).not.toContain("답하지 않은");
   });
 });
+
+describe("질문 화면: 저장된 답변으로 형태 질문에서 시작", () => {
+  it("형태를 하나 골라도 화면이 넘어가지 않고 '다음'을 기다린다", () => {
+    saveAnswers({ experience: "1_to_3y", play_style: "balanced", weight: "any", arm: "no" });
+    render(<Quiz />);
+    const legend = () => screen.getByRole("group").querySelector("legend")!.textContent;
+    expect(legend()).toContain("모양");
+    fireEvent.click(screen.getByRole("button", { name: /^넓은 형/ }));
+    expect(legend()).toContain("모양");
+    expect(screen.getByRole("button", { name: /^넓은 형/ }).getAttribute("aria-pressed")).toBe("true");
+  });
+});
