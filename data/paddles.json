@@ -617,5 +617,32 @@
       "is_affiliate": false
     },
     "notes": "2026-11-16 제조사 페이지: Traditional Shape, 16mm는 15.7 × 7.9in, 7.6–8.0oz(중간값 7.8, 파생값), T700 카본 표면, PowerFlex 폴리머 코어, USAP/UPA 승인. USA Pickleball 목록 'C45 Aurelius 16MM'(entry 12759, MD# PB10176030 — 국내 판매처 상품 코드와 같음). 국내 판매처 판매가 460,000원(할인 없음, 페이지 구조화 데이터에는 459,000원으로 1,000원 차이). 2026-11-16 사용자가 확인표를 승인해 승격."
+  },
+  {
+    "id": "11six24-vapor-jelly-bean-2-hybrid-16mm",
+    "brand": "11SIX24",
+    "model": "Vapor Jelly Bean 2 Hybrid 16mm",
+    "weight_oz": 8.15,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.25,
+    "width_in": 7.75,
+    "surface": "carbon",
+    "price_krw": 289000,
+    "price_checked_at": "2026-11-17",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-17"
+    },
+    "sources": [
+      "https://11six24.com/products/vapor-jelly-bean-2",
+      "https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp"
+    ],
+    "verified_at": "2026-11-17",
+    "purchase": {
+      "url": "https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp",
+      "is_affiliate": false
+    },
+    "notes": "무게는 제조사 범위 8.0–8.3oz의 중간값(파생). 면은 제조사 표기 CFC 3중(Toray T700 카본 + 파이버글라스) + HexGrit으로, 같은 브랜드 Hurache-X Power 2와 맞춰 carbon으로 분류. USAP 승인 목록에는 1세대 Vapor Jelly Bean 16mm만 있어 unknown."
   }
 ]
