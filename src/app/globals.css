@@ -1,30 +1,111 @@
 @import "tailwindcss";
 
-/* 차분하고 신뢰감 있는 톤(docs/design/ui-flow.md 10장). MVP는 밝은 화면만. 색은 변수로 두어 나중에 다크 모드를 더할 수 있게 한다 */
+/*
+ * 디자인 토큰. 화면은 이 이름만 쓰고 값은 여기서만 바꾼다(docs/plan/phase2.md 7장, D-028).
+ * 톤: 차분한 신뢰(남색·회색) + 강조색 하나(코트 청록). 지금은 밝은 화면만. 다크 모드는 이 변수 값만 더하면 된다(M2).
+ * 명도 대비(2026-11-16 계산): accent 위 흰 글자 6.2:1, 바탕 위 accent 글자 5.8:1, accent-soft 위 accent 글자 5.5:1, accent-soft 위 accent-ink 8.3:1.
+ */
 :root {
   --navy: #1e2a44;
-  --accent: #2f6fed;
-  --accent-soft: #eaf1fe;
+  /* 코트 청록. 주 버튼, 선택 테두리, 진행·적합도 막대, 강조 글자, 포커스 링 */
+  --accent: #0f6e56;
+  /* 선택된 선택지·칩 바탕 */
+  --accent-soft: #e1f5ee;
+  /* accent-soft 위 글자 */
+  --accent-ink: #085041;
+  /* 넓은 장식 면(아이콘 등)만. 회색 트랙 위 대비 2.7:1이라 막대·글자에는 쓰지 않는다 */
+  --accent-bright: #1d9e75;
   --surface: #f6f7f9;
   --card: #ffffff;
   --ink: #1f2937;
   --muted: #6b7280;
   --line: #e5e7eb;
+  /* 주의(주황)와 대회 승인 확인(초록). 확인 초록은 청록과 비슷하므로 늘 아이콘·글자와 함께 쓴다(Badge) */
   --caution: #b45309;
+  --caution-soft: #fef3e2;
   --confirm: #15803d;
+  --confirm-soft: #e8f5ec;
+
+  /* 모션. 시간 3단계와 곡선 2개(나타남은 ease-out, 사라짐은 ease-in) */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 400ms;
+  --ease-enter: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
 }
 
 @theme inline {
   --color-navy: var(--navy);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-bright: var(--accent-bright);
   --color-surface: var(--surface);
   --color-card: var(--card);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-caution: var(--caution);
+  --color-caution-soft: var(--caution-soft);
   --color-confirm: var(--confirm);
+  --color-confirm-soft: var(--confirm-soft);
+
+  /* 글자 크기 6단계(모바일 기준). 굵기는 보통(400)과 굵게(700) 두 가지만 쓴다 */
+  --text-display: 1.75rem;
+  --text-display--line-height: 1.3;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.35;
+  --text-heading: 1.125rem;
+  --text-heading--line-height: 1.4;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+
+  /* 모서리 3단계: 작은 요소, 카드, 시트 위쪽 */
+  --radius-control: 0.5rem;
+  --radius-card: 1rem;
+  --radius-sheet: 1.5rem;
+
+  /* 그림자 2단계만 */
+  --shadow-card: 0 1px 2px rgb(30 42 68 / 0.06);
+  --shadow-sheet: 0 -8px 24px rgb(30 42 68 / 0.12);
+
+  --ease-enter: var(--ease-enter);
+  --ease-exit: var(--ease-exit);
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+  --animate-sheet-in: sheet-in var(--duration-base) var(--ease-enter);
+  --animate-fade-in: fade-in var(--duration-base) var(--ease-enter);
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 body {
@@ -35,4 +116,26 @@ body {
   /* 한국어 문장이 낱말 중간에서 끊기지 않게 한다 */
   word-break: keep-all;
   overflow-wrap: anywhere;
+}
+
+/* 바텀시트(<dialog>)의 배경. 열릴 때 어두워진다 */
+dialog.bottom-sheet::backdrop {
+  background: rgb(15 23 42 / 0.45);
+  animation: fade-in var(--duration-base) var(--ease-enter);
+}
+
+/*
+ * 동작 줄이기(운영체제 설정)를 켠 사용자: 이동·확대·깜빡임을 끄고 짧은 페이드만 남긴다(docs/plan/phase2.md 6.1).
+ * 개별 컴포넌트가 따로 처리하지 않아도 되게 전역에서 막는다.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after,
+  ::backdrop {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
 }
