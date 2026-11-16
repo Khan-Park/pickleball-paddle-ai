@@ -82,8 +82,11 @@ export const paddlesSchema = z.array(paddleSchema).refine(
 export type Paddle = z.infer<typeof paddleSchema>;
 /** 추천 엔진이 쓰는 필드. 점수와 필터에 필요한 스펙만 있다. 구매 링크(purchase)·출처·메모는 없다 */
 export const SPEC_FIELDS = ["id", "weight_oz", "core_mm", "shape", "length_in", "width_in", "surface", "price_krw", "certification"] as const;
-/** 결과 화면이 추가로 보여 주는 필드. 출처 URL, 확인일, 내부 메모(notes)는 브라우저로 보내지 않는다 */
-export const DISPLAY_EXTRA_FIELDS = ["brand", "model", "price_checked_at", "purchase", "compare_query"] as const;
+/**
+ * 결과 화면이 추가로 보여 주는 필드. 출처 URL과 스펙 확인일은 상세 시트의 "스펙 근거"로 공개한다(D-030, T-024).
+ * 내부 메모(notes)와 공식 출처 없음 기록(official_source_unavailable)은 브라우저로 보내지 않는다
+ */
+export const DISPLAY_EXTRA_FIELDS = ["brand", "model", "price_checked_at", "purchase", "compare_query", "sources", "verified_at"] as const;
 
 /** 추천 엔진이 사용하는 타입. SPEC_FIELDS에 있는 필드만 담는다 */
 export type PaddleSpec = Pick<Paddle, (typeof SPEC_FIELDS)[number]>;
