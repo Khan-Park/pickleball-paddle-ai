@@ -7,6 +7,7 @@ import { visibleQuestions, type QuizAnswers, type QuizQuestion, type ShapeValue 
 import { clearAnswers, loadAnswersRaw, parseAnswers, saveAnswers } from "@/lib/quiz/storage";
 import { ShapeIcon } from "@/components/ShapeIcon";
 import { Button } from "@/components/ui/Button";
+import { markSubmitted } from "@/components/result/analyzing-flag";
 import { useReducedMotion } from "@/components/ui/useReducedMotion";
 
 const subscribe = () => () => {};
@@ -85,6 +86,8 @@ export function Quiz() {
       return;
     }
     saveAnswers(next);
+    // 결과 화면이 이 표시를 보고 분석 중 화면을 한 번 보여 준다(T-017)
+    markSubmitted();
     router.push("/result");
   }
 

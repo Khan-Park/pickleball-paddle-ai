@@ -81,6 +81,11 @@
   /* 질문 전환: 앞으로는 오른쪽에서, 뒤로는 왼쪽에서 밀려 들어온다(docs/plan/phase2.md 6.2) */
   --animate-slide-in-forward: slide-in-forward var(--duration-base) var(--ease-enter);
   --animate-slide-in-back: slide-in-back var(--duration-base) var(--ease-enter);
+  /* 결과 카드 등장: 아래에서 떠오르며 나타남. 카드마다 animation-delay로 순서를 준다 */
+  --animate-rise-in: rise-in 280ms var(--ease-enter) both;
+  /* 분석 중 화면 그림 */
+  --animate-paddle-swing: paddle-swing 0.9s ease-in-out infinite;
+  --animate-ball-bounce: ball-bounce 0.9s ease-in-out infinite;
 }
 
 @keyframes shimmer {
@@ -121,6 +126,37 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes paddle-swing {
+  0%,
+  100% {
+    transform: rotate(-18deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes ball-bounce {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-22px, -10px);
   }
 }
 

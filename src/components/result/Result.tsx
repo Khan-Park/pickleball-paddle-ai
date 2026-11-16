@@ -10,6 +10,10 @@ import type { UserProfile } from "@/lib/recommend/profile";
 import { recommend, type RelaxationHint } from "@/lib/recommend/recommend";
 import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal, won, type AffiliateProgram } from "./labels";
 import { ResultCard } from "./ResultCard";
+import { Analyzing } from "./Analyzing";
+import { clearAnalyzeMode, peekAnalyzeMode, type AnalyzeMode } from "./analyzing-flag";
+import { CardSkeleton } from "@/components/ui/Skeleton";
+import { useReducedMotion } from "@/components/ui/useReducedMotion";
 
 const subscribe = () => () => {};
 const readToday = () => todayLocal();
@@ -34,6 +38,14 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   // 서버와 첫 렌더에서는 undefined(아직 모름), 브라우저에서는 저장된 문자열 또는 null
   const raw = useSyncExternalStore<string | null | undefined>(subscribe, loadAnswersRaw, () => undefined);
   const [relaxed, setRelaxed] = useState<UserProfile | null>(null);
+  // 질문을 막 끝내고 왔을 때만 분석 중 화면을 보여 준다(docs/plan/phase2.md 6.3). 서버에서는 읽지 않는다.
+  // 첫 렌더(하이드레이션)에서는 답변을 아직 모르므로 스켈레톤이 나와 서버 결과와 같다
+  const [analyze, setAnalyze] = useState<AnalyzeMode | null>(() => (typeof window === "undefined" ? null : peekAnalyzeMode()));
+  const reducedMotion = useReducedMotion();
+  // 한 번 보여 주기 시작하면 표시를 지운다(새로고침에서 다시 나오지 않게)
+  useEffect(() => {
+    if (analyze) clearAnalyzeMode();
+  }, [analyze]);
 
   const base = useMemo(() => {
     const answers = parseAnswers(raw ?? null);
@@ -56,11 +68,21 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   const byId = useMemo(() => new Map(paddles.map((p) => [p.id, p])), [paddles]);
 
   if (!profile || !result || !today) {
+    // 저장된 답변을 읽기 전 잠깐. 카드 모양 자리 표시를 보여 주고 화면 낭독기에는 문구로 알린다
     return (
-      <p className="mx-auto w-full max-w-xl px-5 py-12 text-base text-muted" role="status">
-        답변을 확인하고 있습니다.
-      </p>
+      <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-4 px-5 py-8" aria-busy="true">
+        <p className="sr-only" role="status">
+          답변을 확인하고 있습니다.
+        </p>
+        <CardSkeleton />
+        <CardSkeleton />
+      </section>
     );
+  }
+
+  // 동작 줄이기를 켠 사용자는 기다리지 않는다
+  if (analyze && !reducedMotion) {
+    return <Analyzing count={paddles.length} mode={analyze} onDone={() => setAnalyze(null)} />;
   }
 
   // 화면에 제휴 링크가 하나라도 있으면 게시물의 첫 부분에서 먼저 알린다(심사지침 Ⅴ.6, 쿠팡 파트너스 가이드)
@@ -100,9 +122,14 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
 
       {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
+      {/* 1→2→3순위 순서로 떠오르며 나타난다(카드마다 80ms 늦게) */}
       {result.items.map((item, i) => {
         const paddle = byId.get(item.paddle_id);
-        return paddle ? <ResultCard key={item.paddle_id} rank={i + 1} item={item} paddle={paddle} today={today} /> : null;
+        return paddle ? (
+          <div key={item.paddle_id} className="animate-rise-in" style={{ animationDelay: `${i * 80}ms` }} data-testid="result-card-wrap">
+            <ResultCard rank={i + 1} item={item} paddle={paddle} today={today} />
+          </div>
+        ) : null;
       })}
 
       {result.relaxation.length > 0 ? (
