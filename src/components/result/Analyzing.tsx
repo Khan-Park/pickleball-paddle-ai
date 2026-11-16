@@ -7,12 +7,14 @@ import { STEP_MS, type AnalyzeMode } from "./analyzing-flag";
 /** 패들이 공을 치는 단순한 선 그림. 직접 그린 장식이라 화면 낭독기에는 숨긴다 */
 function PaddleSwing() {
   return (
-    <svg viewBox="0 0 120 96" width="120" height="96" aria-hidden="true" focusable="false" className="text-navy">
-      <g className="origin-[44px_78px] animate-paddle-swing">
-        <rect x="30" y="18" width="28" height="40" rx="10" fill="none" stroke="currentColor" strokeWidth="4" />
-        <rect x="40" y="58" width="8" height="22" rx="2" fill="currentColor" />
+    // 시작 화면·질문 화면의 형태 그림(ShapeIcon)과 같은 선 두께 비율·모서리로 그린다(T-023)
+    <svg viewBox="0 0 160 128" width="160" height="128" aria-hidden="true" focusable="false" className="text-navy">
+      <g className="origin-[58px_112px] animate-paddle-swing">
+        <rect x="38" y="16" width="40" height="58" rx="13" fill="none" stroke="currentColor" strokeWidth="5" />
+        <rect x="52" y="74" width="12" height="38" rx="3" fill="currentColor" />
       </g>
-      <circle cx="92" cy="40" r="7" className="animate-ball-bounce fill-accent" />
+      <circle cx="122" cy="52" r="10" className="animate-ball-bounce fill-accent-bright" />
+      <circle cx="122" cy="52" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="animate-ball-bounce" />
     </svg>
   );
 }
