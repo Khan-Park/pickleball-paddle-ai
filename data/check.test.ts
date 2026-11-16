@@ -157,6 +157,33 @@ describe("실제 data/paddles.json", () => {
   });
 });
 
+describe("공식 출처 점검(D-024)", () => {
+  const warn = (o: Parameters<typeof good>[0]) => checkPaddles([good(o)], TODAY).warnings;
+
+  it("사람이 확인한 공식 도메인(브랜드명과 다른 도메인)은 경고하지 않는다", () => {
+    expect(warn({ brand: "Spartus", sources: ["https://gospartus.com/products/x"] })).toEqual([]);
+    expect(warn({ brand: "STAR", sources: ["https://starsportsmall.co.kr/goods/content.asp?guid=1"] })).toEqual([]);
+    expect(warn({ brand: "Friday", sources: ["https://fridaypickle.com/products/x"] })).toEqual([]);
+  });
+
+  it("확인 목록의 도메인을 흉내 낸 주소와 다른 브랜드의 확인 도메인은 공식으로 보지 않는다", () => {
+    expect(warn({ brand: "Spartus", sources: ["https://gospartus.com.evil.example/x"] })[0]).toContain("공식 도메인");
+    expect(warn({ brand: "JOOLA", sources: ["https://gospartus.com/x"] })[0]).toContain("공식 도메인");
+  });
+
+  it("공식 페이지가 없다는 기록이 있으면 경고 대신 그 기록을 쓰고, 오래되면 다시 찾으라고 경고한다", () => {
+    const sources = ["https://shop.example.com/x"];
+    expect(warn({ sources, official_source_unavailable: { reason: "제조사 공식몰에 이 모델이 없다", checked_at: TODAY } })).toEqual([]);
+    expect(warn({ sources, official_source_unavailable: { reason: "없음", checked_at: ago(DATA_MAX_AGE_DAYS + 1) } })[0]).toContain("다시 찾아");
+  });
+
+  it("공식 출처가 있는데 없다는 기록이 남아 있으면 경고, 기록 날짜가 미래면 오류", () => {
+    expect(warn({ official_source_unavailable: { reason: "없음", checked_at: TODAY } })[0]).toContain("official_source_unavailable");
+    const r = checkPaddles([good({ sources: ["https://shop.example.com/x"], official_source_unavailable: { reason: "없음", checked_at: "2999-01-01" } })], TODAY);
+    expect(r.errors[0]).toContain("미래");
+  });
+});
+
 describe("구매 링크 점검", () => {
   const withLink = (url: string, is_affiliate: boolean, program?: "coupang_partners" | "other") =>
     goodPaddle({ purchase: program ? { url, is_affiliate, program } : { url, is_affiliate } });

@@ -40,11 +40,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://noxsport.com/en/products/pala-pickleball-x-treme-tempus-16mm",
       "https://pnpino.com/products/nox-%EB%85%B9%EC%8A%A4-x-treme-tempus-16mm-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%B8%94%EB%9E%99-tqy9",
       "https://equipment.usapickleball.org/paddle-list/entry/12147/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "무게는 판매처 표기 230g(±5)을 환산한 파생값. 제조사 공식 페이지는 아직 대조하지 않음."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.1±0.1oz, 16 × 8in, 코어 16mm). 무게는 판매처 표기 230g(±5)을 환산한 파생값. 제조사 공식 페이지는 아직 대조하지 않음."
   },
   {
     "id": "joola-heat-vision-scorpeus-16mm",
@@ -54,7 +55,7 @@
     "core_mm": 16,
     "shape": "widebody",
     "length_in": 16.0,
-    "width_in": 7.99,
+    "width_in": 8,
     "surface": "carbon",
     "price_krw": 159000,
     "price_checked_at": "2026-11-15",
@@ -63,11 +64,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://joola.com/products/joola-scorpeus-heat-vision-pickleball-paddle",
       "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-heat-vision-16mm-%ED%9E%88%ED%8A%B8-%EB%B9%84%EC%A0%84-%EC%B9%B4%EB%B3%B8-z47k",
       "https://equipment.usapickleball.org/paddle-list/entry/11671/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "한 상품 페이지에 셰이프 3종(페르세우스·스콜피우스·애거시)이 있고 치수가 다르다. 이 초안은 스콜피우스. 페르세우스(41.91 × 19.1cm)는 수집 시점에 전 색상 품절."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조(무게 7.8oz, 16 × 8in, 코어 16mm. 폭을 cm 환산값 7.99에서 공식 값 8로 바꿨다). 한 상품 페이지에 셰이프 3종(페르세우스·스콜피우스·애거시)이 있고 치수가 다르다. 이 초안은 스콜피우스. 페르세우스(41.91 × 19.1cm)는 수집 시점에 전 색상 품절."
   },
   {
     "id": "joola-hyperion-vision-16mm",
@@ -96,7 +98,7 @@
     "id": "spartus-spitfire-elongated-16mm",
     "brand": "Spartus",
     "model": "Spitfire Elongated 16mm",
-    "weight_oz": 7.87,
+    "weight_oz": 7.85,
     "core_mm": 16,
     "shape": "elongated",
     "length_in": 16.5,
@@ -109,11 +111,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://gospartus.com/products/spitfire-elongated",
       "https://pnpino.com/products/spartus-%EC%8A%A4%ED%8C%8C%EB%A5%B4%ED%88%AC%EC%8A%A4-%EC%8A%A4%ED%95%8F%ED%8C%8C%EC%9D%B4%EC%96%B4-%EC%9D%BC%EB%A1%B1%EA%B2%8C%EC%9D%B4%ED%8A%B8-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-spitfire-elongated-16mm-704i-pnpino",
       "https://equipment.usapickleball.org/paddle-list/entry/13265/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조(무게 7.85oz ±0.2, 16.5 × 7.5in, 코어 16mm. 무게를 g 환산값 7.87에서 공식 값 7.85로 바꿨다). 무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값."
   },
   {
     "id": "franklin-fs-tour-tempo-16mm",
@@ -156,11 +159,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://joola.com/products/joola-perseus-3s-dual-14mm-pickleball-paddle",
       "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-perseus-pro-3s-dual-%ED%8E%98%EB%A5%B4%EC%84%B8%EC%9A%B0%EC%8A%A4-%EB%B2%A4-%EC%A1%B4%EC%8A%A4-14mm-1947",
       "https://equipment.usapickleball.org/paddle-list/entry/10356/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "첫 묶음의 얇은 코어(14mm) 대표. 무게·치수는 판매처 상세 이미지의 g·cm 표기를 환산한 값."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 7.8oz, 16.5 × 7.5in, 코어 14mm. 공식 상품명은 Perseus 3S Dual 14mm). 첫 묶음의 얇은 코어(14mm) 대표. 무게·치수는 판매처 상세 이미지의 g·cm 표기를 환산한 값."
   },
   {
     "id": "six-zero-boulder-opal-hybrid-14mm",
@@ -179,10 +183,11 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://www.sixzeropickleball.com/products/boulder-opal",
       "https://pnpino.com/products/%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EB%B3%BC%EB%8D%94-%EC%98%A4%ED%8C%94-boulder-opal-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-14mm-5wtj"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "14mm 코어. weight_oz와 width_in은 판매처 표기 범위(8.0–8.3oz, 7.5–7.7in)의 중간값(파생값)."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.0–8.3oz, 16.3 × 7.5–7.7in, 코어 14mm. 공식 페이지에는 Smooth 면이 USAP 승인판, Rough 면이 UPA 승인판으로 적혀 있다(USAP 목록은 미확인이라 인증은 unknown 유지)). 14mm 코어. weight_oz와 width_in은 판매처 표기 범위(8.0–8.3oz, 7.5–7.7in)의 중간값(파생값)."
   },
   {
     "id": "luzz-glider-2026-hybrid-16mm",
@@ -201,16 +206,17 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://luzzpickleball.com/products/luzz-gabbys-dollhouse-glider-2026-hybrid-paddle",
       "https://pnpino.com/products/luzz-luzz-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EA%B0%9C%EB%B9%84%EC%8A%A4-%EB%8F%8C%ED%95%98%EC%9A%B0%EC%8A%A4-%EA%B8%80%EB%9D%BC%EC%9D%B4%EB%8D%94-2026-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-t700-%EC%B9%B4%EB%B3%B8-tc4j"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "캐릭터 디자인 에디션. 규격은 판매처 제품 정보 표를 이미지로 대조한 값. 길이+폭 표기 합이 24.02in(41.5 + 19.5cm = 61.0cm)."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 7.94oz, 16.34 × 7.68in, 두께 16mm. 공식 페이지에 UPA-A·USAP 이중 인증이라고 적혀 있다(USAP 목록은 미확인이라 인증은 unknown 유지)). 캐릭터 디자인 에디션. 규격은 판매처 제품 정보 표를 이미지로 대조한 값. 길이+폭 표기 합이 24.02in(41.5 + 19.5cm = 61.0cm)."
   },
   {
     "id": "joola-power-fx-16mm",
     "brand": "JOOLA",
     "model": "Power FX 16mm",
-    "weight_oz": 8.01,
+    "weight_oz": 8.0,
     "core_mm": 16,
     "shape": "elongated",
     "length_in": 16.5,
@@ -223,10 +229,11 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://joola.com/products/perseus-power-fx-pickleball-paddle",
       "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%ED%8C%8C%EC%9B%8C-fx-power-fx-%ED%8F%BC%EC%BD%94%EC%96%B4-16mm-mm65"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값. 색상 2종(데이드림·프리즈)."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조(무게 8.0oz, 16.5 × 7.5in, 코어 16mm. 무게를 g 환산값 8.01에서 공식 값 8.0으로 바꿨다. 공식 페이지에 USAP 인증이라고 적혀 있다(USAP 목록은 미확인이라 인증은 unknown 유지)). 무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값. 색상 2종(데이드림·프리즈)."
   },
   {
     "id": "friday-original-carbon-fiber-16mm",
@@ -245,10 +252,11 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://fridaypickle.com/products/friday-paddle",
       "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%98%A4%EB%A6%AC%EC%A7%80%EB%84%90-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-16mm-3f10"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "무게는 OCR 원문 값(8.2온스)이며 발췌 이미지에서 직접 확인하지 못했다. 색상 10종, 헤드 윗면 형태가 색상별로 다름."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.2oz ± 0.18oz, 16.5 × 7.5in, 두께 16mm). 무게는 OCR 원문 값(8.2온스)이며 발췌 이미지에서 직접 확인하지 못했다. 색상 10종, 헤드 윗면 형태가 색상별로 다름."
   },
   {
     "id": "six-zero-coral-pro-hybrid-16mm",
@@ -267,16 +275,17 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://www.sixzeropickleball.com/products/coral-pro",
       "https://pnpino.com/products/%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EC%BD%94%EB%9E%84-%ED%94%84%EB%A1%9C-coral-pro-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-16mm-dr0w"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "weight_oz는 판매처 표기 범위의 중간값, width_in은 표기 범위(7.5~7.7in)의 중간값(둘 다 파생값). 길이·폭은 OCR 원문 값."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid: 무게 8.0–8.3oz, 16.3 × 7.5–7.7in, 코어 16mm. UPA 전용판과 UPA·USAP 승인판이 따로 있다). weight_oz는 판매처 표기 범위의 중간값, width_in은 표기 범위(7.5~7.7in)의 중간값(둘 다 파생값). 길이·폭은 OCR 원문 값."
   },
   {
     "id": "selkirk-boomstik-st-elongated-16mm",
     "brand": "Selkirk",
     "model": "Boomstik ST Elongated 16mm",
-    "weight_oz": 8.15,
+    "weight_oz": 8.1,
     "core_mm": 16,
     "shape": "elongated",
     "length_in": 16.5,
@@ -289,11 +298,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://www.selkirk.com/products/boomstik-st",
       "https://pnpino.com/products/selkirk-%EC%85%80%EC%BB%A4%ED%81%AC-%EB%B6%90%EC%8A%A4%ED%8B%B1-st-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-boomstik-st-16mm-ghy0",
       "https://equipment.usapickleball.org/paddle-list/entry/13858/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "한 상품 페이지에 엘롱게이티드·와이드바디 2종이 있다. 이 초안은 엘롱게이티드(레드·블루 판매중). 와이드바디(15.95 × 8.0in)는 수집 시점에 전 색상 품절. 7.5g 탈착식 MOI 웨이트 포함."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조(Elongated: 무게 8.0–8.2oz, 16.5 × 7.45in, 코어 16mm. 무게를 8.15에서 공식 범위의 중간값 8.1(파생값)로 바꿨다). 한 상품 페이지에 엘롱게이티드·와이드바디 2종이 있다. 이 초안은 엘롱게이티드(레드·블루 판매중). 와이드바디(15.95 × 8.0in)는 수집 시점에 전 색상 품절. 7.5g 탈착식 MOI 웨이트 포함."
   },
   {
     "id": "franklin-signature-fiberglass-16mm",
@@ -312,11 +322,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://franklinsports.com/franklin-signature-pickleball-paddles-new-1",
       "https://pnpino.com/products/%ED%94%84%EB%9E%AD%ED%81%B4%EB%A6%B0-%ED%94%BC%ED%81%B4%EB%B3%BC-%EB%9D%BC%EC%BC%93-%ED%8C%A8%EB%93%A4-%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98-%ED%8C%8C%EC%9D%B4%EB%B2%84%EA%B8%80%EB%9D%BC%EC%8A%A4-16mm-%EB%B8%94%EB%A3%A8-usap-%EA%B3%B5%EC%9D%B8-gwuy",
       "https://equipment.usapickleball.org/paddle-list/entry/3799/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "표면이 파이버글라스인 16mm 모델. weight_oz는 표기 범위의 중간값(파생값)."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(16mm: 무게 7.9–8.3oz, 16.5 × 7.5in, 폴리프로필렌 코어 16mm, 파이버글라스 면). 표면이 파이버글라스인 16mm 모델. weight_oz는 표기 범위의 중간값(파생값)."
   },
   {
     "id": "picklepoppers-pop-n-rookie-16mm",
@@ -338,6 +349,10 @@
       "https://pnpino.com/products/%ED%94%BC%ED%81%B4%ED%8C%8C%ED%8D%BC%EC%8A%A4-16mm-%EB%A3%A8%ED%82%A4-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%8B%A8%ED%92%88-usap-%EA%B3%B5%EC%9D%B8-1523",
       "https://equipment.usapickleball.org/paddle-list/entry/11062/"
     ],
+    "official_source_unavailable": {
+      "reason": "제조사 공식몰(pickle-poppers.com)의 상품 목록 12개에 POP N Rookie가 없다. picklepoppers.com은 주차된 도메인이다",
+      "checked_at": "2026-11-16"
+    },
     "verified_at": "2026-11-15",
     "notes": "입문용 저가 제품. weight_oz는 표기 범위의 중간값(파생값). 이미지의 치수 그림에는 폭이 7.5\"로, 스펙 문구에는 7.4W\"로 적혀 있어 문구 값을 썼다."
   },
@@ -358,11 +373,12 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://starsportsmall.co.kr/goods/content.asp?guid=61666",
       "https://pnpino.com/products/%EC%8A%A4%ED%83%80%EC%8A%A4%ED%8F%AC%EC%B8%A0-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-reactive-%EC%B9%B4%EB%B3%B8-16mm-%EB%B8%94%EB%A3%A8-k0xw",
       "https://equipment.usapickleball.org/paddle-list/entry/13222/"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "무게 250g으로 무거운 편. 치수는 cm 정수 표기(41×19)를 환산한 값이라 형태 경계 판단이 불확실하다."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(크기 41 × 19 × 2cm, 중량 250g. 공식몰에는 코어 두께가 따로 적혀 있지 않다(16mm는 판매처 값)). 무게 250g으로 무거운 편. 치수는 cm 정수 표기(41×19)를 환산한 값이라 형태 경계 판단이 불확실하다."
   },
   {
     "id": "friday-aura-pro-gen4-hybrid-16mm",
@@ -381,9 +397,10 @@
       "checked_at": "2026-11-15"
     },
     "sources": [
+      "https://fridaypickle.com/products/aura-pro-paddle",
       "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%95%84%EC%9A%B0%EB%9D%BC-%ED%94%84%EB%A1%9C-gen-4-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-fbd5"
     ],
-    "verified_at": "2026-11-15",
-    "notes": "규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션."
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid 선택 시: 무게 7.9oz ± 0.18oz, 16.375 × 7.625in, 두께 16mm). 규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션."
   }
 ]

@@ -25,6 +25,16 @@ export function parsePaddlesJson(text: string): unknown {
 const OFFICIAL_SUFFIXES = ["pickleball", "pickleballs", "sports", "sport", "paddles", "paddle", "official", "usa", "global", "korea"];
 // co.kr, com.au처럼 등록 도메인이 한 라벨 더 앞에 있는 2단 TLD의 앞부분
 const SECOND_LEVEL = new Set(["co", "com", "or", "ne", "go", "ac", "org", "net"]);
+/**
+ * 브랜드명으로 추정할 수 없지만 사람이 제조사 공식 사이트임을 확인한 도메인(D-024). 키는 브랜드명을 소문자·영숫자만 남긴 값.
+ * 2026-11-16 확인: Friday(fridaypickle.com), Spartus(gospartus.com, spartuspickleball.com에서 넘어감),
+ * STAR(starsportsmall.co.kr, starsports.co.kr에서 넘어가는 스타스포츠 공식몰).
+ */
+const CONFIRMED_OFFICIAL_HOSTS: Record<string, string[]> = {
+  friday: ["fridaypickle.com"],
+  spartus: ["gospartus.com"],
+  star: ["starsportsmall.co.kr"],
+};
 
 /**
  * 출처 URL의 등록 도메인 이름(TLD 제외, 하이픈 제거)이 브랜드명이거나 브랜드명+흔한 꼬리말이면 공식 사이트로 본다.
@@ -38,6 +48,7 @@ function looksOfficial(brand: string, url: string): boolean {
   } catch {
     return false;
   }
+  if (CONFIRMED_OFFICIAL_HOSTS[brand]?.some((h) => host === h || host.endsWith(`.${h}`))) return true;
   const labels = host.split(".");
   const twoLevelTld = labels.length >= 3 && SECOND_LEVEL.has(labels[labels.length - 2]!) && labels[labels.length - 1]!.length === 2;
   const name = labels[labels.length - (twoLevelTld ? 3 : 2)]?.replace(/-/g, "");
@@ -67,6 +78,7 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
       ["verified_at", p.verified_at],
       ["certification.checked_at", p.certification.checked_at],
       ["price_checked_at", p.price_checked_at],
+      ["official_source_unavailable.checked_at", p.official_source_unavailable?.checked_at],
     ];
     for (const [name, date] of dated) {
       if (date !== undefined && daysBetween(date, today) < 0) {
@@ -93,7 +105,15 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
     }
 
     const brand = alnum(p.brand);
-    if (brand !== "" && !p.sources.some((u) => looksOfficial(brand, u))) {
+    const hasOfficial = brand !== "" && p.sources.some((u) => looksOfficial(brand, u));
+    const unavailable = p.official_source_unavailable;
+    if (hasOfficial && unavailable) {
+      warnings.push(`${p.id}: 공식 출처가 있는데 official_source_unavailable 기록이 남아 있다. 기록을 지워 달라`);
+    } else if (!hasOfficial && unavailable) {
+      if (age(unavailable.checked_at) > DATA_MAX_AGE_DAYS) {
+        warnings.push(`${p.id}: 공식 페이지가 없다고 확인한 지 ${age(unavailable.checked_at)}일 지났다. 다시 찾아 달라(기준 ${DATA_MAX_AGE_DAYS}일)`);
+      }
+    } else if (brand !== "" && !hasOfficial) {
       warnings.push(`${p.id}: 출처 URL이 브랜드(${p.brand}) 공식 도메인으로 보이지 않는다. 제조사 공식 페이지인지 확인해 달라`);
     }
   }
