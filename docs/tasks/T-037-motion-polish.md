@@ -30,11 +30,11 @@ M1 검수에서 M2로 넘긴 연출(phase2 6.2 중 빠진 것)을 넣고, 둘러
 | B | 필터 기본 상태 | 접힘 / 펼침 | 접힘(목록이 바로 보이게) |
 
 ## 수용 기준
-- [ ] 적합도 막대 채움·"자세히" 등장·판매처 이동 안내·시트 끌어 닫기가 동작하고 동작 줄이기면 꺼진다(끌기는 동작 줄이기와 무관하게 동작)
-- [ ] 연출이 `transform`·`opacity`만 쓴다(테스트·검색으로 확인)
-- [ ] 둘러보기 375px에서 필터가 접힌 상태로 목록 첫 줄이 첫 화면에 보인다
+- [x] 적합도 막대 채움·"자세히" 등장·판매처 이동 안내·시트 끌어 닫기가 동작하고 동작 줄이기면 꺼진다(끌기는 동작 줄이기와 무관하게 동작)
+- [x] 연출이 `transform`·`opacity`만 쓴다(테스트·검색으로 확인)
+- [x] 둘러보기 375px에서 필터가 접힌 상태로 목록 첫 줄이 첫 화면에 보인다
 - [ ] Lighthouse 4개 화면 점수가 기록돼 있다
-- [ ] `npm run check`·`npm run build` 통과, 375px 브라우저 확인
+- [x] `npm run check`·`npm run build` 통과, 375px 브라우저 확인
 
 ## 건드릴 파일
 - `src/app/globals.css`(키프레임), `src/components/result/parts.tsx`, `ResultCard.tsx`(details와 링크 클릭 안내), `src/components/ui/BottomSheet.tsx`, 새 파일 `src/components/ui/Toast.tsx`, `src/components/browse/Browse.tsx`, 각 테스트
@@ -52,3 +52,15 @@ M1 검수에서 M2로 넘긴 연출(phase2 6.2 중 빠진 것)을 넣고, 둘러
 ## 결정 (2026-11-16, 사용자)
 - A: Lighthouse는 이 앱의 브라우저로 PageSpeed Insights 웹 페이지에서 잰다(공개 사이트 주소만 보냄, 설치 없음)
 - B: 둘러보기 필터는 처음에 접힌 상태
+
+## 결과 (2026-11-16, Lighthouse 제외)
+- 적합도 막대: `animate-bar-fill`(키프레임 `bar-fill`, scaleX 0→1, 500ms, 300ms 늦게), `origin-left`, 막대 트랙 `overflow-hidden`
+- "자세히": 펼친 내용에 `group-open:animate-reveal`(rise-in 220ms). 높이 연출 없음
+- 판매처 이동 안내: 새 부품 `ui/Toast`(`showToast` 이벤트 + 레이아웃의 `ToastHost` 하나, 1초, `role="status"`). "판매처에서 보기" → "판매처로 이동합니다. 새 창에서 열립니다", "다른 곳 가격 비교" → "네이버 쇼핑으로 이동합니다. 새 창에서 열립니다". 링크 주소·새 창 동작은 그대로
+- **카드와 달라진 점**: 모달 시트는 브라우저 맨 위 층에 그려져 보통 고정 요소(안내)를 덮는다. 시트 안 구매 버튼에서도 안내가 보이도록 안내를 popover(`popover="manual"`)로 맨 위 층에 올린다. popover를 못 쓰면 보통 고정 요소로 보인다
+- 시트 끌어 닫기: 손잡이·제목 줄(`touch-none`)에서 pointer 이벤트로 `translateY`, `DRAG_CLOSE_PX`(100px) 넘게 끌고 놓으면 닫음, 덜 끌면 제자리로(220ms), 위로는 올라가지 않음, 내용 영역·닫기 버튼에서 시작한 누르기는 무시
+- 둘러보기 필터: 처음에 접힘(`hidden`, 펼침 버튼 `aria-expanded`), 접힌 줄에 고른 조건 요약(예: "넓은 형 · 10~20만", 없으면 "모든 제품")과 "필터 지우기"
+- 테스트 410 → 417개(막대 키프레임에 폭·높이 없음, 안내 표시·사라짐·링크 유지, 끌기 거리별 닫힘/복귀·내용 영역 무시, 필터 접힘·요약). `npm run check`·`npm run build` 통과
+- 브라우저(정적 빌드, 375px): 둘러보기 첫 행이 224~321px(필터를 펼친 상태로 시작하던 전에는 약 500px 아래). 펼치면 필터 346px. 상세 시트가 열린 채 안내를 띄우면 popover가 열려(`:popover-open`) 시트 위 663~700px에 보이고 1초 뒤 닫힘. 시트 손잡이를 60px 끌면 `translateY(60px)` 후 놓으면 제자리, 150px 끌고 놓으면 닫힘. 가로 넘침 없음
+- 확인하지 못한 것: 실기기 끌기 손맛, 휴대폰 브라우저의 당겨서 새로고침과 겹치는지(손잡이 줄은 `touch-action: none`), 연출의 실제 매끄러움(이 환경의 창이 숨겨져 연출이 멈춘다)
+- 남은 것: Lighthouse 첫 기록(배포 후 PageSpeed Insights)

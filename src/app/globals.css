@@ -114,6 +114,10 @@
   --animate-slide-in-back: slide-in-back var(--duration-base) var(--ease-enter);
   /* 결과 카드 등장: 아래에서 떠오르며 나타남. 카드마다 animation-delay로 순서를 준다 */
   --animate-rise-in: rise-in 280ms var(--ease-enter) both;
+  /* 적합도 막대가 0에서 채워짐(T-037). 카드가 떠오른 뒤 시작한다 */
+  --animate-bar-fill: bar-fill 500ms var(--ease-enter) 300ms both;
+  /* "자세히" 펼친 내용, 안내 토스트가 나타남(T-037) */
+  --animate-reveal: rise-in var(--duration-base) var(--ease-enter) both;
   /* 분석 중 화면 그림 */
   --animate-paddle-swing: paddle-swing 0.9s ease-in-out infinite;
   --animate-ball-bounce: ball-bounce 0.9s ease-in-out infinite;
@@ -188,6 +192,15 @@
   }
   50% {
     transform: translate(-22px, -10px);
+  }
+}
+
+@keyframes bar-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 

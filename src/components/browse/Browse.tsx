@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useId, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import Link from "next/link";
 import { SHAPES, type PaddleDisplay, type Shape } from "../../../data/schema";
 import { EMPTY_FILTER, filterAndSort, PRICE_BANDS, type BrowseFilter, type PriceBand } from "@/lib/shared/browse";
@@ -18,6 +18,16 @@ const readToday = () => todayLocal();
 
 /** 둘러보기 순서 안내. 결과 화면의 순위 안내(NOTICE.ranking)와 같은 원칙 */
 export const BROWSE_ORDER_NOTE = "목록은 가격 낮은 순이며, 구매 링크나 수수료는 순서에 영향을 주지 않습니다.";
+
+/** 고른 조건을 한 줄로. 아무것도 안 골랐으면 null */
+export function filterSummary(filter: BrowseFilter): string | null {
+  const parts = [
+    ...filter.shapes.map((shape) => SHAPE_LABEL[shape]),
+    ...(filter.price ? [PRICE_BANDS.find((b) => b.value === filter.price)!.label] : []),
+    ...(filter.approvedOnly ? ["승인 확인"] : []),
+  ];
+  return parts.length > 0 ? parts.join(" · ") : null;
+}
 
 /** 켜고 끄는 칩. 상태는 aria-pressed로 알린다 */
 function Chip({ pressed, onClick, children }: { pressed: boolean; onClick: () => void; children: string }) {
@@ -53,6 +63,9 @@ function ChipGroup({ label, children }: { label: string; children: ReactNode }) 
  */
 export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
   const [filter, setFilter] = useState<BrowseFilter>(EMPTY_FILTER);
+  // 필터는 처음에 접어 목록이 바로 보이게 한다(T-037, 사용자 결정 B)
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filtersId = useId();
   const [productStack, setProductStack] = useState<string[]>([]);
   // 오늘 날짜는 브라우저에서만 읽는다(결과 화면과 같다)
   const today = useSyncExternalStore<string | null>(subscribe, readToday, () => null);
@@ -75,6 +88,7 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
     setFilter((f) => ({ ...f, shapes: f.shapes.includes(shape) ? f.shapes.filter((s) => s !== shape) : [...f.shapes, shape] }));
   const setPrice = (price: PriceBand | null) => setFilter((f) => ({ ...f, price: f.price === price ? null : price }));
   const filtered = filter.shapes.length > 0 || filter.price !== null || filter.approvedOnly;
+  const summary = filterSummary(filter);
   const programs = affiliatePrograms(list);
 
   const catalog: ProductCatalog = {
@@ -102,7 +116,29 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
           </p>
         </header>
 
-        <div className="flex flex-col gap-4" data-testid="browse-filters">
+        {/* 접힌 줄: 필터 버튼 + 고른 조건 요약 + 필터 지우기. 접어도 고른 조건은 보인다 */}
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Button
+              variant="secondary"
+              size="md"
+              aria-expanded={filtersOpen}
+              aria-controls={filtersId}
+              onClick={() => setFiltersOpen((v) => !v)}
+              data-testid="browse-filter-toggle"
+            >
+              필터 {filtersOpen ? "접기 ▴" : "펼치기 ▾"}
+            </Button>
+            <p className="min-w-0 flex-1 text-small text-muted" data-testid="browse-filter-summary">
+              {summary ?? "모든 제품"}
+            </p>
+            {filtered ? (
+              <Button variant="text" size="md" onClick={() => setFilter(EMPTY_FILTER)}>
+                필터 지우기
+              </Button>
+            ) : null}
+          </div>
+        <div id={filtersId} hidden={!filtersOpen} className="flex flex-col gap-4 animate-reveal" data-testid="browse-filters">
           <ChipGroup label="형태(여러 개 선택)">
             {SHAPES.map((shape) => (
               <Chip key={shape} pressed={filter.shapes.includes(shape)} onClick={() => toggleShape(shape)}>
@@ -122,11 +158,7 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
               승인 확인된 제품만
             </Chip>
           </ChipGroup>
-          {filtered ? (
-            <Button variant="text" size="md" onClick={() => setFilter(EMPTY_FILTER)} className="-ml-2 self-start">
-              필터 지우기
-            </Button>
-          ) : null}
+        </div>
         </div>
 
         {list.length > 0 ? (

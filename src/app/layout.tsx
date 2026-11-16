@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/shared/site";
+import { ToastHost } from "@/components/ui/Toast";
 import "./globals.css";
 
 /**
@@ -34,7 +35,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* 짧은 안내(판매처 이동 등, T-037) */}
+        <ToastHost />
+      </body>
     </html>
   );
 }

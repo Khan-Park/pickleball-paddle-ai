@@ -38,7 +38,12 @@ const PADDLES = [
 ];
 const rows = () => screen.getAllByTestId("browse-row").map((r) => r.dataset.paddleId);
 /** 필터 칩(목록 행 이름에도 형태가 들어 있어 필터 영역 안에서만 찾는다) */
-const chip = (name: string) => within(screen.getByTestId("browse-filters")).getByRole("button", { name: new RegExp(name) });
+const chip = (name: string) => {
+  // 필터는 처음에 접혀 있다(T-037). 칩을 찾기 전에 펼친다
+  const toggle = screen.getByTestId("browse-filter-toggle");
+  if (toggle.getAttribute("aria-expanded") === "false") fireEvent.click(toggle);
+  return within(screen.getByTestId("browse-filters")).getByRole("button", { name: new RegExp(name) });
+};
 
 describe("둘러보기 화면(T-026)", () => {
   it("전체를 가격 낮은 순으로 보이고 개수를 적는다", () => {
@@ -102,6 +107,24 @@ describe("둘러보기 화면(T-026)", () => {
     const adRow = screen.getAllByTestId("browse-row").find((r) => r.dataset.paddleId === "long-high")!;
     expect(within(adRow).getByTestId("affiliate-badge")).toBeDefined();
     expect(rows()).toEqual(["std-low", "wide-mid", "hyb-mid", "long-high"]);
+  });
+});
+
+describe("필터 접기(T-037)", () => {
+  it("처음에는 접혀 있고, 펼치면 칩이 보이며, 접어도 고른 조건 요약과 개수가 보인다", () => {
+    render(<Browse paddles={PADDLES} />);
+    const toggle = screen.getByTestId("browse-filter-toggle");
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    expect(screen.getByTestId("browse-filters").hidden).toBe(true);
+    expect(screen.getByTestId("browse-filter-summary").textContent).toBe("모든 제품");
+    fireEvent.click(chip("넓은 형"));
+    fireEvent.click(chip("10~20만"));
+    fireEvent.click(screen.getByTestId("browse-filter-toggle"));
+    expect(screen.getByTestId("browse-filters").hidden).toBe(true);
+    expect(screen.getByTestId("browse-filter-summary").textContent).toBe("넓은 형 · 10~20만");
+    expect(screen.getByTestId("browse-count").textContent).toBe("4개 중 1개");
+    fireEvent.click(screen.getByRole("button", { name: "필터 지우기" }));
+    expect(screen.getByTestId("browse-filter-summary").textContent).toBe("모든 제품");
   });
 });
 
