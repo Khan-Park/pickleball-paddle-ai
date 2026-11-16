@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { clearAnswers } from "@/lib/quiz/storage";
+import { buttonClass } from "@/components/ui/Button";
 
 /**
  * 시작 화면의 버튼. 누르면 이 탭에 남아 있던 답변을 지우고 질문 화면으로 간다.
@@ -13,7 +14,7 @@ export function StartButton() {
     <Link
       href="/quiz"
       onClick={clearAnswers}
-      className="rounded-lg bg-navy px-5 py-4 text-center text-base font-semibold text-white outline-offset-4 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-accent"
+      className={buttonClass({ fullWidth: true })}
     >
       질문 시작하기
     </Link>

@@ -12,15 +12,18 @@ const FACE: Record<Shape, { width: number; height: number }> = {
   elongated: { width: 24, height: 46 },
 };
 
+/** 크기 단계. md는 질문 선택지, lg는 시작 화면(T-023). 그림 비율은 같다 */
+const SIZE = { md: { width: 36, height: 54 }, lg: { width: 56, height: 84 } } as const;
+
 /** 모르는 형태 값이면 아무것도 그리지 않는다(선택지가 바뀌어도 화면이 깨지지 않게) */
-export function ShapeIcon({ shape, className }: { shape: string; className?: string }) {
+export function ShapeIcon({ shape, className, size = "md" }: { shape: string; className?: string; size?: keyof typeof SIZE }) {
   if (!Object.hasOwn(FACE, shape)) return null;
   const { width, height } = FACE[shape as Shape];
   const x = (48 - width) / 2;
   const top = 4;
   const handleTop = top + height;
   return (
-    <svg viewBox="0 0 48 72" width="36" height="54" className={className} aria-hidden="true" focusable="false" data-shape={shape}>
+    <svg viewBox="0 0 48 72" width={SIZE[size].width} height={SIZE[size].height} className={className} aria-hidden="true" focusable="false" data-shape={shape}>
       <rect x={x} y={top} width={width} height={height} rx="8" fill="none" stroke="currentColor" strokeWidth="2.5" />
       <rect x="20" y={handleTop} width="8" height={68 - handleTop} rx="2" fill="currentColor" />
     </svg>
