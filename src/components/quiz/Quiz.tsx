@@ -8,9 +8,18 @@ import { clearAnswers, loadAnswersRaw, parseAnswers, saveAnswers } from "@/lib/q
 import { ShapeIcon } from "@/components/ShapeIcon";
 import { Button } from "@/components/ui/Button";
 import { markSubmitted } from "@/components/result/analyzing-flag";
+import { HelpButton } from "@/components/help/HelpButton";
+import type { GlossaryTerm } from "@/lib/shared/glossary";
 import { useReducedMotion } from "@/components/ui/useReducedMotion";
 
 const subscribe = () => () => {};
+
+/** 용어 도움말을 붙이는 질문과 버튼 글자(T-021) */
+const QUESTION_HELP: Partial<Record<QuizQuestion["id"], { term: GlossaryTerm; label: string }>> = {
+  weight: { term: "weight", label: "무게란?" },
+  shapes: { term: "shape", label: "형태란?" },
+  tournament: { term: "certification", label: "대회 승인이란?" },
+};
 
 /** 선택지를 누른 뒤 선택 표시를 보여 주고 다음 질문으로 넘어가기까지의 시간(docs/plan/phase2.md 6.2) */
 export const SELECT_DELAY_MS = 150;
@@ -169,6 +178,9 @@ export function Quiz() {
           {question.title}
         </legend>
         {question.note ? <p className="text-small text-muted">{question.note}</p> : null}
+        {QUESTION_HELP[question.id] ? (
+          <HelpButton term={QUESTION_HELP[question.id]!.term} label={QUESTION_HELP[question.id]!.label} className="-ml-2 self-start" />
+        ) : null}
 
         <div className="flex flex-col gap-3">
           {question.options.map((option) => {

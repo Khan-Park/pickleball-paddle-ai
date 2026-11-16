@@ -8,6 +8,7 @@ import { buttonClass } from "@/components/ui/Button";
 import { compareUrl } from "@/lib/shared/compare";
 import { affiliateProgram, DISCLOSURE, PRICE_STALE_DAYS, SHAPE_LABEL, SURFACE_LABEL, won } from "./labels";
 import { FitBar, SpecScale } from "./parts";
+import { HelpButton } from "@/components/help/HelpButton";
 
 /**
  * 대회 승인 표시. 미확인도 숨기지 않고 적는다.
@@ -148,9 +149,9 @@ function Details({ item, paddle }: { item: Recommendation; paddle: PaddleDisplay
           </ul>
         </section>
       ) : null}
-      <SpecScale label="무게" value={paddle.weight_oz} unit="oz" {...SPEC_RANGE.weight} left="가벼움" right="묵직함" />
+      <SpecScale label="무게" value={paddle.weight_oz} unit="oz" {...SPEC_RANGE.weight} left="가벼움" right="묵직함" help="weight" />
       {/* 엔진 해석과 같은 방향: 코어가 얇을수록 파워, 두꺼울수록 컨트롤 */}
-      <SpecScale label="코어 두께" value={paddle.core_mm} unit="mm" {...SPEC_RANGE.core} left="파워" right="컨트롤" />
+      <SpecScale label="코어 두께" value={paddle.core_mm} unit="mm" {...SPEC_RANGE.core} left="파워" right="컨트롤" help="core" />
       <dl className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-3 text-small">
         <div>
           <dt className="text-muted">형태</dt>
@@ -209,20 +210,22 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
               <span className="font-bold">⚠ 알아 둘 점 {item.cautions.length}개</span> · {item.cautions[0]}
             </p>
           ) : null}
-          <div className="flex flex-wrap gap-1.5" data-testid="spec-chips">
+          <div className="flex flex-wrap items-center gap-1.5" data-testid="spec-chips">
             {[`${paddle.weight_oz}oz`, `코어 ${paddle.core_mm}mm`, SHAPE_LABEL[paddle.shape]].map((chip) => (
               <span key={chip} className="rounded-full border border-line px-2.5 py-0.5 text-caption font-bold text-ink">
                 {chip}
               </span>
             ))}
+            <HelpButton term="core" label="용어 설명" className="-my-2" />
           </div>
         </>
       ) : null}
 
       <div className="flex flex-col gap-2">
         <Price paddle={paddle} today={today} />
-        <div>
+        <div className="flex flex-wrap items-center gap-1">
           <CertBadge certification={paddle.certification} today={today} />
+          <HelpButton term="certification" className="-my-3" />
         </div>
       </div>
 

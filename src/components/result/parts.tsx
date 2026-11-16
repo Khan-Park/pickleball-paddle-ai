@@ -3,6 +3,8 @@ import type { QuizAnswers } from "@/lib/quiz/questions";
 import { visibleQuestions } from "@/lib/quiz/questions";
 import type { MatchLabel } from "@/lib/recommend/recommend";
 import { SHAPE_LABEL } from "./labels";
+import { HelpButton } from "@/components/help/HelpButton";
+import type { GlossaryTerm } from "@/lib/shared/glossary";
 
 /**
  * 적합도 막대. 엔진 점수(0~100)를 막대 길이로 보여 주고 숫자는 보여 주지 않는다(점수 숫자는 화면에 내지 않는 원칙).
@@ -32,7 +34,9 @@ export function SpecScale({
   max,
   left,
   right,
+  help,
 }: {
+  help?: GlossaryTerm;
   label: string;
   value: number;
   unit: string;
@@ -45,7 +49,10 @@ export function SpecScale({
   return (
     <div className="flex flex-col gap-1.5" data-testid="spec-scale">
       <div className="flex items-baseline justify-between text-small">
-        <span className="text-muted">{label}</span>
+        <span className="flex items-center text-muted">
+          {label}
+          {help ? <HelpButton term={help} className="-my-3" /> : null}
+        </span>
         <span className="font-bold text-ink">
           {value}
           {unit}
