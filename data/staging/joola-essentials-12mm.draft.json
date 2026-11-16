@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 확인표 대기 (2026-11-16, T-022 표준형 보강)",
+  "status": "승격됨 - 2026-11-16 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "joola-essentials-12mm",
     "brand": "JOOLA",
@@ -22,7 +22,7 @@
       "https://equipment.usapickleball.org/paddle-list/entry/3497/"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 페이지(패들 2개·공 세트 상품 페이지의 패들 스펙): Average Weight 8.2oz, 15.5 × 7.9in, Core 12mm, Fiberglass Abrasion 표면, USAP Approved: Yes. USA Pickleball 목록 'Essentials'(entry 3497): Depth 12mm, Polypropylene, Fiberglass. 형태는 제조사 표기가 없어 치수 규칙(D-018)으로 standard(길이 16.1 미만, 폭 8.0 미만, 폭이 경계 8.0과 0.1 차이). 국내 판매처 단품 할인가 93,900원(블랙 판매 중, 블루 품절). 입문·레저용."
+    "notes": "2026-11-16 제조사 페이지(패들 2개·공 세트 상품 페이지의 패들 스펙): Average Weight 8.2oz, 15.5 × 7.9in, Core 12mm, Fiberglass Abrasion 표면, USAP Approved: Yes. USA Pickleball 목록 'Essentials'(entry 3497): Depth 12mm, Polypropylene, Fiberglass. 형태는 제조사 표기가 없어 치수 규칙(D-018)으로 standard(길이 16.1 미만, 폭 8.0 미만, 폭이 경계 8.0과 0.1 차이). 국내 판매처 단품 할인가 93,900원(블랙 판매 중, 블루 품절). 입문·레저용. 2026-11-16 사용자가 확인표를 승인해 승격."
   },
   "evidence": {
     "weight_oz": {

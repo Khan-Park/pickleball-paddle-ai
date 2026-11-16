@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 확인표 대기 (2026-11-16, T-022 표준형 보강)",
+  "status": "승격됨 - 2026-11-16 사용자가 확인표를 승인해 data/paddles.json에 반영",
   "paddle": {
     "id": "franklin-alw-c45-aurelius-16mm",
     "brand": "Franklin",
@@ -22,7 +22,7 @@
       "https://equipment.usapickleball.org/paddle-list/entry/12759/"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 페이지: Traditional Shape, 16mm는 15.7 × 7.9in, 7.6–8.0oz(중간값 7.8, 파생값), T700 카본 표면, PowerFlex 폴리머 코어, USAP/UPA 승인. USA Pickleball 목록 'C45 Aurelius 16MM'(entry 12759, MD# PB10176030 — 국내 판매처 상품 코드와 같음). 국내 판매처 판매가 460,000원(할인 없음, 페이지 구조화 데이터에는 459,000원으로 1,000원 차이)."
+    "notes": "2026-11-16 제조사 페이지: Traditional Shape, 16mm는 15.7 × 7.9in, 7.6–8.0oz(중간값 7.8, 파생값), T700 카본 표면, PowerFlex 폴리머 코어, USAP/UPA 승인. USA Pickleball 목록 'C45 Aurelius 16MM'(entry 12759, MD# PB10176030 — 국내 판매처 상품 코드와 같음). 국내 판매처 판매가 460,000원(할인 없음, 페이지 구조화 데이터에는 459,000원으로 1,000원 차이). 2026-11-16 사용자가 확인표를 승인해 승격."
   },
   "evidence": {
     "weight_oz": {
