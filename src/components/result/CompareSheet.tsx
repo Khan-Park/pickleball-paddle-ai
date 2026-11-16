@@ -2,8 +2,7 @@
 
 import type { Paddle, PaddleDisplay } from "../../../data/schema";
 import type { Recommendation } from "@/lib/recommend/recommend";
-import { daysBetween } from "@/lib/shared/dates";
-import { CERT_MAX_AGE_DAYS } from "@/lib/shared/limits";
+import { isApprovedNow } from "@/lib/shared/browse";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { SHAPE_LABEL, SURFACE_LABEL, won } from "./labels";
 
@@ -11,10 +10,7 @@ export type CompareColumn = { rank: number; item: Recommendation; paddle: Paddle
 
 /** 대회 승인을 짧게. 확인 배지(CertBadge)와 같은 기준(180일, 미래 날짜는 재확인 필요) */
 export function certShort(certification: Paddle["certification"], today: string): string {
-  if (certification.usa_pickleball === "approved") {
-    const age = daysBetween(certification.checked_at, today);
-    return Number.isFinite(age) && age >= 0 && age <= CERT_MAX_AGE_DAYS ? "✓ 승인" : "재확인 필요";
-  }
+  if (certification.usa_pickleball === "approved") return isApprovedNow(certification, today) ? "✓ 승인" : "재확인 필요";
   return certification.usa_pickleball === "not_approved" ? "미승인" : "미확인";
 }
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { StartButton } from "@/components/StartButton";
 import { ShapeShowcase } from "@/components/home/ShapeShowcase";
 
@@ -23,6 +24,13 @@ export default function Home() {
           <circle cx="45" cy="47" r="5" fill="var(--accent-bright)" />
         </svg>
         <span className="text-small font-bold text-navy">패들 추천</span>
+        {/* 질문 없이 전체 목록을 보는 보조 길(T-026). 하단 고정 바를 높이지 않도록 상단 바 오른쪽에 둔다(-my-2로 줄 높이 유지) */}
+        <Link
+          href="/browse"
+          className="-my-2 ml-auto inline-flex min-h-11 items-center rounded-control px-2 text-small font-bold text-accent underline underline-offset-4 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+        >
+          질문 없이 둘러보기
+        </Link>
       </div>
 
       <header {...rise(1, "flex flex-col gap-2")}>
