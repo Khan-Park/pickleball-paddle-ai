@@ -109,14 +109,12 @@ describe("결과 화면", () => {
 
   it("쿠팡 링크에는 쿠팡 파트너스 권장 문구를 그대로 쓴다", () => {
     expect(DISCLOSURE.coupang).toBe("이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.");
-    expect(affiliateProgram("https://link.coupang.com/a/abc")).toBe("coupang");
-    expect(affiliateProgram("https://www.coupang.com/vp/products/1")).toBe("coupang");
-    expect(affiliateProgram("https://notcoupang.com/x")).toBe("other");
-    expect(affiliateProgram("https://coupang.com.evil.example/x")).toBe("other");
-    expect(affiliateProgram("주소 아님")).toBe("other");
+    expect(affiliateProgram({ program: "coupang_partners" })).toBe("coupang");
+    expect(affiliateProgram({ program: "other" })).toBe("other");
+    expect(affiliateProgram({})).toBe("other");
 
     saveAnswers(beginner);
-    render(<Result paddles={[p({ id: "cp", brand: "가짜", model: "쿠팡", purchase: { url: "https://link.coupang.com/a/abc", is_affiliate: true } })]} />);
+    render(<Result paddles={[p({ id: "cp", brand: "가짜", model: "쿠팡", purchase: { url: "https://link.coupang.com/a/abc", is_affiliate: true, program: "coupang_partners" } })]} />);
     expect(screen.getByTestId("affiliate-disclosure").textContent).toBe(DISCLOSURE.coupang);
     expect(screen.getByTestId("affiliate-page-notice").textContent).toContain(DISCLOSURE.coupang);
   });
@@ -211,6 +209,20 @@ describe("결과 화면", () => {
 });
 
 describe("대회 승인 배지와 조건 완화", () => {
+  it("문구는 주소가 아니라 데이터의 program을 따른다(쿠팡이 아닌 주소라도 program이 쿠팡 파트너스면 권장 문구)", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "short", brand: "가짜", model: "단축", purchase: { url: "https://example.com/short", is_affiliate: true, program: "coupang_partners" } })]} />);
+    expect(screen.getByTestId("affiliate-disclosure").textContent).toBe(DISCLOSURE.coupang);
+  });
+
+  it("승인 확인일이 미래면 '오래됨'이 아니라 확인일을 확인할 수 없다고 알린다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={[p({ id: "future", brand: "가짜", model: "미래", certification: { usa_pickleball: "approved", checked_at: "2999-01-01" } })]} />);
+    const badge = screen.getByText(/승인 재확인 필요/);
+    expect(badge.textContent).toContain("확인할 수 없음");
+    expect(badge.textContent).not.toContain("오래됨");
+  });
+
   it("확인한 지 180일이 넘은 승인은 '확인'이 아니라 '재확인 필요'로 보여 준다", () => {
     saveAnswers(beginner);
     render(<Result paddles={[p({ id: "stale", brand: "가짜", model: "오래된 승인", certification: { usa_pickleball: "approved", checked_at: "2020-01-01" } })]} />);

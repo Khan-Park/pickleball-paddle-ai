@@ -8,6 +8,10 @@ export const MAX_LENGTH_PLUS_WIDTH_IN = 24;
  */
 export const SIZE_ROUNDING_TOLERANCE_IN = 0.05;
 
+/** 패들 형태. 이 목록이 유일한 정의다. 질문 선택지, 점수 설정, 라벨, 그림이 모두 여기서 타입을 가져온다 */
+export const SHAPES = ["standard", "hybrid", "elongated", "widebody"] as const;
+export type Shape = (typeof SHAPES)[number];
+
 /** 제품 1개의 스키마. 모든 값은 사람이 출처를 확인한 것이어야 한다(추정 금지). */
 export const paddleSchema = z
   .object({
@@ -16,7 +20,7 @@ export const paddleSchema = z
     model: z.string().min(1),
     weight_oz: z.number().min(5).max(10),
     core_mm: z.number().min(8).max(25),
-    shape: z.enum(["standard", "hybrid", "elongated", "widebody"]),
+    shape: z.enum(SHAPES),
     length_in: z.number().positive(),
     width_in: z.number().positive(),
     surface: z.enum(["carbon", "fiberglass", "composite", "other"]),
@@ -31,7 +35,22 @@ export const paddleSchema = z
     sources: z.array(z.url()).min(1),
     verified_at: z.iso.date(),
     /** 구매 링크. 추천 엔진은 이 필드를 읽지 않는다 (PaddleSpec 타입 사용) */
-    purchase: z.object({ url: z.url(), is_affiliate: z.boolean() }).optional(),
+    purchase: z
+      .object({
+        url: z.url(),
+        is_affiliate: z.boolean(),
+        /** 제휴 프로그램. 화면의 대가 표시 문구를 정한다. 주소로 추정하지 않고 사람이 적는다(D-023) */
+        program: z.enum(["coupang_partners", "other"]).optional(),
+      })
+      .refine((p) => !p.is_affiliate || p.program !== undefined, {
+        message: "제휴 링크(is_affiliate: true)에는 program(coupang_partners 또는 other)을 적어야 한다",
+        path: ["program"],
+      })
+      .refine((p) => p.is_affiliate || p.program === undefined, {
+        message: "program은 제휴 링크에만 적는다(is_affiliate가 false인데 program이 있다)",
+        path: ["program"],
+      })
+      .optional(),
     notes: z.string().optional(),
   })
   .refine((p) => p.length_in + p.width_in <= MAX_LENGTH_PLUS_WIDTH_IN + SIZE_ROUNDING_TOLERANCE_IN + 1e-9, {
@@ -49,14 +68,28 @@ export const paddlesSchema = z.array(paddleSchema).refine(
 );
 
 export type Paddle = z.infer<typeof paddleSchema>;
-/**
- * 추천 엔진이 사용하는 타입. 점수와 필터에 쓰는 스펙 필드만 담는다.
- * 구매 링크·수수료 정보(purchase)는 물론 출처·메모도 들어 있지 않아, 엔진이 읽을 방법이 없다.
- */
-export type PaddleSpec = Pick<
-  Paddle,
-  "id" | "weight_oz" | "core_mm" | "shape" | "length_in" | "width_in" | "surface" | "price_krw" | "certification"
->;
+/** 추천 엔진이 쓰는 필드. 점수와 필터에 필요한 스펙만 있다. 구매 링크(purchase)·출처·메모는 없다 */
+export const SPEC_FIELDS = ["id", "weight_oz", "core_mm", "shape", "length_in", "width_in", "surface", "price_krw", "certification"] as const;
+/** 결과 화면이 추가로 보여 주는 필드. 출처 URL, 확인일, 내부 메모(notes)는 브라우저로 보내지 않는다 */
+export const DISPLAY_EXTRA_FIELDS = ["brand", "model", "price_checked_at", "purchase"] as const;
 
-/** 결과 화면에 보여 줄 정보. 출처 URL과 내부 메모(notes)는 브라우저로 보내지 않는다 */
-export type PaddleDisplay = PaddleSpec & Pick<Paddle, "brand" | "model" | "price_checked_at" | "purchase">;
+/** 추천 엔진이 사용하는 타입. SPEC_FIELDS에 있는 필드만 담는다 */
+export type PaddleSpec = Pick<Paddle, (typeof SPEC_FIELDS)[number]>;
+/** 결과 화면에 보여 줄 정보 */
+export type PaddleDisplay = Pick<Paddle, (typeof SPEC_FIELDS)[number] | (typeof DISPLAY_EXTRA_FIELDS)[number]>;
+
+function pick<T extends object, K extends keyof T>(source: T, keys: readonly K[]): Pick<T, K> {
+  const out = {} as Pick<T, K>;
+  for (const key of keys) if (source[key] !== undefined) out[key] = source[key];
+  return out;
+}
+
+/** 엔진에 넘길 스펙만 고른다. 필드 목록(SPEC_FIELDS)에 추가하면 타입과 복사가 함께 바뀐다 */
+export function toPaddleSpec(paddle: PaddleSpec): PaddleSpec {
+  return pick(paddle, SPEC_FIELDS);
+}
+
+/** 브라우저로 보낼 화면용 정보만 고른다 */
+export function toPaddleDisplay(paddle: Paddle): PaddleDisplay {
+  return pick(paddle, [...SPEC_FIELDS, ...DISPLAY_EXTRA_FIELDS]);
+}

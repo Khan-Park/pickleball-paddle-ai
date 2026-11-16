@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { PaddleDisplay, PaddleSpec } from "../../../data/schema";
+import { toPaddleSpec, type PaddleDisplay } from "../../../data/schema";
 import { answersToProfile } from "@/lib/quiz/answers";
 import { loadAnswersRaw, parseAnswers } from "@/lib/quiz/storage";
 import type { UserProfile } from "@/lib/recommend/profile";
@@ -13,24 +13,6 @@ import { ResultCard } from "./ResultCard";
 
 const subscribe = () => () => {};
 const readToday = () => todayLocal();
-
-/**
- * 엔진에는 점수와 필터에 쓰는 스펙만 골라 넘긴다. 구매 링크는 결과가 나온 뒤 paddle_id로 붙인다(핵심 규칙 1).
- * 필드를 하나씩 적어 넣는다. 화면용 필드가 늘어도 엔진으로 새지 않는다.
- */
-function toSpec(p: PaddleDisplay): PaddleSpec {
-  return {
-    id: p.id,
-    weight_oz: p.weight_oz,
-    core_mm: p.core_mm,
-    shape: p.shape,
-    length_in: p.length_in,
-    width_in: p.width_in,
-    surface: p.surface,
-    price_krw: p.price_krw,
-    certification: p.certification,
-  };
-}
 
 /** 조건 완화 힌트를 눌렀을 때의 프로필. 저장된 답변은 바꾸지 않는다 */
 function relax(profile: UserProfile, hint: RelaxationHint): UserProfile {
@@ -68,7 +50,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   // 오늘 날짜는 브라우저에서만 읽는다. 미리 그리는 단계(서버)에서는 현재 시각을 읽지 않는다
   const today = useSyncExternalStore<string | null>(subscribe, readToday, () => null);
   const result = useMemo(
-    () => (profile && today ? recommend(paddles.map(toSpec), profile, { today }) : null),
+    () => (profile && today ? recommend(paddles.map(toPaddleSpec), profile, { today }) : null),
     [paddles, profile, today],
   );
   const byId = useMemo(() => new Map(paddles.map((p) => [p.id, p])), [paddles]);
@@ -85,7 +67,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   const programs = new Set<AffiliateProgram>();
   for (const item of result.items) {
     const purchase = byId.get(item.paddle_id)?.purchase;
-    if (purchase?.is_affiliate) programs.add(affiliateProgram(purchase.url));
+    if (purchase?.is_affiliate) programs.add(affiliateProgram(purchase));
   }
   const hasAffiliate = programs.size > 0;
 
@@ -116,7 +98,6 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         ) : null}
       </header>
 
-      {/* 화면에 제휴 링크가 하나라도 있으면 추천 카드보다 먼저 알린다 */}
       {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
       {result.items.map((item, i) => {
@@ -161,7 +142,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       </footer>
 
       <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
-        질문 다시 하기
+        답변 고치기
       </Link>
     </section>
   );

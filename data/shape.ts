@@ -1,4 +1,6 @@
-export type Shape = "standard" | "hybrid" | "elongated" | "widebody";
+import type { Shape } from "./schema.ts";
+
+export type { Shape };
 
 /**
  * 형태 분류 규칙(docs/decisions.md D-018). 임계값은 일반적으로 알려진 구분에서 가져온 가설이며

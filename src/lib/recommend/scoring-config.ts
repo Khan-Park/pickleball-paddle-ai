@@ -1,3 +1,5 @@
+import type { Shape } from "../../../data/schema";
+
 /**
  * 소프트 점수화의 모든 숫자. 설계: docs/design/scoring.md
  *
@@ -6,7 +8,8 @@
  */
 export const SCORING_VERSION = "0.2.0";
 
-export type ShapeKey = "standard" | "hybrid" | "elongated" | "widebody";
+/** 스키마의 형태 타입과 같다 */
+export type ShapeKey = Shape;
 
 /** 파워/컨트롤 경향 lean(-1 컨트롤 ~ +1 파워) 계산 */
 export const LEAN = {

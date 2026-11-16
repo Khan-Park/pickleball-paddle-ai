@@ -1,3 +1,4 @@
+import { isCoupangUrl } from "../src/lib/shared/affiliate.ts";
 import { daysBetween, todayLocal } from "../src/lib/shared/dates.ts";
 import { CERT_MAX_AGE_DAYS, PRICE_MAX_AGE_DAYS } from "../src/lib/shared/limits.ts";
 import { paddleSchema, paddlesSchema } from "./schema.ts";
@@ -43,15 +44,6 @@ function looksOfficial(brand: string, url: string): boolean {
   return name !== undefined && (name === brand || OFFICIAL_SUFFIXES.some((s) => name === brand + s));
 }
 
-function isCoupangUrl(url: string): boolean {
-  try {
-    const host = new URL(url).hostname.toLowerCase();
-    return host === "coupang.com" || host.endsWith(".coupang.com");
-  } catch {
-    return false;
-  }
-}
-
 const alnum = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 /**
@@ -94,8 +86,10 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
     }
 
     // 쿠팡 파트너스 링크는 경제적 이해관계 표시 대상이다. is_affiliate가 false면 화면에 대가 표시가 빠진다
-    if (p.purchase && !p.purchase.is_affiliate && isCoupangUrl(p.purchase.url)) {
-      errors.push(`${p.id}: 구매 링크가 쿠팡 주소인데 is_affiliate가 false이다. 파트너스 링크면 true로 바꿔 대가 표시가 나오게 해야 한다`);
+    if (p.purchase && isCoupangUrl(p.purchase.url) && p.purchase.program !== "coupang_partners") {
+      errors.push(
+        `${p.id}: 구매 링크가 쿠팡 주소인데 쿠팡 파트너스 링크로 적혀 있지 않다. 파트너스 링크면 is_affiliate: true, program: "coupang_partners"로 적어 권장 문구가 나오게 해야 한다`,
+      );
     }
 
     const brand = alnum(p.brand);
