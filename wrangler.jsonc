@@ -1,0 +1,14 @@
+// Cloudflare Workers 정적 파일 배포 설정(Worker 스크립트 없음). 절차는 docs/deploy.md
+// 근거: https://developers.cloudflare.com/workers/static-assets/routing/static-site-generation/ (2026-11-16 확인)
+{
+  "name": "pickleball-paddle-ai",
+  "compatibility_date": "2026-11-16",
+  "assets": {
+    // npm run build(next build, output: "export")의 결과 폴더
+    "directory": "./out/",
+    // 없는 주소는 out/404.html을 404 상태로 보낸다
+    "not_found_handling": "404-page",
+    // quiz.html → /quiz처럼 슬래시 없이 제공한다(기본값)
+    "html_handling": "auto-trailing-slash"
+  }
+}
