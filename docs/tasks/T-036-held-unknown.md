@@ -52,3 +52,21 @@
 
 ## 참고
 - data/staging/README.md(승인 목록 검색 주소, 조사 방법), docs/decisions.md D-024·D-025, T-035 결과
+
+## 1·2단계 결과 (2026-11-17)
+### A. 승인 목록 재대조
+| 제품 | 목록에서 찾은 것 | 결론 |
+|---|---|---|
+| JOOLA Hyperion Vision 16mm | JOOLA Hyperion 21건(Pro V·Double Vision·IV·3S Dual·C2·CFS 등)에 'Vision' 단독 없음 | unknown 유지 |
+| Six Zero Boulder Opal Hybrid 14mm | 'Boulder Opal RCS 14mm'(entry 11655, 2025-07-15) 1건 | 국내 판매판이 USAP 승인판(Smooth)인지 모름 → **판매처 문의** |
+| Six Zero Coral Pro Hybrid 16mm | 'Coral Pro'(13780, 2026-10-01), 새로 'Coral Pro RCD-E 16MM'(13889)·'RCD-W'(13890)·'RCD-EFT'(13893, 모두 2026-11-06) | 국내 판매판이 UPA·USAP 승인판인지 모름 → **판매처 문의**. 새 항목은 이름으로 보아 다른 형태판(추정, 미확인) |
+| 11SIX24 Hurache-X Power 2 Elongated 16mm | Hurache-X 11건 중 'Power 16mm'(1세대, 10474)뿐 | unknown 유지 |
+| Honolulu J6CR Elongated 16mm | 'J6CR'(12459, 2025-12-11) | 기존 기록대로 목록판은 LOOSE WEAVE 일반 카본판, 국내 판매판은 Crystal Blue Endurance → **판매처 문의**(같은 판인지) |
+| 11SIX24 Vapor Jelly Bean 2 | Jelly Bean 6건 중 'Vapor Jelly Bean 16mm'(1세대, 10340)뿐 | unknown 유지 |
+
+### B. 제조사 자료 재조사
+| 초안 | 결과 |
+|---|---|
+| TRION V-1 Control·Power | 제조사 공식몰(trionsports.com)에 상품 페이지가 있으나 스펙은 상세 이미지 한 장(`V-120CONTROL_FULL.jpg`, `V-120POWER_FULL.jpg`)에만 있다. 글자로 읽을 수 없음 → 이미지를 내려받아 보거나 사용자가 확인 |
+| ProKennex Kinetic Pro Speed·Power | 제조사 미국 사이트(prokennex.com)에 두 모델 상품 페이지 없음(검색 결과에 Black Ace·Q 시리즈만) → **판매처 문의** |
+| SKARO PKR-T700 | 2026-11-16 재조사와 같음(공개 자료에 코어 두께 없음) → **판매처 문의** |
