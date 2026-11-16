@@ -78,6 +78,9 @@
   --animate-shimmer: shimmer 1.4s ease-in-out infinite;
   --animate-sheet-in: sheet-in var(--duration-base) var(--ease-enter);
   --animate-fade-in: fade-in var(--duration-base) var(--ease-enter);
+  /* 질문 전환: 앞으로는 오른쪽에서, 뒤로는 왼쪽에서 밀려 들어온다(docs/plan/phase2.md 6.2) */
+  --animate-slide-in-forward: slide-in-forward var(--duration-base) var(--ease-enter);
+  --animate-slide-in-back: slide-in-back var(--duration-base) var(--ease-enter);
 }
 
 @keyframes shimmer {
@@ -96,6 +99,28 @@
   }
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
