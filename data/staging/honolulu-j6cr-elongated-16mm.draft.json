@@ -1,5 +1,5 @@
 {
-  "status": "보류 - 무게가 없음 (필수 필드). 수집본에 없어 제조사 자료가 필요",
+  "status": "승격 2026-11-16 - paddles.json에 넣음(무게는 해외 판매처, 대회 승인은 unknown으로 정정)",
   "paddle": {
     "id": "honolulu-j6cr-elongated-16mm",
     "brand": "Honolulu",

@@ -407,5 +407,79 @@
     ],
     "verified_at": "2026-11-16",
     "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid 선택 시: 무게 7.9oz ± 0.18oz, 16.375 × 7.625in, 두께 16mm). 규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션. 2026-11-16 대회 승인: USA Pickleball 승인 목록에 코드명 FL-H-FOAM-M-N(entry 12899)으로 등록. 등록 사진 파일명 usap-aura-pro-hybrid, 하이브리드·EPP 폼·16mm로 대응을 판단(사용자 승인)."
+  },
+  {
+    "id": "11six24-hurache-x-power-2-elongated-16mm",
+    "brand": "11SIX24",
+    "model": "Hurache-X Power 2 Elongated 16mm",
+    "weight_oz": 8.15,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.5,
+    "width_in": 7.5,
+    "surface": "carbon",
+    "price_krw": 339000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-16"
+    },
+    "sources": [
+      "https://11six24.com/products/hurache-x-power-2",
+      "https://pnpino.com/products/11six24-11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%ED%97%88%EB%9D%BC%EC%B7%A8-%EC%97%91%EC%8A%A4-%ED%8C%8C%EC%9B%8C-2-hurache-x-power-2-%EC%9D%BC%EB%A1%B1%EA%B2%8C%EC%9D%B4%ED%8B%B0%EB%93%9C-16mm-qh0x"
+    ],
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 제조사 공식 페이지 기준: 16.5 × 7.5in, 무게 범위 8.0–8.3oz의 중간값 8.15(파생값), 코어 16mm. 판매처 표기(실측 7.97–8.10oz)와 무게가 달라 제조사 값을 썼다. 제조사는 UPA-A 인증만 표기하고 USA Pickleball 승인 목록에는 구형 Hurache-X Power 16mm(entry 10474)만 있어 대회 승인은 unknown."
+  },
+  {
+    "id": "vatic-pro-v-sol-tour-bloom-16mm",
+    "brand": "Vatic Pro",
+    "model": "V-SOL Tour Bloom 16mm",
+    "weight_oz": 8.1,
+    "core_mm": 16,
+    "shape": "widebody",
+    "length_in": 16.0,
+    "width_in": 8.0,
+    "surface": "carbon",
+    "price_krw": 199000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-16"
+    },
+    "sources": [
+      "https://vaticpro.com/products/v-sol-tour",
+      "https://pnpino.com/products/%EB%B0%94%ED%8B%B1%ED%94%84%EB%A1%9C-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-v-sol-tour-%EC%97%90%EB%B2%84%EA%B7%B8%EB%A6%BF-16mm-o570",
+      "https://equipment.usapickleball.org/paddle-list/entry/13671/"
+    ],
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 판매처 상세 이미지의 BLOOM 표(평균 무게 8.1oz, 코어 16mm, 16.0 × 8.0in)와 대조해 일치. 표면 소재는 USA Pickleball 등록 정보(entry 13671: Carbon Fiber, Raw Carbon Fiber 마감)를 따랐다. 제조사 페이지에는 평균 무게 8.0oz(형태 구분 없음), Evergrit 표면으로 적혀 있다. 한 상품 페이지에 플래쉬(하이브리드, 16.3 × 7.6in, 8.0oz, 품절)와 블룸(와이드바디) 2종이 있다. 이 초안은 판매중인 블룸."
+  },
+  {
+    "id": "honolulu-j6cr-elongated-16mm",
+    "brand": "Honolulu",
+    "model": "J6CR Crystal Blue Endurance Elongated 16mm",
+    "weight_oz": 8.1,
+    "core_mm": 16,
+    "shape": "elongated",
+    "length_in": 16.48,
+    "width_in": 7.52,
+    "surface": "carbon",
+    "price_krw": 339000,
+    "price_checked_at": "2026-11-15",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-16"
+    },
+    "sources": [
+      "https://pnpino.com/products/%ED%98%B8%EB%86%80%EB%A3%B0%EB%A3%A8-%ED%98%B8%EB%86%80%EB%A3%B0%EB%A3%A8-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-j6cr-%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%83%88-%EB%B8%94%EB%A3%A8-%EC%97%94%EB%93%80%EB%9F%B0%EC%8A%A4-%EC%9D%BC%EB%A1%B1%EA%B2%8C%EC%9D%B4%ED%8B%B0%EB%93%9C-pixt",
+      "https://pickleballcentral.com/honolulu-j6cr-crystal-blue-endurance-surface-pickleball-paddle/"
+    ],
+    "official_source_unavailable": {
+      "reason": "제조사 공식 사이트를 찾지 못했다(honolulupickleball.com은 하와이 관광 안내, honolulupb.com은 구글 설문지로 연결). 무게는 미국 판매처 Pickleball Central 스펙표를 썼다",
+      "checked_at": "2026-11-16"
+    },
+    "verified_at": "2026-11-16",
+    "notes": "2026-11-16 무게는 Pickleball Central 스펙표의 8.0–8.2oz 중간값 8.1(파생값, 사용자 승인). 같은 표의 16.48 × 7.52in, 코어 16mm는 판매처 값과 일치. 대회 승인 정정: USA Pickleball 목록의 J6CR(entry 12459)은 마감이 LOOSE WEAVE인 일반 카본판이고, Crystal Blue Endurance판은 판매처들이 UPA-A 승인만 표기하므로 unknown으로 둔다. Pickleball Central은 면을 카본·파이버글라스 복합으로 적었지만 surface는 국내 판매처 표기(carbon)를 유지했다."
   }
 ]
