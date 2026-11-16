@@ -5,12 +5,11 @@ import Link from "next/link";
 import { SHAPES, type PaddleDisplay, type Shape } from "../../../data/schema";
 import { EMPTY_FILTER, filterAndSort, PRICE_BANDS, type BrowseFilter, type PriceBand } from "@/lib/shared/browse";
 import { SHAPE_LABEL } from "@/lib/shared/shape-labels";
+import { ProductRow } from "@/components/product/ProductRow";
 import { ProductCatalogContext, type ProductCatalog } from "@/components/product/catalog";
 import { ProductSheet } from "@/components/product/ProductSheet";
 import { AffiliatePageNotice, affiliatePrograms } from "@/components/result/AffiliatePageNotice";
-import { certShort } from "@/components/result/CompareSheet";
-import { AdBadge } from "@/components/result/ResultCard";
-import { NOTICE, todayLocal, won } from "@/components/result/labels";
+import { NOTICE, todayLocal } from "@/components/result/labels";
 import { Button } from "@/components/ui/Button";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 
@@ -45,41 +44,6 @@ function ChipGroup({ label, children }: { label: string; children: ReactNode }) 
       </p>
       <div className="flex flex-wrap gap-2">{children}</div>
     </div>
-  );
-}
-
-/** 목록 한 줄. 2·3순위 행(RankRow)과 같은 모양이고, 누르면 "제품 자세히" 시트를 연다 */
-function ProductRow({ paddle, today, onOpen }: { paddle: PaddleDisplay; today: string; onOpen: () => void }) {
-  const name = `${paddle.brand} ${paddle.model}`;
-  const ad = paddle.purchase?.is_affiliate === true;
-  const short = certShort(paddle.certification, today);
-  const cert = short === "미확인" ? "승인 미확인" : short;
-  const spec = `${SHAPE_LABEL[paddle.shape]} · ${paddle.weight_oz}oz · 코어 ${paddle.core_mm}mm`;
-  const price = paddle.price_krw !== undefined ? `약 ${won(paddle.price_krw)}` : "가격 정보 없음";
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      data-testid="browse-row"
-      data-paddle-id={paddle.id}
-      aria-label={[name, ad ? "광고" : null, spec, price, cert.replace("✓ ", "")].filter(Boolean).join(", ") + ". 자세히 보기"}
-      className="flex min-h-16 w-full items-center gap-3 rounded-card border border-line bg-card px-4 py-3 text-left shadow-card outline-offset-2 transition-transform duration-[var(--duration-fast)] hover:border-accent focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98]"
-    >
-      <span className="min-w-0 flex-1" aria-hidden="true">
-        {/* "광고"는 말줄임 영역 밖, 이름 앞(D-022, T-033) */}
-        <span className="flex min-w-0 items-center gap-1.5">
-          {ad ? <AdBadge className="shrink-0" /> : null}
-          <span className="truncate text-body font-bold text-ink">{name}</span>
-        </span>
-        <span className="mt-0.5 block text-small text-muted">{spec}</span>
-        <span className="mt-0.5 block text-small text-ink">
-          <span className="font-bold">{price}</span> · {cert}
-        </span>
-      </span>
-      <span aria-hidden="true" className="shrink-0 text-muted">
-        ›
-      </span>
-    </button>
   );
 }
 
@@ -169,7 +133,7 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
           <ul className="flex flex-col gap-2" data-testid="browse-list">
             {list.map((paddle, i) => (
               <li key={paddle.id} className="animate-rise-in" style={{ animationDelay: `${Math.min(i, 5) * 40}ms` }}>
-                <ProductRow paddle={paddle} today={today} onOpen={() => setProductStack([paddle.id])} />
+                <ProductRow paddle={paddle} today={today} onOpen={() => setProductStack([paddle.id])} testId="browse-row" />
               </li>
             ))}
           </ul>
