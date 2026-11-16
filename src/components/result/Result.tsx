@@ -22,6 +22,7 @@ import { CardSkeleton } from "@/components/ui/Skeleton";
 import { useReducedMotion } from "@/components/ui/useReducedMotion";
 import { ProductCatalogContext, type ProductCatalog } from "@/components/product/catalog";
 import { ProductSheet } from "@/components/product/ProductSheet";
+import { ShareButtons } from "@/components/share/ShareButtons";
 
 const subscribe = () => () => {};
 /** 1순위 카드의 구매 묶음 id. 하단 고정 버튼이 이 요소가 보이는지 본다 */
@@ -239,6 +240,9 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         {hasAffiliate ? null : <p>{NOTICE.ranking}</p>}
         <p>{NOTICE.price}</p>
       </footer>
+
+      {/* 결과만 공유(T-025). 화면에 보이는 추천(조건 완화 결과 포함)의 제품 id만 담는다 */}
+      {result.items.length > 0 ? <ShareButtons paddleIds={result.items.map((item) => item.paddle_id)} /> : null}
 
       <div className="flex flex-wrap gap-x-6 gap-y-2">
         <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">

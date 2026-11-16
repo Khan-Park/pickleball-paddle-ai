@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { OG_IMAGE, SITE_NAME, SITE_URL, SITEMAP_PATHS } from "@/lib/shared/site";
 import { metadata as rootMetadata } from "./layout";
 import { metadata as resultMetadata } from "./result/page";
+import { metadata as sharedMetadata } from "./shared/page";
 import robots from "./robots";
 import sitemap from "./sitemap";
 
@@ -23,8 +24,10 @@ describe("사이트 정보(T-027)", () => {
     expect(robots().sitemap).toBe(`${SITE_URL}/sitemap.xml`);
   });
 
-  it("결과 화면은 검색 색인에서 뺀다", () => {
+  it("결과 화면과 공유받은 화면은 검색 색인에서 빼고 sitemap에도 넣지 않는다", () => {
     expect(resultMetadata.robots).toMatchObject({ index: false });
+    expect(sharedMetadata.robots).toMatchObject({ index: false });
+    expect(SITEMAP_PATHS).not.toContain("/shared");
   });
 });
 

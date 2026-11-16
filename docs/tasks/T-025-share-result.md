@@ -30,11 +30,11 @@
    - 받은 사람 화면: 순서대로 행, 목록에 없는 제품 안내, 0개 안내, 행 누르면 상세 시트, "나도…"가 답변을 지움, noindex
 
 ## 수용 기준
-- [ ] 결과 화면에서 링크 복사·기본 공유 창으로 공유할 수 있다
-- [ ] 공유 주소와 공유 글에 답변이 들어가지 않는다(테스트)
-- [ ] `/shared?p=…`에서 공유된 제품을 순서대로 보고, 상세 시트를 열 수 있다
-- [ ] 목록에서 빠진 제품·잘못된 주소에도 화면이 깨지지 않는다
-- [ ] `npm run check`·`npm run build` 통과, 375px 브라우저 확인
+- [x] 결과 화면에서 링크 복사·기본 공유 창으로 공유할 수 있다
+- [x] 공유 주소와 공유 글에 답변이 들어가지 않는다(테스트)
+- [x] `/shared?p=…`에서 공유된 제품을 순서대로 보고, 상세 시트를 열 수 있다
+- [x] 목록에서 빠진 제품·잘못된 주소에도 화면이 깨지지 않는다
+- [x] `npm run check`·`npm run build` 통과, 375px 브라우저 확인
 
 ## 건드릴 파일
 - 새 파일: `src/lib/shared/share.ts`와 테스트, `src/app/shared/page.tsx`, `src/components/share/`(공유 버튼·받은 사람 화면)와 테스트
@@ -50,3 +50,12 @@
 ## 참고
 - docs/plan/m2.md, docs/plan/phase2.md 4장, docs/design/ui-flow.md 4장, docs/decisions.md D-030·D-022, T-024·T-026·T-027
 - node_modules/next/dist/docs/01-app/03-api-reference/04-functions/use-search-params.md(Suspense 경계)
+
+## 결과 (2026-11-16)
+- `src/lib/shared/share.ts`: `buildShareUrl(ids)`(제품 id 1~3개만 받음, `{SITE_URL}/shared?p=…`), `parseSharedIds`(형식이 틀린 값·중복 제거, 최대 3개, 목록에 없는 제품 수), 공유 글 `SHARE_TEXT`(제품 이름·답변 없음)
+- 결과 화면: 하단에 "이 결과 공유하기"("추천된 제품만 담깁니다. 답변은 공유되지 않습니다."). "공유하기"는 `navigator.share`가 있을 때만, "링크 복사"는 복사 후 "링크를 복사했습니다.", 복사 불가면 주소 칸. 공유 창 취소는 조용히 넘어간다
+- `/shared`: `useSearchParams` + `Suspense`(그동안 스켈레톤), 순위 숫자와 한 줄 행(`ProductRow`를 둘러보기와 같이 쓰게 꺼냄), 목록에 없는 제품 안내, 0개 안내, 행 → "제품 자세히" 시트(비슷한 제품에서 공유 제품 제외), "나도 질문에 답하고 추천받기"(탭의 답변을 지움, `StartButton`에 글자 인자 추가) + "전체 둘러보기", `noindex, follow`, sitemap 제외
+- 테스트 369 → 381개. 팔 불편 답(`arm: yes`)을 넣은 답변으로 공유 주소·공유 글에 답변 키·값·제품 이름이 없는지 확인. `npm run check`·`npm run build` 통과
+- 브라우저(정적 빌드, 375px): 이 환경의 브라우저에는 기본 공유 창이 없어 "링크 복사"만 보였고, 복사가 막혀(사용자 조작이 아닌 스크립트 클릭) 주소 칸이 나왔다. 주소는 `…/shared?p=joola-heat-vision-scorpeus-16mm,vatic-pro-v-sol-tour-bloom-16mm,nox-x-treme-tempus-16mm`. 이 주소를 열면 제목 "공유받은 추천 | 패들핏", 1~3순위 행, 가로 넘침 없음
+- 알게 된 것: 제품 id가 길어 공유 주소가 140자 정도다. 카카오톡에서는 미리보기 카드로 보여 문제가 적을 것으로 보지만(미확인), 짧게 하려면 id 대신 짧은 코드가 필요하다(데이터에 필드 추가). 지금은 하지 않는다
+- 확인하지 못한 것: 휴대폰 기본 공유 창과 카카오톡, 카카오톡 앱 안 브라우저의 복사, 실제 클릭으로 복사했을 때의 안내(이 환경에서는 클립보드 권한이 없음)

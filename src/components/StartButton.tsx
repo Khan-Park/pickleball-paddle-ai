@@ -9,14 +9,14 @@ import { buttonClass } from "@/components/ui/Button";
  * 처음부터 다시 하려는 사람이나 같은 기기를 이어 쓰는 다른 사람에게 앞사람의 답이 보이지 않게 한다.
  * (결과 화면의 "답변 고치기"로 돌아갈 때는 지우지 않아 이어서 고칠 수 있다.)
  */
-export function StartButton() {
+export function StartButton({ label = "질문 시작하기" }: { label?: string } = {}) {
   return (
     <Link
       href="/quiz"
       onClick={clearAnswers}
       className={buttonClass({ fullWidth: true })}
     >
-      질문 시작하기
+      {label}
     </Link>
   );
 }
