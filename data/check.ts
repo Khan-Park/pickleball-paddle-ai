@@ -97,6 +97,11 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
       warnings.push(`${p.id}: 가격 확인 후 ${age(p.price_checked_at)}일 지났다. 가격 재확인이 필요하다(기준 ${PRICE_MAX_AGE_DAYS}일)`);
     }
 
+    // 제휴가 아닌 판매처 링크는 사람이 확인한 출처 페이지로만 보낸다(T-019). 제휴 링크는 프로그램이 만든 주소라 출처와 다를 수 있다
+    if (p.purchase && !p.purchase.is_affiliate && !p.sources.includes(p.purchase.url)) {
+      errors.push(`${p.id}: 판매처 링크가 출처(sources)에 없는 주소다. 사람이 확인한 판매처 페이지를 sources에 넣고 같은 주소를 써야 한다`);
+    }
+
     // 쿠팡 파트너스 링크는 경제적 이해관계 표시 대상이다. is_affiliate가 false면 화면에 대가 표시가 빠진다
     if (p.purchase && isCoupangUrl(p.purchase.url) && p.purchase.program !== "coupang_partners") {
       errors.push(

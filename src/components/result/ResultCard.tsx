@@ -4,6 +4,8 @@ import type { Recommendation } from "@/lib/recommend/recommend";
 import { daysBetween } from "@/lib/shared/dates";
 import { CERT_MAX_AGE_DAYS } from "@/lib/shared/limits";
 import { Badge } from "@/components/ui/Badge";
+import { buttonClass } from "@/components/ui/Button";
+import { compareUrl } from "@/lib/shared/compare";
 import { affiliateProgram, DISCLOSURE, PRICE_STALE_DAYS, SHAPE_LABEL, SURFACE_LABEL, won } from "./labels";
 import { FitBar, SpecScale } from "./parts";
 
@@ -78,6 +80,29 @@ export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"];
   );
 }
 
+/**
+ * 가격 비교 링크(T-019). 네이버 쇼핑 검색 결과로 보낸다. 제휴가 아니므로 대가 표시를 붙이지 않는다.
+ * 판매처 링크가 있을 때만 보여 준다(사러 갈 곳이 없는 제품에 비교만 두지 않는다).
+ */
+export function CompareLink({ paddle, name }: { paddle: PaddleDisplay; name: string }) {
+  return (
+    <a href={compareUrl(paddle)} target="_blank" rel="noopener noreferrer" className={buttonClass({ variant: "secondary", size: "md", fullWidth: true })}>
+      다른 곳 가격 비교 ↗<span className="sr-only"> (네이버 쇼핑에서 {name} 검색, 새 창)</span>
+    </a>
+  );
+}
+
+/** 구매 묶음: 판매처 링크(제휴면 대가 표시 포함) + 가격 비교. 접히는 영역 밖에 둔다(D-022) */
+export function BuyButtons({ paddle, name, anchorId }: { paddle: PaddleDisplay; name: string; anchorId?: string }) {
+  if (!paddle.purchase) return null;
+  return (
+    <div id={anchorId} className="flex flex-col gap-2" data-testid="buy-buttons">
+      <PurchaseLink purchase={paddle.purchase} name={name} />
+      <CompareLink paddle={paddle} name={name} />
+    </div>
+  );
+}
+
 export function AdBadge() {
   return (
     <Badge tone="ad" className="ml-2 align-middle">
@@ -94,7 +119,7 @@ function Price({ paddle, today }: { paddle: PaddleDisplay; today: string }) {
   return (
     <p className="text-body font-bold text-ink">
       {paddle.price_krw !== undefined ? `약 ${won(paddle.price_krw)}` : "가격 정보 없음"}
-      {paddle.price_checked_at ? <span className="ml-2 text-caption font-normal text-muted">{paddle.price_checked_at} 기준</span> : null}
+      {paddle.price_checked_at ? <span className="ml-2 text-caption font-normal text-muted">{paddle.price_checked_at} 기준 · 판매처 가격과 다를 수 있음</span> : null}
       {priceAge > PRICE_STALE_DAYS ? <span className="ml-2 text-caption font-normal text-caution">가격 변동 가능</span> : null}
     </p>
   );
@@ -153,13 +178,15 @@ type Props = {
   today: string;
   /** top: 1순위 요약 + "자세히" 펼치기. full: 시트 안에서 모두 펼친 상태 */
   mode?: "top" | "full";
+  /** 구매 묶음의 id. 결과 화면이 이 요소가 보이는지 보고 하단 고정 버튼을 띄운다(T-019) */
+  buyAnchorId?: string;
 };
 
 /**
  * 추천 1개(docs/plan/phase2.md 5.4). 근거가 먼저 보이도록 적합도 → 핵심 이유 → 알아 둘 점 → 스펙 → 가격·승인 순서.
  * 점수 숫자는 보여 주지 않는다. 알아 둘 점은 접지 않고 개수와 첫 문장을 요약에 보인다.
  */
-export function ResultCard({ rank, item, paddle, today, mode = "top" }: Props) {
+export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorId }: Props) {
   const name = `${paddle.brand} ${paddle.model}`;
   const affiliate = paddle.purchase?.is_affiliate === true;
   return (
@@ -199,7 +226,7 @@ export function ResultCard({ rank, item, paddle, today, mode = "top" }: Props) {
         </div>
       </div>
 
-      <PurchaseLink purchase={paddle.purchase} name={name} />
+      <BuyButtons paddle={paddle} name={name} anchorId={buyAnchorId} />
 
       {mode === "top" ? (
         <details className="group border-t border-line pt-3">

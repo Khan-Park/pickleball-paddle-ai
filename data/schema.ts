@@ -61,6 +61,8 @@ export const paddleSchema = z
         path: ["program"],
       })
       .optional(),
+    /** 가격 비교 사이트 검색어(선택). 없으면 "브랜드 모델 피클볼"로 만든다(T-019). 추천 엔진은 읽지 않는다 */
+    compare_query: z.string().min(1).optional(),
     notes: z.string().optional(),
   })
   .refine((p) => p.length_in + p.width_in <= MAX_LENGTH_PLUS_WIDTH_IN + SIZE_ROUNDING_TOLERANCE_IN + 1e-9, {
@@ -81,7 +83,7 @@ export type Paddle = z.infer<typeof paddleSchema>;
 /** 추천 엔진이 쓰는 필드. 점수와 필터에 필요한 스펙만 있다. 구매 링크(purchase)·출처·메모는 없다 */
 export const SPEC_FIELDS = ["id", "weight_oz", "core_mm", "shape", "length_in", "width_in", "surface", "price_krw", "certification"] as const;
 /** 결과 화면이 추가로 보여 주는 필드. 출처 URL, 확인일, 내부 메모(notes)는 브라우저로 보내지 않는다 */
-export const DISPLAY_EXTRA_FIELDS = ["brand", "model", "price_checked_at", "purchase"] as const;
+export const DISPLAY_EXTRA_FIELDS = ["brand", "model", "price_checked_at", "purchase", "compare_query"] as const;
 
 /** 추천 엔진이 사용하는 타입. SPEC_FIELDS에 있는 필드만 담는다 */
 export type PaddleSpec = Pick<Paddle, (typeof SPEC_FIELDS)[number]>;
