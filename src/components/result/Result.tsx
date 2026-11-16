@@ -8,7 +8,8 @@ import { answersToProfile } from "@/lib/quiz/answers";
 import { loadAnswersRaw, parseAnswers } from "@/lib/quiz/storage";
 import type { UserProfile } from "@/lib/recommend/profile";
 import { recommend, type RelaxationHint } from "@/lib/recommend/recommend";
-import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal, won, type AffiliateProgram } from "./labels";
+import { NOTICE, todayLocal, won } from "./labels";
+import { AffiliatePageNotice, affiliatePrograms } from "./AffiliatePageNotice";
 import { ResultCard } from "./ResultCard";
 import { RankRow } from "./RankRow";
 import { StickyBuy } from "./StickyBuy";
@@ -119,11 +120,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   }
 
   // 화면에 제휴 링크가 하나라도 있으면 게시물의 첫 부분에서 먼저 알린다(심사지침 Ⅴ.6, 쿠팡 파트너스 가이드)
-  const programs = new Set<AffiliateProgram>();
-  for (const item of result.items) {
-    const purchase = byId.get(item.paddle_id)?.purchase;
-    if (purchase?.is_affiliate) programs.add(affiliateProgram(purchase));
-  }
+  const programs = affiliatePrograms(result.items.map((item) => byId.get(item.paddle_id)));
   const hasAffiliate = programs.size > 0;
   const topPaddle = result.items[0] ? byId.get(result.items[0].paddle_id) : undefined;
   const columns: CompareColumn[] = result.items.flatMap((item, i) => {
@@ -162,19 +159,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
     <ProductCatalogContext.Provider value={catalog}>
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
       {/* 경제적 이해관계 표시: 제목보다 앞, 본문보다 큰 글자와 다른 색, 접히지 않는 위치 */}
-      {hasAffiliate ? (
-        <div className="rounded-lg border-2 border-navy bg-card p-4" data-testid="affiliate-page-notice">
-          <p className="text-sm font-bold text-navy">광고</p>
-          {(["coupang", "other"] as const)
-            .filter((program) => programs.has(program))
-            .map((program) => (
-              <p key={program} className="mt-1 text-base font-semibold leading-relaxed text-navy">
-                {DISCLOSURE[program]}
-              </p>
-            ))}
-          <p className="mt-2 text-sm leading-relaxed text-ink">{NOTICE.ranking}</p>
-        </div>
-      ) : null}
+      <AffiliatePageNotice programs={programs} />
 
       <header className="flex flex-col gap-3">
         {answers ? <ConditionChips answers={answers} /> : null}
@@ -255,9 +240,15 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         <p>{NOTICE.price}</p>
       </footer>
 
-      <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
-        답변 고치기
-      </Link>
+      <div className="flex flex-wrap gap-x-6 gap-y-2">
+        <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
+          답변 고치기
+        </Link>
+        {/* 추천 밖의 제품도 보고 싶을 때(T-026) */}
+        <Link href="/browse" className="text-base font-semibold text-accent underline underline-offset-4">
+          전체 둘러보기
+        </Link>
+      </div>
 
       {columns.length >= 2 ? (
         <CompareSheet
