@@ -14,8 +14,9 @@ export function FitBar({ score, label }: { score: number; label: MatchLabel }) {
   const width = Math.max(4, Math.min(100, score));
   return (
     <div className="flex items-center gap-3">
-      <div className="h-2 flex-1 rounded-full bg-line" aria-hidden="true">
-        <div className="h-2 rounded-full bg-accent" style={{ width: `${width}%` }} data-testid="fit-bar" />
+      <div className="h-2 flex-1 overflow-hidden rounded-full bg-line" aria-hidden="true">
+        {/* 0에서 채워지는 연출은 폭이 아니라 scaleX로(레이아웃을 다시 계산하지 않게, T-037) */}
+        <div className="h-2 origin-left animate-bar-fill rounded-full bg-accent" style={{ width: `${width}%` }} data-testid="fit-bar" />
       </div>
       <span className="shrink-0 text-small font-bold text-accent">{label}</span>
     </div>

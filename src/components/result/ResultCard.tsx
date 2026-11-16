@@ -10,6 +10,13 @@ import { affiliateProgram, DISCLOSURE, PRICE_STALE_DAYS, SHAPE_LABEL, SURFACE_LA
 import { FitBar, SpecScale } from "./parts";
 import { HelpButton } from "@/components/help/HelpButton";
 import { ProductExtras } from "@/components/product/ProductExtras";
+import { showToast } from "@/components/ui/Toast";
+
+/** 새 창으로 넘어갈 때 짧은 안내(phase2 6.2, T-037). 대가 표시(D-022)를 대신하지 않는다 */
+export const TOAST_TEXT = {
+  purchase: "판매처로 이동합니다. 새 창에서 열립니다",
+  compare: "네이버 쇼핑으로 이동합니다. 새 창에서 열립니다",
+} as const;
 
 /**
  * 대회 승인 표시. 미확인도 숨기지 않고 적는다.
@@ -73,6 +80,7 @@ export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"];
         target="_blank"
         rel={affiliate ? "sponsored noopener" : "noopener noreferrer"}
         aria-describedby={affiliate ? disclosureId : undefined}
+        onClick={() => showToast(TOAST_TEXT.purchase)}
         className="inline-flex min-h-13 items-center justify-center rounded-control bg-accent px-4 text-center text-body font-bold text-on-accent outline-offset-2 transition-transform duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98]"
       >
         {affiliate ? <span className="sr-only">광고 · </span> : null}
@@ -88,7 +96,13 @@ export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"];
  */
 export function CompareLink({ paddle, name }: { paddle: PaddleDisplay; name: string }) {
   return (
-    <a href={compareUrl(paddle)} target="_blank" rel="noopener noreferrer" className={buttonClass({ variant: "secondary", size: "md", fullWidth: true })}>
+    <a
+      href={compareUrl(paddle)}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => showToast(TOAST_TEXT.compare)}
+      className={buttonClass({ variant: "secondary", size: "md", fullWidth: true })}
+    >
       다른 곳 가격 비교 ↗<span className="sr-only"> (네이버 쇼핑에서 {name} 검색, 새 창)</span>
     </a>
   );
@@ -251,7 +265,8 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
               ▾
             </span>
           </summary>
-          <div className="pt-3">
+          {/* 펼칠 때 내용이 아래에서 떠오르며 나타남(높이를 늘이는 연출은 하지 않는다, phase2 6.1, T-037) */}
+          <div className="pt-3 group-open:animate-reveal" data-testid="details-body">
             <Details item={item} paddle={paddle} />
           </div>
         </details>

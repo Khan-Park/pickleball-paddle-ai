@@ -46,6 +46,8 @@ describe("결과 화면 구조(T-018)", () => {
     expect(within(top).getByTestId("spec-chips").textContent).toContain("oz");
     expect(top.textContent).toMatch(/약 [\d,]+원/);
     expect(top.textContent).not.toMatch(/\d+점|점수/);
+    // "자세히"를 펼치면 내용이 떠오르며 나타난다(이동·투명도만, T-037)
+    expect(within(top).getByTestId("details-body").className).toContain("group-open:animate-reveal");
   });
 
   it("알아 둘 점이 있으면 접지 않고 개수와 첫 문장을 요약에 보여 준다", () => {

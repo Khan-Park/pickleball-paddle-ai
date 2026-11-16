@@ -23,6 +23,9 @@ function unlockScroll() {
   if (openSheets === 0) document.documentElement.style.overflow = "";
 }
 
+/** 손잡이·제목 줄을 이만큼(px) 넘게 아래로 끌었다 놓으면 닫는다(T-037) */
+export const DRAG_CLOSE_PX = 100;
+
 export function BottomSheet({
   open,
   onClose,
@@ -38,6 +41,8 @@ export function BottomSheet({
   const opener = useRef<HTMLElement | null>(null);
   const titleId = useId();
   const locked = useRef(false);
+  // 끌어 닫기(T-037): 누른 위치. 끄는 동안에는 상태를 바꾸지 않고 dialog의 transform만 바꿔 다시 그리지 않는다
+  const drag = useRef<{ startY: number; dy: number; id: number } | null>(null);
   // onClose가 렌더마다 새 함수여도 이벤트 연결을 다시 하지 않게 최신 값을 담아 둔다
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -64,6 +69,9 @@ export function BottomSheet({
     const dialog = ref.current;
     if (!dialog) return;
     const handleClose = () => {
+      drag.current = null;
+      dialog.style.transform = "";
+      dialog.style.transition = "";
       if (locked.current) {
         locked.current = false;
         unlockScroll();
@@ -98,7 +106,47 @@ export function BottomSheet({
       className="bottom-sheet mx-auto mt-auto mb-0 w-full max-w-xl rounded-t-sheet bg-card p-0 text-ink shadow-sheet open:animate-sheet-in"
     >
       <div className="flex max-h-[85dvh] flex-col">
-        <div className="flex flex-col gap-2 px-5 pt-3 pb-2">
+        {/*
+          손잡이·제목 줄을 잡고 아래로 끌면 시트가 따라 내려오고, DRAG_CLOSE_PX 넘게 내려간 채 놓으면 닫는다(phase2 5.5, T-037).
+          내용 영역에서는 끌기를 받지 않는다(스크롤과 겹치지 않게). 닫기 버튼에서 시작한 누르기는 끌기로 보지 않는다.
+          touch-none: 이 줄에서는 브라우저 기본 스크롤·당겨서 새로고침 대신 끌기를 받는다
+        */}
+        <div
+          className="flex cursor-grab touch-none flex-col gap-2 px-5 pt-3 pb-2 active:cursor-grabbing"
+          data-testid="sheet-drag-handle"
+          onPointerDown={(event) => {
+            if ((event.target as HTMLElement).closest("button")) return;
+            drag.current = { startY: event.clientY, dy: 0, id: event.pointerId };
+            event.currentTarget.setPointerCapture?.(event.pointerId);
+            if (ref.current) ref.current.style.transition = "none";
+          }}
+          onPointerMove={(event) => {
+            const d = drag.current;
+            if (!d || d.id !== event.pointerId || !ref.current) return;
+            d.dy = Math.max(0, event.clientY - d.startY);
+            ref.current.style.transform = `translateY(${d.dy}px)`;
+          }}
+          onPointerUp={(event) => {
+            const d = drag.current;
+            const dialog = ref.current;
+            drag.current = null;
+            if (!d || d.id !== event.pointerId || !dialog) return;
+            if (d.dy > DRAG_CLOSE_PX) {
+              dialog.close();
+              return;
+            }
+            // 덜 끌었으면 제자리로 돌아온다
+            dialog.style.transition = "transform var(--duration-base) var(--ease-enter)";
+            dialog.style.transform = "";
+          }}
+          onPointerCancel={() => {
+            drag.current = null;
+            if (ref.current) {
+              ref.current.style.transition = "";
+              ref.current.style.transform = "";
+            }
+          }}
+        >
           <div aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-line" />
           <div className="flex items-center justify-between gap-4">
             <h2 id={titleId} className="text-heading font-bold text-navy">
