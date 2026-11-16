@@ -38,10 +38,10 @@ Next 16 문서(node_modules/next/dist/docs)
 6. **테스트**: 사이트 주소 상수가 https이고 이메일 아이디 형태가 아닌지(빌드 산출물에 옛 하위 도메인 문자열이 없는지 점검 스크립트), sitemap에 `/`·`/browse`만, robots에 sitemap 주소, `/result` noindex, 제목 틀
 
 ## 수용 기준
-- [ ] 빌드 산출물(`out/`)에 옛 하위 도메인 문자열이 없다
-- [ ] `out/`에 `opengraph-image`(png), `sitemap.xml`, `robots.txt`가 생기고, 각 페이지 HTML에 og:title·og:description·og:image(절대 주소)가 있다
-- [ ] `/result`는 noindex
-- [ ] `npm run check`·`npm run build` 통과
+- [x] 빌드 산출물(`out/`)에 옛 하위 도메인 문자열이 없다
+- [x] `out/`에 `opengraph-image`(png), `sitemap.xml`, `robots.txt`가 생기고, 각 페이지 HTML에 og:title·og:description·og:image(절대 주소)가 있다
+- [x] `/result`는 noindex
+- [x] `npm run check`·`npm run build` 통과
 - [ ] 배포 후 카카오톡에 새 주소를 붙여 미리보기가 나온다(사용자 확인)
 
 ## 건드릴 파일
@@ -64,3 +64,13 @@ Next 16 문서(node_modules/next/dist/docs)
 - 하위 도메인: 사용자가 바꿈(2026-11-16). 바꾼 직후 옛 주소(`pickleball-paddle-ai.<옛 하위 도메인>.workers.dev`)는 **이름을 찾을 수 없음(ERR_NAME_NOT_RESOLVED)**으로 열리지 않았다. 옛 주소는 넘겨 주지 않고 끊기는 것으로 보인다(바꾼 직후 1회 확인)
 - 새 주소: **https://pickleball-paddle-ai.paddlefit.workers.dev** (사용자 제공). 바꾼 직후에는 보안 연결 오류(ERR_SSL_VERSION_OR_CIPHER_MISMATCH)가 났고, 잠시 뒤 `/`·`/quiz`·`/result`·`/icon.svg` 200, 없는 주소 404를 확인했다. `/browse`는 404인데, T-026이 아직 push·배포되지 않았기 때문이다(로컬 main이 origin보다 앞서 있음)
 - 서비스 이름: **패들핏**(사용자 확정, D7). 영문 후보 `paddlefit`. 상표·같은 이름의 서비스 여부는 확인하지 않았다
+
+## 결과 (2026-11-16)
+- 사이트 정보: `src/lib/shared/site.ts`(주소·이름·제목·설명·미리보기 그림·sitemap 경로). `layout.tsx`에 `metadataBase`, 제목 틀 `%s | 패들핏`, Open Graph(website, ko_KR, 사이트 이름), 트위터 카드. 페이지 제목은 "질문"·"추천 결과"·"둘러보기"·"페이지를 찾을 수 없습니다"만 적는다. 시작 화면 상단 이름 "패들핏"
+- **카드와 달라진 점**: `opengraph-image` 파일 규칙은 확장자 없는 `out/opengraph-image` 파일을 만들었다. 확장자로 파일 종류를 정하는 정적 호스팅에서 그림으로 안내되지 않을 수 있어(Cloudflare 동작은 미확인) `src/app/og.png/route.tsx`(GET, force-static)로 바꿔 `out/og.png`를 만들고 `layout.tsx`에서 주소를 직접 적었다. 대체 글은 `OG_IMAGE.alt`(og:image:alt)
+- 미리보기 그림: 1200×630 PNG(약 38KB), 글자 없이 앱 아이콘 + 형태 4가지(넓은 형 강조). 모든 페이지 HTML에 og:image `https://pickleball-paddle-ai.paddlefit.workers.dev/og.png`
+- `robots.txt`(전체 허용 + sitemap), `sitemap.xml`(`/`, `/browse`), `/result`는 `noindex, follow`
+- 이메일 아이디 노출 점검: 아이디 문자열을 저장소에 적지 않으려고 git 설정의 이메일에서 아이디를 읽어 `SITE_URL`·`src/`·`docs/`에 없는지 테스트한다(git 설정이 없으면 건너뜀). 빌드 산출물 `out/`에도 없음을 확인했다
+- 테스트 365 → 369개. `npm run check`·`npm run build` 통과. 로컬 정적 빌드에서 탭 제목(시작 "패들핏 · 나에게 맞는 피클볼 패들", 나머지 "○○ | 패들핏"), `/og.png` 200, 가로 넘침 없음 확인
+- `docs/deploy.md`에 사이트 주소, 배포 후 확인 항목(og.png 파일 종류, robots·sitemap, 카카오톡 미리보기) 추가
+- 확인하지 못한 것: Cloudflare가 `og.png`를 `image/png`로 응답하는지, 카카오톡 미리보기(배포 후 사용자 확인)

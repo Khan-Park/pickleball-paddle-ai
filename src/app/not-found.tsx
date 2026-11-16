@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "페이지를 찾을 수 없습니다 | 피클볼 패들 추천" };
+export const metadata: Metadata = { title: "페이지를 찾을 수 없습니다" };
 
 /** 없는 주소로 들어왔을 때. 정적 내보내기에서는 out/404.html이 된다 */
 export default function NotFound() {
