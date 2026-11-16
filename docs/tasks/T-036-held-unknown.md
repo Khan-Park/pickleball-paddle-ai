@@ -80,8 +80,16 @@
 > 4. 프로케넥스 키네틱 프로 스피드: 코어 두께(mm)와 면 소재가 무엇인가요?
 > 5. 프로케넥스 파워: 상세페이지의 '두께 13mm'가 코어 두께인가요? 길이·폭도 알려 주세요.
 > 6. 스카로 PKR-T700: 상세페이지의 '16mm'가 코어 두께인가요, 패들 전체 두께인가요?
+> 7. 트라이온 V-1 컨트롤·V-1 파워: 패들 폭(가로)이 몇 mm인가요? (제조사 스펙 표에는 패들 길이 415mm와 'Handle Width 110mm'만 있습니다)
 >
 > 감사합니다.
 
 - 답이 오면 이 카드에 원문과 날짜를 적고, 값마다 확인표를 거쳐 반영한다(판매처 답변은 판매처 표기로 기록, D-025)
 - JOOLA Hyperion Vision·Hurache-X Power 2·Vapor Jelly Bean 2는 문의해도 승인 목록 등재가 바뀌지 않으므로 문의하지 않는다(목록에 오르면 그때 바꾼다)
+
+## TRION 제조사 스펙 이미지 (2026-11-17, 사용자 승인 후 앱 안 브라우저로 이미지를 열어 읽음. 파일 저장 없음)
+- V-1 CONTROL(`V-120CONTROL_FULL.jpg`, 860×11473): Paddle Length 415mm, Handle Length 415mm(표기 그대로), Handle Width 110mm, Balance Point 180mm, Core Thickness 16mm, Weight 225g ± / 7.9oz, Material T-700 CARBON SURFACE / HYPERDENSITY EPP FOAM CORE
+- V-1 POWER(`copy-1762241598-V-120POWER_FULL.jpg`, 860×11770): Handle Length 415mm, Handle Width 110mm, Balance Point 180mm, Core Thickness 16mm, Weight 230g ± / 8.1oz, Material T-700 CARBON SURFACE / GEL SKIN FOAM, HONEYCOMB CORE
+- **패들 폭 칸이 없다.** 'Handle Width 110mm'는 손잡이 폭으로 보기에는 크고 패들 폭(보통 190mm 안팎)으로 보기에는 작아 어느 쪽인지 알 수 없다 → 폭은 계속 비워 두고 판매처 문의 7번에 넣었다
+- 코어 16mm·무게·면 소재는 기존 초안 값과 맞는지 반영 단계에서 대조한다
+- 처리: B의 TRION 2개는 "문의 중"
