@@ -61,4 +61,6 @@ Next 16 문서(node_modules/next/dist/docs)
 - node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/01-metadata/(opengraph-image·robots·sitemap), …/04-functions/generate-metadata.md(metadataBase), …/02-guides/static-exports.md
 
 ## 결정 (2026-11-16)
+- 하위 도메인: 사용자가 바꿈(2026-11-16). 바꾼 직후 옛 주소(`pickleball-paddle-ai.<옛 하위 도메인>.workers.dev`)는 **이름을 찾을 수 없음(ERR_NAME_NOT_RESOLVED)**으로 열리지 않았다. 옛 주소는 넘겨 주지 않고 끊기는 것으로 보인다(바꾼 직후 1회 확인)
+- 새 주소: **https://pickleball-paddle-ai.paddlefit.workers.dev** (사용자 제공). 바꾼 직후에는 보안 연결 오류(ERR_SSL_VERSION_OR_CIPHER_MISMATCH)가 났고, 잠시 뒤 `/`·`/quiz`·`/result`·`/icon.svg` 200, 없는 주소 404를 확인했다. `/browse`는 404인데, T-026이 아직 push·배포되지 않았기 때문이다(로컬 main이 origin보다 앞서 있음)
 - 서비스 이름: **패들핏**(사용자 확정, D7). 영문 후보 `paddlefit`. 상표·같은 이름의 서비스 여부는 확인하지 않았다
