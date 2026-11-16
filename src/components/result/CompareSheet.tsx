@@ -62,7 +62,7 @@ export function CompareSheet({
                 aria-label={`${c.rank}순위 ${c.paddle.brand} ${c.paddle.model}${c.paddle.purchase?.is_affiliate ? ", 광고" : ""}. 자세히 보기`}
               >
                 <span aria-hidden="true" className="flex items-center gap-1">
-                  <span className="flex size-6 items-center justify-center rounded-full bg-accent text-caption font-bold text-white">{c.rank}</span>
+                  <span className="flex size-6 items-center justify-center rounded-full bg-accent text-caption font-bold text-on-accent">{c.rank}</span>
                   {c.paddle.purchase?.is_affiliate ? (
                     <span className="rounded-control border border-ink px-1 text-caption font-bold text-ink" data-testid="compare-ad">
                       광고
