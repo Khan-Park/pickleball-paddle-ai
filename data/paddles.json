@@ -85,14 +85,14 @@
     "price_checked_at": "2026-11-15",
     "certification": {
       "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://joola.com/products/hyperion-vision-16mm",
       "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-joola-vision-hyperion-16mm-%EB%B9%84%EC%A0%84-%ED%95%98%EC%9D%B4%ED%8E%98%EB%A6%AC%EC%98%A8-1955"
     ],
     "verified_at": "2026-11-15",
-    "notes": "제조사 페이지는 'USAP certified: Yes'라고 표기하지만 USA Pickleball 승인 목록과 대조하지 않아 unknown으로 둠. 무게는 제조사 표기 'Average Weight'(단일 값)."
+    "notes": "제조사 페이지는 'USAP certified: Yes'라고 표기한다. 2026-11-16 USA Pickleball 승인 목록의 JOOLA Hyperion 21건에 Vision이 없어(Double Vision은 다른 모델) unknown으로 둔다. 무게는 제조사 표기 'Average Weight'(단일 값)."
   },
   {
     "id": "spartus-spitfire-elongated-16mm",
@@ -180,14 +180,14 @@
     "price_checked_at": "2026-11-15",
     "certification": {
       "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://www.sixzeropickleball.com/products/boulder-opal",
       "https://pnpino.com/products/%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EB%B3%BC%EB%8D%94-%EC%98%A4%ED%8C%94-boulder-opal-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-14mm-5wtj"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.0–8.3oz, 16.3 × 7.5–7.7in, 코어 14mm. 공식 페이지에는 Smooth 면이 USAP 승인판, Rough 면이 UPA 승인판으로 적혀 있다(USAP 목록은 미확인이라 인증은 unknown 유지)). 14mm 코어. weight_oz와 width_in은 판매처 표기 범위(8.0–8.3oz, 7.5–7.7in)의 중간값(파생값)."
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.0–8.3oz, 16.3 × 7.5–7.7in, 코어 14mm. 공식 페이지에는 Smooth 면이 USAP 승인판, Rough 면이 UPA 승인판으로 적혀 있다). 14mm 코어. weight_oz와 width_in은 판매처 표기 범위(8.0–8.3oz, 7.5–7.7in)의 중간값(파생값). 2026-11-16 대회 승인: USA Pickleball 승인 목록에 'Boulder Opal RCS 14mm'(entry 11655, 하이브리드)가 있으나 제조사가 USAP 승인판(Smooth)과 UPA 전용판(Rough)을 따로 팔고, 판매처 페이지에 어느 판인지 없어 unknown으로 둔다."
   },
   {
     "id": "luzz-glider-2026-hybrid-16mm",
@@ -202,15 +202,16 @@
     "price_krw": 190000,
     "price_checked_at": "2026-11-15",
     "certification": {
-      "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://luzzpickleball.com/products/luzz-gabbys-dollhouse-glider-2026-hybrid-paddle",
-      "https://pnpino.com/products/luzz-luzz-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EA%B0%9C%EB%B9%84%EC%8A%A4-%EB%8F%8C%ED%95%98%EC%9A%B0%EC%8A%A4-%EA%B8%80%EB%9D%BC%EC%9D%B4%EB%8D%94-2026-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-t700-%EC%B9%B4%EB%B3%B8-tc4j"
+      "https://pnpino.com/products/luzz-luzz-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EA%B0%9C%EB%B9%84%EC%8A%A4-%EB%8F%8C%ED%95%98%EC%9A%B0%EC%8A%A4-%EA%B8%80%EB%9D%BC%EC%9D%B4%EB%8D%94-2026-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-t700-%EC%B9%B4%EB%B3%B8-tc4j",
+      "https://equipment.usapickleball.org/paddle-list/entry/12660/"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 7.94oz, 16.34 × 7.68in, 두께 16mm. 공식 페이지에 UPA-A·USAP 이중 인증이라고 적혀 있다(USAP 목록은 미확인이라 인증은 unknown 유지)). 캐릭터 디자인 에디션. 규격은 판매처 제품 정보 표를 이미지로 대조한 값. 길이+폭 표기 합이 24.02in(41.5 + 19.5cm = 61.0cm)."
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 7.94oz, 16.34 × 7.68in, 두께 16mm. 공식 페이지에 UPA-A·USAP 이중 인증이라고 적혀 있다). 캐릭터 디자인 에디션. 규격은 판매처 제품 정보 표를 이미지로 대조한 값. 길이+폭 표기 합이 24.02in(41.5 + 19.5cm = 61.0cm). 2026-11-16 대회 승인: USA Pickleball 승인 목록 'Glider'(entry 12660, 2026-01-21 등록, 사진 파일명 Glider-updated-graphics)와 대응. Gabby's Dollhouse판은 그래픽만 다른 판으로 보고 판단했고, Luzz 공식 페이지도 이 판을 USAP 인증으로 표기(사용자 승인)."
   },
   {
     "id": "joola-power-fx-16mm",
@@ -225,15 +226,16 @@
     "price_krw": 299000,
     "price_checked_at": "2026-11-15",
     "certification": {
-      "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://joola.com/products/perseus-power-fx-pickleball-paddle",
-      "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%ED%8C%8C%EC%9B%8C-fx-power-fx-%ED%8F%BC%EC%BD%94%EC%96%B4-16mm-mm65"
+      "https://pnpino.com/products/joola-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%ED%8C%8C%EC%9B%8C-fx-power-fx-%ED%8F%BC%EC%BD%94%EC%96%B4-16mm-mm65",
+      "https://equipment.usapickleball.org/paddle-list/entry/13645/"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 공식 페이지와 대조(무게 8.0oz, 16.5 × 7.5in, 코어 16mm. 무게를 g 환산값 8.01에서 공식 값 8.0으로 바꿨다. 공식 페이지에 USAP 인증이라고 적혀 있다(USAP 목록은 미확인이라 인증은 unknown 유지)). 무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값. 색상 2종(데이드림·프리즈)."
+    "notes": "2026-11-16 제조사 공식 페이지와 대조(무게 8.0oz, 16.5 × 7.5in, 코어 16mm. 무게를 g 환산값 8.01에서 공식 값 8.0으로 바꿨다. 공식 페이지에 USAP 인증이라고 적혀 있다). 무게·길이·폭은 판매처 웹 원문(g·cm)을 환산한 파생값. 색상 2종(데이드림·프리즈). 2026-11-16 대회 승인: USA Pickleball 승인 목록 'Perseus POWER FX 16mm'(entry 13645, 2026-10-01 등록)과 대응(사용자 승인)."
   },
   {
     "id": "friday-original-carbon-fiber-16mm",
@@ -248,15 +250,17 @@
     "price_krw": 105000,
     "price_checked_at": "2026-11-15",
     "certification": {
-      "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://fridaypickle.com/products/friday-paddle",
-      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%98%A4%EB%A6%AC%EC%A7%80%EB%84%90-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-16mm-3f10"
+      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%98%A4%EB%A6%AC%EC%A7%80%EB%84%90-%EC%B9%B4%EB%B3%B8%ED%8C%8C%EC%9D%B4%EB%B2%84-16mm-3f10",
+      "https://equipment.usapickleball.org/paddle-list/entry/6415/",
+      "https://equipment.usapickleball.org/paddle-list/entry/7440/"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.2oz ± 0.18oz, 16.5 × 7.5in, 두께 16mm). 무게는 OCR 원문 값(8.2온스)이며 발췌 이미지에서 직접 확인하지 못했다. 색상 10종, 헤드 윗면 형태가 색상별로 다름."
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(무게 8.2oz ± 0.18oz, 16.5 × 7.5in, 두께 16mm). 무게는 OCR 원문 값(8.2온스)이며 발췌 이미지에서 직접 확인하지 못했다. 색상 10종, 헤드 윗면 형태가 색상별로 다름. 2026-11-16 대회 승인: USA Pickleball 승인 목록에 코드명 FRIDAY-LABS-01(entry 6415, 둥근 윗면)과 FRIDAY-LABS-02(entry 7440, 평평한 윗면)로 등록. PP 허니콤·16mm·카본으로 대응을 판단(사용자 승인)."
   },
   {
     "id": "six-zero-coral-pro-hybrid-16mm",
@@ -272,14 +276,14 @@
     "price_checked_at": "2026-11-15",
     "certification": {
       "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://www.sixzeropickleball.com/products/coral-pro",
       "https://pnpino.com/products/%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EC%8B%9D%EC%8A%A4%EC%A0%9C%EB%A1%9C-%EC%BD%94%EB%9E%84-%ED%94%84%EB%A1%9C-coral-pro-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-16mm-dr0w"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid: 무게 8.0–8.3oz, 16.3 × 7.5–7.7in, 코어 16mm. UPA 전용판과 UPA·USAP 승인판이 따로 있다). weight_oz는 판매처 표기 범위의 중간값, width_in은 표기 범위(7.5~7.7in)의 중간값(둘 다 파생값). 길이·폭은 OCR 원문 값."
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid: 무게 8.0–8.3oz, 16.3 × 7.5–7.7in, 코어 16mm. UPA 전용판과 UPA·USAP 승인판이 따로 있다). weight_oz는 판매처 표기 범위의 중간값, width_in은 표기 범위(7.5~7.7in)의 중간값(둘 다 파생값). 길이·폭은 OCR 원문 값. 2026-11-16 대회 승인: USA Pickleball 승인 목록에 'Coral Pro'(entry 13780, RCD 16MM, 하이브리드)가 있으나 제조사가 UPA·USAP 승인판과 UPA 전용판을 따로 팔고, 판매처 페이지에 어느 판인지 없어 unknown으로 둔다."
   },
   {
     "id": "selkirk-boomstik-st-elongated-16mm",
@@ -393,14 +397,15 @@
     "price_krw": 244000,
     "price_checked_at": "2026-11-15",
     "certification": {
-      "usa_pickleball": "unknown",
-      "checked_at": "2026-11-15"
+      "usa_pickleball": "approved",
+      "checked_at": "2026-11-16"
     },
     "sources": [
       "https://fridaypickle.com/products/aura-pro-paddle",
-      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%95%84%EC%9A%B0%EB%9D%BC-%ED%94%84%EB%A1%9C-gen-4-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-fbd5"
+      "https://pnpino.com/products/friday-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EC%95%84%EC%9A%B0%EB%9D%BC-%ED%94%84%EB%A1%9C-gen-4-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-fbd5",
+      "https://equipment.usapickleball.org/paddle-list/entry/12899/"
     ],
     "verified_at": "2026-11-16",
-    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid 선택 시: 무게 7.9oz ± 0.18oz, 16.375 × 7.625in, 두께 16mm). 규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션."
+    "notes": "2026-11-16 제조사 공식 페이지와 대조해 일치(Hybrid 선택 시: 무게 7.9oz ± 0.18oz, 16.375 × 7.625in, 두께 16mm). 규격은 판매처 스펙 표를 이미지로 대조한 값(인치 표기 사용). 메탈릭 색상은 추가금(+15,000원) 옵션. 2026-11-16 대회 승인: USA Pickleball 승인 목록에 코드명 FL-H-FOAM-M-N(entry 12899)으로 등록. 등록 사진 파일명 usap-aura-pro-hybrid, 하이브리드·EPP 폼·16mm로 대응을 판단(사용자 승인)."
   }
 ]
