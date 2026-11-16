@@ -36,14 +36,12 @@ export const DISCLOSURE = {
 
 export type AffiliateProgram = keyof typeof DISCLOSURE;
 
-/** 제휴 링크의 프로그램을 주소로 구분한다. 쿠팡 주소(coupang.com과 그 하위 도메인)면 쿠팡 파트너스 */
-export function affiliateProgram(url: string): AffiliateProgram {
-  try {
-    const host = new URL(url).hostname.toLowerCase();
-    return host === "coupang.com" || host.endsWith(".coupang.com") ? "coupang" : "other";
-  } catch {
-    return "other";
-  }
+/**
+ * 대가 표시 문구를 고른다. 데이터에 적힌 program을 따른다(주소로 추정하지 않는다).
+ * 쿠팡 주소인데 program이 빠진 경우는 데이터 점검(data/check.ts)이 오류로 막는다.
+ */
+export function affiliateProgram(purchase: { program?: "coupang_partners" | "other" }): AffiliateProgram {
+  return purchase.program === "coupang_partners" ? "coupang" : "other";
 }
 
 export const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;

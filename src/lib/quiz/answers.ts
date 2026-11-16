@@ -18,7 +18,8 @@ const INVALID_CHECKS: { id: "budget" | "arm" | "tournament"; allowed: string[] }
   { id: "tournament", allowed: ["yes", "no"] },
 ];
 
-export type AnswersResult = ProfileParseResult | { success: false; missing: QuestionId[] };
+/** missing: 아직 답하지 않은 질문, invalid: 답은 있지만 선택지에 없는 값인 질문 */
+export type AnswersResult = ProfileParseResult | { success: false; missing: QuestionId[]; invalid: QuestionId[] };
 
 /**
  * 질문 답변을 추천 엔진의 UserProfile로 바꾼다. 순수 함수.
@@ -31,12 +32,12 @@ export function answersToProfile(answers: QuizAnswers): AnswersResult {
     const missing = visibleQuestions(answers)
       .filter((q) => answers[q.id] === undefined)
       .map((q) => q.id);
-    return { success: false, missing };
+    return { success: false, missing, invalid: [] };
   }
   // 저장된 답이 손상됐거나 옛 값이면(선택지에 없는 값) 조용히 기본값으로 바꾸지 않고 다시 묻는다.
   // 예산·팔 불편·대회 답은 아래 변환에서 기본값으로 떨어질 수 있어 여기서 먼저 확인한다
   const invalid = INVALID_CHECKS.filter(({ id, allowed }) => !allowed.includes(String(answers[id]))).map(({ id }) => id);
-  if (invalid.length > 0) return { success: false, missing: invalid };
+  if (invalid.length > 0) return { success: false, missing: [], invalid };
 
   // "잘 모르겠어요"는 초보에게만 보이는 선택지다. 초보가 아닌데 남아 있으면 균형으로 본다(설계상 같은 뜻)
   const style = answers.play_style === "unsure" ? "balanced" : answers.play_style;

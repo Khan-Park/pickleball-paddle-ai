@@ -50,10 +50,11 @@ export function Quiz() {
     }
     const result = answersToProfile(next);
     if (!result.success) {
-      // 정상 흐름에서는 일어나지 않는다. 일어나면 문제가 된 첫 질문으로 돌려보낸다
-      const missing = "missing" in result ? result.missing[0] : undefined;
-      goTo(Math.max(0, list.findIndex((q) => q.id === missing)));
-      setError("답하지 않았거나 다시 확인이 필요한 질문이 있습니다.");
+      // 정상 흐름에서는 일어나지 않는다(저장된 답이 손상된 경우 등). 문제가 된 첫 질문으로 돌려보낸다
+      const invalid = "invalid" in result ? result.invalid : [];
+      const target = "missing" in result ? (result.missing[0] ?? invalid[0]) : undefined;
+      goTo(Math.max(0, list.findIndex((q) => q.id === target)));
+      setError(invalid.length > 0 ? "저장된 답 중에 읽을 수 없는 값이 있습니다. 이 질문을 다시 골라 주세요." : "답하지 않은 질문이 있습니다. 다시 확인해 주세요.");
       return;
     }
     saveAnswers(next);
@@ -83,6 +84,8 @@ export function Quiz() {
   const currentAnswer = answers[question.id];
   const canGoNext = !question.multiple && question.options.some((o) => o.value === currentAnswer);
   const hasAnyAnswer = Object.keys(answers).length > 0;
+  // 아직 아무것도 건드리지 않았고 저장된 답변으로 화면을 채운 상태
+  const restored = edited === null && saved !== null && hasAnyAnswer;
 
   return (
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
@@ -102,6 +105,12 @@ export function Quiz() {
       <div className="h-1 w-full rounded bg-line" aria-hidden="true">
         <div className="h-1 rounded bg-accent" style={{ width: `${((index + 1) / questions.length) * 100}%` }} />
       </div>
+
+      {restored ? (
+        <p role="status" className="rounded-lg border border-line bg-card p-3 text-sm leading-relaxed text-ink">
+          이 탭에서 전에 답한 내용을 불러왔습니다. 바꾸고 싶은 질문으로 돌아가 고칠 수 있습니다.
+        </p>
+      ) : null}
 
       <fieldset className="flex flex-col gap-4">
         <legend ref={legendRef} tabIndex={-1} className="mb-4 text-2xl font-bold leading-snug text-navy outline-none">

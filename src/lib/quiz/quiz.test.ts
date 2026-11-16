@@ -111,8 +111,8 @@ describe("answersToProfile", () => {
   });
 
   it("답하지 않은 질문이 있으면 어떤 질문인지 알려 준다", () => {
-    expect(answersToProfile({})).toEqual({ success: false, missing: ["experience", "play_style", "weight", "arm", "shapes", "budget", "tournament"] });
-    expect(answersToProfile({ experience: "under_1y", play_style: "control", weight: "light", arm: "no" })).toEqual({ success: false, missing: ["budget", "tournament"] });
+    expect(answersToProfile({})).toEqual({ success: false, missing: ["experience", "play_style", "weight", "arm", "shapes", "budget", "tournament"], invalid: [] });
+    expect(answersToProfile({ experience: "under_1y", play_style: "control", weight: "light", arm: "no" })).toEqual({ success: false, missing: ["budget", "tournament"], invalid: [] });
   });
 
   it("입력 객체를 바꾸지 않는다", () => {
@@ -127,10 +127,10 @@ describe("answersToProfile: 손상된 저장값", () => {
   const bad = (o: object) => answersToProfile({ ...full, ...o } as QuizAnswers);
 
   it("예산·팔 불편·대회 답이 선택지에 없는 값이면 기본값으로 바꾸지 않고 다시 묻는다", () => {
-    expect(bad({ budget: "under100" })).toEqual({ success: false, missing: ["budget"] });
-    expect(bad({ arm: "maybe" })).toEqual({ success: false, missing: ["arm"] });
-    expect(bad({ tournament: true })).toEqual({ success: false, missing: ["tournament"] });
-    expect(bad({ budget: 1, arm: "", tournament: "y" })).toEqual({ success: false, missing: ["budget", "arm", "tournament"] });
+    expect(bad({ budget: "under100" })).toEqual({ success: false, missing: [], invalid: ["budget"] });
+    expect(bad({ arm: "maybe" })).toEqual({ success: false, missing: [], invalid: ["arm"] });
+    expect(bad({ tournament: true })).toEqual({ success: false, missing: [], invalid: ["tournament"] });
+    expect(bad({ budget: 1, arm: "", tournament: "y" })).toEqual({ success: false, missing: [], invalid: ["budget", "arm", "tournament"] });
   });
 
   it("경력·무게·성향이 모르는 값이면 프로필 검증에서 실패한다", () => {

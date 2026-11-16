@@ -13,8 +13,15 @@ import { affiliateProgram, DISCLOSURE, PRICE_STALE_DAYS, SHAPE_LABEL, SURFACE_LA
 export function CertBadge({ certification, today }: { certification: Paddle["certification"]; today: string }) {
   if (certification.usa_pickleball === "approved") {
     const age = daysBetween(certification.checked_at, today);
-    const fresh = Number.isFinite(age) && age >= 0 && age <= CERT_MAX_AGE_DAYS;
-    if (!fresh) {
+    // 확인일이 미래이거나 날짜로 읽을 수 없으면 얼마나 지났는지 말할 수 없다(데이터 오류이거나 기기 시계가 틀린 경우)
+    if (!Number.isFinite(age) || age < 0) {
+      return (
+        <p className="text-sm font-medium text-caution">
+          ⚠ USA Pickleball 승인 재확인 필요 <span className="font-normal text-muted">(확인일 {certification.checked_at}을 확인할 수 없음)</span>
+        </p>
+      );
+    }
+    if (age > CERT_MAX_AGE_DAYS) {
       return (
         <p className="text-sm font-medium text-caution">
           ⚠ USA Pickleball 승인 재확인 필요 <span className="font-normal text-muted">({certification.checked_at} 확인, 오래됨)</span>
@@ -47,7 +54,7 @@ export function PurchaseLink({ purchase, name }: { purchase: Paddle["purchase"];
     <div className="flex flex-col gap-2">
       {affiliate ? (
         <p id={disclosureId} className="text-sm font-semibold text-navy" data-testid="affiliate-disclosure">
-          {DISCLOSURE[affiliateProgram(purchase.url)]}
+          {DISCLOSURE[affiliateProgram(purchase)]}
         </p>
       ) : null}
       {/*

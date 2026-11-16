@@ -3,11 +3,13 @@
  * 문구는 한국어, 과장 표현과 의학적 단정을 쓰지 않는다.
  */
 
+import type { Shape } from "../../../data/schema";
 import { SHAPE_LABEL } from "../shared/shape-labels";
 
 export type QuestionId = "experience" | "play_style" | "weight" | "arm" | "shapes" | "budget" | "tournament";
 
-export type ShapeValue = "standard" | "hybrid" | "elongated" | "widebody";
+/** 스키마의 형태 타입과 같다 */
+export type ShapeValue = Shape;
 
 /** 사용자가 고른 답. 아직 답하지 않은 질문은 키가 없다 */
 export type QuizAnswers = {

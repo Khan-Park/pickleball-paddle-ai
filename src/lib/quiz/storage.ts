@@ -31,12 +31,25 @@ export function loadAnswersRaw(): string | null {
   }
 }
 
-/** JSON 문자열을 답변으로 바꾼다. 형식이 깨졌으면 null. 값의 유효성은 answersToProfile이 다시 검증한다 */
+const TEXT_KEYS = ["experience", "play_style", "weight", "arm", "budget", "tournament"] as const;
+
+/**
+ * JSON 문자열을 답변으로 바꾼다. 모양이 맞지 않으면 통째로 버리고 null을 돌려준다
+ * (화면이 문자열이나 배열이 아닌 값을 받아 깨지지 않게). 값이 선택지 안에 있는지는 answersToProfile이 검증한다.
+ * - 한 가지를 고르는 답은 문자열, 선호 모양은 문자열 배열이어야 한다.
+ */
 export function parseAnswers(raw: string | null): QuizAnswers | null {
   if (!raw) return null;
   try {
     const parsed: unknown = JSON.parse(raw);
-    return typeof parsed === "object" && parsed !== null && !Array.isArray(parsed) ? (parsed as QuizAnswers) : null;
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) return null;
+    const record = parsed as Record<string, unknown>;
+    for (const key of TEXT_KEYS) {
+      if (record[key] !== undefined && typeof record[key] !== "string") return null;
+    }
+    const shapes = record.shapes;
+    if (shapes !== undefined && !(Array.isArray(shapes) && shapes.every((s) => typeof s === "string"))) return null;
+    return record as QuizAnswers;
   } catch {
     return null;
   }

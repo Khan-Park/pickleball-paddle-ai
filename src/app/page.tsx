@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { StartButton } from "@/components/StartButton";
 
 const POINTS = [
   { title: "스펙을 근거로", body: "무게, 코어 두께, 형태 같은 공개된 스펙으로 맞는 정도를 계산합니다." },
@@ -17,12 +17,7 @@ export default function Home() {
         </p>
       </header>
 
-      <Link
-        href="/quiz"
-        className="rounded-lg bg-navy px-5 py-4 text-center text-base font-semibold text-white outline-offset-4 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-accent"
-      >
-        질문 시작하기
-      </Link>
+      <StartButton />
 
       <ul className="flex flex-col gap-3">
         {POINTS.map((p) => (
