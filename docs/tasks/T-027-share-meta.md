@@ -59,3 +59,6 @@ Next 16 문서(node_modules/next/dist/docs)
 ## 참고
 - docs/plan/m2.md, docs/decisions.md D-030·D-027, docs/deploy.md
 - node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/01-metadata/(opengraph-image·robots·sitemap), …/04-functions/generate-metadata.md(metadataBase), …/02-guides/static-exports.md
+
+## 결정 (2026-11-16)
+- 서비스 이름: **패들핏**(사용자 확정, D7). 영문 후보 `paddlefit`. 상표·같은 이름의 서비스 여부는 확인하지 않았다
