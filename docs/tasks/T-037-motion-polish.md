@@ -48,3 +48,7 @@ M1 검수에서 M2로 넘긴 연출(phase2 6.2 중 빠진 것)을 넣고, 둘러
 
 ## 참고
 - docs/plan/phase2.md 6.1·6.2·7.8, docs/plan/m1-review.md, T-026 결과(필터 높이 346px)
+
+## 결정 (2026-11-16, 사용자)
+- A: Lighthouse는 이 앱의 브라우저로 PageSpeed Insights 웹 페이지에서 잰다(공개 사이트 주소만 보냄, 설치 없음)
+- B: 둘러보기 필터는 처음에 접힌 상태
