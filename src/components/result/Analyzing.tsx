@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { STEP_MS, type AnalyzeMode } from "./analyzing-flag";
+import { analyzeTotalMs, STEP_MS, type AnalyzeMode } from "./analyzing-flag";
 
 /** 패들이 공을 치는 단순한 선 그림. 직접 그린 장식이라 화면 낭독기에는 숨긴다 */
 function PaddleSwing() {
@@ -35,7 +35,7 @@ export function Analyzing({ count, mode, onDone }: { count: number; mode: Analyz
     const ms = STEP_MS[mode];
     const timers = steps.map((_, i) => setTimeout(() => setDone(i + 1), ms * (i + 1)));
     // 마지막 체크가 보인 뒤 잠깐 두고 결과로
-    timers.push(setTimeout(() => onDoneRef.current(), ms * steps.length + ms / 2));
+    timers.push(setTimeout(() => onDoneRef.current(), analyzeTotalMs(mode)));
     return () => timers.forEach(clearTimeout);
     // 단계 수는 고정(3)이라 mode만 본다
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -82,6 +82,44 @@ describe("결과 화면 구조(T-018)", () => {
     }
   });
 
+  it("행의 '광고'는 이름이 길어도 잘리는 영역 밖, 이름 앞에 있다(T-033)", () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    const long = PADDLES.map((x) => ({
+      ...x,
+      model: `${x.model} 아주 긴 이름 프로 에디션 2027 한정판`,
+      purchase: { url: `https://shop.example.com/${x.id}`, is_affiliate: true, program: "other" as const },
+    }));
+    render(<Result paddles={long} />);
+    for (const row of screen.getAllByTestId("rank-row")) {
+      const name = within(row).getByTestId("rank-row-name");
+      const badge = within(row).getByTestId("affiliate-badge");
+      expect(name.className).toContain("truncate");
+      expect(name.contains(badge)).toBe(false);
+      expect(badge.compareDocumentPosition(name) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    }
+  });
+
+  it("행의 승인 표시는 카드·비교표와 같은 기준이고, 가격·승인을 행 이름으로도 읽는다(T-033)", () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    const [first, second, third] = PADDLES;
+    const mixed = [
+      first!,
+      { ...second!, certification: { usa_pickleball: "approved" as const, checked_at: "2000-01-01" } },
+      { ...third!, certification: { usa_pickleball: "not_approved" as const, checked_at: today } },
+    ];
+    render(<Result paddles={mixed} />);
+    const rows = screen.getAllByTestId("rank-row");
+    const texts = rows.map((r) => r.textContent ?? "");
+    expect(texts.some((t) => t.includes("재확인 필요"))).toBe(true);
+    expect(texts.some((t) => t.includes("미승인"))).toBe(true);
+    expect(texts.join(" ")).not.toContain("승인 미확인");
+    for (const row of rows) {
+      const label = row.getAttribute("aria-label")!;
+      expect(label).toMatch(/약 [\d,]+원/);
+      expect(label).toMatch(/재확인 필요|미승인/);
+    }
+  });
+
   it("'내 조건' 칩은 답을 요약하고 질문 화면으로 이어지며, 팔 불편 답과 '상관없어요'는 넣지 않는다", () => {
     expect(conditionChips(lightLover)).toEqual(["1~3년", "컨트롤", "가벼운 무게", "넓은 형", "대회용"]);
     expect(conditionChips({ ...lightLover, weight: "any", budget: "any", tournament: "no" })).toEqual(["1~3년", "컨트롤", "넓은 형"]);
@@ -171,5 +209,15 @@ describe("하단 고정 구매 버튼(T-019)", () => {
     const disclosure = within(bar).getByTestId("affiliate-disclosure");
     const link = within(bar).getByRole("link", { name: /광고/ });
     expect(disclosure.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // 바가 뜰 때 페이지 위 안내는 화면 밖이므로 바에도 "광고"가 보인다(T-033 A)
+    expect(within(bar).getByTestId("affiliate-badge").textContent).toBe("광고");
+  });
+
+  it("제휴가 아니면 고정 버튼에 '광고'가 없다", async () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    render(<Result paddles={PADDLES.map((x) => ({ ...x, purchase: { url: `https://shop.example.com/${x.id}`, is_affiliate: false } }))} />);
+    const { act } = await import("@testing-library/react");
+    act(() => report(false));
+    expect(within(screen.getByTestId("sticky-buy")).queryByTestId("affiliate-badge")).toBeNull();
   });
 });

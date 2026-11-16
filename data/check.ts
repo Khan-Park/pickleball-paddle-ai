@@ -97,6 +97,11 @@ export function checkPaddles(raw: unknown, today: string): CheckReport {
       warnings.push(`${p.id}: 가격 확인 후 ${age(p.price_checked_at)}일 지났다. 가격 재확인이 필요하다(기준 ${PRICE_MAX_AGE_DAYS}일)`);
     }
 
+    // 결과의 모든 제품에 구매 링크가 있어야 한다(docs/plan/phase2.md 1장 실사용 기준 1, T-033)
+    if (!p.purchase) {
+      errors.push(`${p.id}: 구매 링크(purchase)가 없다. 사람이 확인한 판매처 페이지를 sources와 purchase에 넣어야 한다`);
+    }
+
     // 제휴가 아닌 판매처 링크는 사람이 확인한 출처 페이지로만 보낸다(T-019). 제휴 링크는 프로그램이 만든 주소라 출처와 다를 수 있다
     if (p.purchase && !p.purchase.is_affiliate && !p.sources.includes(p.purchase.url)) {
       errors.push(`${p.id}: 판매처 링크가 출처(sources)에 없는 주소다. 사람이 확인한 판매처 페이지를 sources에 넣고 같은 주소를 써야 한다`);

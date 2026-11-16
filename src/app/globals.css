@@ -23,7 +23,7 @@
   /* 주의(주황)와 대회 승인 확인(초록). 확인 초록은 청록과 비슷하므로 늘 아이콘·글자와 함께 쓴다(Badge) */
   --caution: #b45309;
   --caution-soft: #fef3e2;
-  --confirm: #15803d;
+  --confirm: #166534;
   --confirm-soft: #e8f5ec;
 
   /* 모션. 시간 3단계와 곡선 2개(나타남은 ease-out, 사라짐은 ease-in) */

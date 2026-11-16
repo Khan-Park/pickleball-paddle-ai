@@ -37,7 +37,7 @@ export function GlossaryContent({ term, onChange }: { term: GlossaryTerm; onChan
 
 /**
  * 용어 옆 ⓘ 버튼(T-021). 누르면 바텀시트에 그 용어 설명을 연다.
- * label을 주면 "ⓘ 무게란?"처럼 글자를 함께 보이고, 주지 않으면 ⓘ만 보인다(이름은 늘 "○○ 설명 보기").
+ * label을 주면 "ⓘ 무게란?"처럼 글자를 함께 보이고 이름은 "무게란? 설명 보기", 주지 않으면 ⓘ만 보이고 이름은 "무게 설명 보기".
  */
 export function HelpButton({ term, label, className = "" }: { term: GlossaryTerm; label?: string; className?: string }) {
   const [open, setOpen] = useState(false);
@@ -52,7 +52,8 @@ export function HelpButton({ term, label, className = "" }: { term: GlossaryTerm
           setCurrent(term);
           setOpen(true);
         }}
-        aria-label={`${GLOSSARY[term].title} 설명 보기`}
+        // 글자가 보이면 이름도 그 글자로 시작한다(WCAG 2.5.3 보이는 이름 포함). 음성으로 "무게란?"이라고 불러도 눌린다
+        aria-label={`${label ?? GLOSSARY[term].title} 설명 보기`}
         className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full px-2 text-small font-bold text-accent outline-offset-2 hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-accent ${className}`.trim()}
       >
         <span aria-hidden="true" className="flex size-5 items-center justify-center rounded-full border border-accent text-caption">

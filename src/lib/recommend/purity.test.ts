@@ -17,6 +17,8 @@ describe("추천 엔진은 구매 링크·수수료와 무관하다", () => {
     for (const file of sources) {
       const text = readFileSync(new URL(file, dir), "utf-8");
       expect(text, `${file}가 purchase/affiliate를 참조한다`).not.toMatch(/purchase|affiliate/i);
+      // 가격 비교 검색어(T-019)도 화면용이다. 순위가 판매처 검색과 엮이지 않게 한다(T-033)
+      expect(text, `${file}가 compare_query를 참조한다`).not.toMatch(/compare_query/);
     }
   });
 

@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest";
 import { DISPLAY_EXTRA_FIELDS, SPEC_FIELDS, toPaddleDisplay, toPaddleSpec } from "./schema";
 import { fakePaddle } from "./test-fixtures";
 
-const full = fakePaddle({ notes: "내부 메모", purchase: { url: "https://shop.example.com/p/1", is_affiliate: true, program: "other" } });
+const full = fakePaddle({
+  notes: "내부 메모",
+  compare_query: "샘플 테스트 피클볼",
+  purchase: { url: "https://shop.example.com/p/1", is_affiliate: true, program: "other" },
+});
 
 describe("toPaddleDisplay: 브라우저로 보내는 필드", () => {
   it("출처, 확인일, 내부 메모는 넣지 않는다", () => {
@@ -20,6 +24,12 @@ describe("toPaddleDisplay: 브라우저로 보내는 필드", () => {
     expect(display.brand).toBe(full.brand);
     expect(display.purchase).toEqual(full.purchase);
     expect(display.price_krw).toBe(full.price_krw);
+    expect(display.compare_query).toBe(full.compare_query);
+  });
+
+  it("가격 비교 검색어는 화면용 필드에만 있다(T-033)", () => {
+    expect(DISPLAY_EXTRA_FIELDS).toContain("compare_query");
+    expect(SPEC_FIELDS as readonly string[]).not.toContain("compare_query");
   });
 });
 
@@ -28,6 +38,7 @@ describe("toPaddleSpec: 엔진에 넘기는 필드", () => {
     const spec = toPaddleSpec(full) as Record<string, unknown>;
     expect(Object.keys(spec).sort()).toEqual([...SPEC_FIELDS].filter((k) => (full as Record<string, unknown>)[k] !== undefined).sort());
     expect(spec).not.toHaveProperty("purchase");
+    expect(spec).not.toHaveProperty("compare_query");
     expect(spec).not.toHaveProperty("brand");
     expect(spec).not.toHaveProperty("notes");
   });

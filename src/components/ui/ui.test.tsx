@@ -138,4 +138,36 @@ describe("BottomSheet", () => {
     fireEvent.click(screen.getByRole("button", { name: "비교하기" }));
     expect(dialog().open).toBe(true);
   });
+
+  it("시트 위 시트를 닫아도 바깥 시트가 열려 있으면 스크롤 잠금을 유지한다(T-033)", () => {
+    function Nested() {
+      const [outer, setOuter] = useState(false);
+      const [inner, setInner] = useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setOuter(true)}>
+            상세
+          </button>
+          <BottomSheet open={outer} title="상세" onClose={() => setOuter(false)}>
+            <button type="button" onClick={() => setInner(true)}>
+              도움말
+            </button>
+            <BottomSheet open={inner} title="도움말 시트" onClose={() => setInner(false)}>
+              <p>설명</p>
+            </BottomSheet>
+          </BottomSheet>
+        </>
+      );
+    }
+    render(<Nested />);
+    fireEvent.click(screen.getByRole("button", { name: "상세" }));
+    fireEvent.click(screen.getByRole("button", { name: "도움말", hidden: true }));
+    const [outerDialog, innerDialog] = document.querySelectorAll("dialog");
+    expect(innerDialog!.open).toBe(true);
+    act(() => innerDialog!.close());
+    expect(outerDialog!.open).toBe(true);
+    expect(document.documentElement.style.overflow).toBe("hidden");
+    act(() => outerDialog!.close());
+    expect(document.documentElement.style.overflow).toBe("");
+  });
 });

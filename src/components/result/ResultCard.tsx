@@ -104,9 +104,9 @@ export function BuyButtons({ paddle, name, anchorId }: { paddle: PaddleDisplay; 
   );
 }
 
-export function AdBadge() {
+export function AdBadge({ className = "ml-2" }: { className?: string } = {}) {
   return (
-    <Badge tone="ad" className="ml-2 align-middle">
+    <Badge tone="ad" className={`${className} align-middle`}>
       <span data-testid="affiliate-badge">광고</span>
     </Badge>
   );
@@ -216,7 +216,7 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
                 {chip}
               </span>
             ))}
-            <HelpButton term="core" label="용어 설명" className="-my-2" />
+            <HelpButton term="core" label="코어 두께란?" className="-my-2" />
           </div>
         </>
       ) : null}

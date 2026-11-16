@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import Home from "@/app/page";
-import { SHOWCASE_INTERVAL_MS, ShapeShowcase } from "./ShapeShowcase";
+import { SHOWCASE_INTERVAL_MS, SHOWCASE_ROUNDS, ShapeShowcase } from "./ShapeShowcase";
 
 const activeShape = () => document.querySelector("[data-active='true'] svg")?.getAttribute("data-shape");
 
@@ -25,6 +25,19 @@ describe("형태 그림 강조(T-023)", () => {
       vi.advanceTimersByTime(SHOWCASE_INTERVAL_MS * 3);
     });
     expect(activeShape()).toBe("standard");
+  });
+
+  it("3바퀴 돈 뒤 표준형에서 멈춘다(T-033)", () => {
+    render(<ShapeShowcase />);
+    act(() => {
+      vi.advanceTimersByTime(SHOWCASE_INTERVAL_MS * 4 * SHOWCASE_ROUNDS);
+    });
+    expect(activeShape()).toBe("standard");
+    act(() => {
+      vi.advanceTimersByTime(SHOWCASE_INTERVAL_MS * 5);
+    });
+    expect(activeShape()).toBe("standard");
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it("그림은 화면 낭독기에 숨기고 한 문장으로 알린다", () => {
