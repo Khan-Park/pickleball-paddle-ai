@@ -68,3 +68,18 @@
 | 11SIX24 Vapor Jelly Bean 2 Hybrid 16mm | 289,000 | 하이브리드 20~30만 | 'Vapor Jelly Bean 16mm'만 있음(2세대 표기 없음 → 미확인) | 조사 |
 
 찾지 못한 것: 판매 중인 **길쭉한 형 10만 원 이하** 제품(10만 원 이하 판매 중 패들은 TRION·ProKennex·GLUX LumaAir·STAR·Picklepoppers 정도이고 형태·코어가 공개되지 않았거나 이미 데이터에 있다). **표준형 10만 원 이하** 추가 후보도 없다
+
+## 제조사 페이지 조사 결과 (2026-11-17, 앱 안 브라우저로 직접 읽음)
+| 후보 | 제조사 표기 | 우리 규칙(D-018) 형태 | 채우는 칸 | 막힌 점 |
+|---|---|---|---|---|
+| 11SIX24 Vapor Jelly Bean 2 | Shape: Hybrid, 8.0–8.3oz, 16.25 × 7.75in, 16mm EMA foam, HexGrit 면, UPA-A 인증(11six24.com/products/vapor-jelly-bean-2) | 하이브리드(제조사 표기) | 하이브리드 20~30만 **대회 아님 1→2** | USAP 목록은 'Vapor Jelly Bean 16mm'(1세대)뿐 → 승인 unknown. 표면 HexGrit 분류(카본인지) 미확인 |
+| JOOLA Hyperion 3S Dual 16mm | 8.0oz, 16.5 × 7.5in, 16mm, 탄소 마찰면, USAP 인증(joola.com) | 길쭉한 형(길이 16.5 = 경계) | 없음(길쭉한 형 20~30만은 이미 2개) | — |
+| JOOLA Magnus 3S Dual 14mm | 7.9oz, 16.5 × 7.5in, 14mm, USAP 인증 | 길쭉한 형(경계) | 없음 | — |
+| JOOLA Agassi Edge 16mm | 7.8oz, 16.5 × 7.5in, 16mm, **"2026-05-01부터 USAP 대회 사용 불가"** 문구 | 길쭉한 형(경계) | 없음 | 승인 목록에는 남아 있으나 대회용으로 보면 안 됨 |
+| Franklin FS Tour Dynasty 14·16mm | "elongated pro style", 14mm 8–8.4oz, 16mm 8.5–8.8oz(franklinsports.com/fs-tour-paddle-series) | 길쭉한 형(제조사 표기) | 없음 | 길이·폭 표기 못 찾음 |
+| Franklin Signature Carbon 13mm Traditional | 옵션 이름 "13mm Traditional"(표준형), 7.5–8oz, 13mm, T700 생카본, USAP 인증. 페이지 치수 16.5 × 7.5in은 어느 옵션 것인지 표시 없음 | 표준형(제조사 표기) | 표준형 10~20만 0→1(대회 포함) | **Traditional 옵션의 길이·폭이 없다**(필수 필드). 승인 목록 'Signature Carbon T'와 같은 모델인지 확인 필요 |
+| JOOLA Double Vision Hyperion 16mm | Shape: Hyperion, ~7.8oz, 16mm, 아라미드 면, USAP 인증(entry 11835) | 판단 불가 | 하이브리드 10~20만 대회(형태가 하이브리드라면) | **길이·폭 미공개**(필수 필드). 같은 'Hyperion' 형태인 Hyperion Vision(16.4 × 7.3)의 치수를 쓰면 추정이 된다 |
+| JOOLA Collin Johns Scorpeus CFS 16mm | joola.com에 상품 페이지 없음(단종 추정), Pickleball Central 검색 결과 없음 | 판단 불가 | 넓은 형 10만 이하(형태가 넓은 형이라면) | **스펙 출처를 찾지 못함** |
+
+- 판매처(피앤피노) 상품 페이지의 스펙은 이미지라 이 환경에서 읽지 못했다. 사용자가 상세 이미지의 길이·폭을 확인해 주면 Franklin Traditional·Double Vision Hyperion·Scorpeus CFS를 판매처 표기(D-025)로 채울 수 있다
+- 참고: JOOLA 3S 페이지는 "Perseus is a standard body"라고 적는다. 지금 데이터의 Perseus Pro 3S Dual 14mm는 치수 규칙으로 길쭉한 형이다(기존 결정, 이번에는 바꾸지 않음)
