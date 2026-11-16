@@ -22,7 +22,8 @@ push와 배포는 사람이 한다(CLAUDE.md). 이 문서는 그 절차와 확�
 3. 빌드 설정
    - 빌드 명령: `npm run build`
    - 배포 명령: `npx wrangler deploy` (Cloudflare 기본값으로 알려져 있다. 화면에서 확인)
-   - Node 버전: 22.18 이상(`package.json`의 engines). 빌드 환경의 기본 Node 버전은 미확인이라 첫 빌드 로그에서 확인하고, 낮으면 빌드 환경변수 `NODE_VERSION`을 22 이상으로 지정한다
+   - Node 버전: 22.18 이상(`package.json`의 engines). Workers Builds 기본 Node는 24.22.1이라 따로 지정하지 않아도 된다(2026-11-16 확인: https://developers.cloudflare.com/workers/ci-cd/builds/build-image/). 바꿀 때는 빌드 환경변수 `NODE_VERSION`
+   - Worker 이름은 `wrangler.jsonc`의 `name`(`pickleball-paddle-ai`)과 같아야 한다. 다르면 빌드가 실패한다
 4. 배포가 끝나면 아래 "배포 후 확인"을 한다.
 
 대시보드 메뉴 이름과 위치는 바뀔 수 있다. 화면이 다르면 위 공식 문서를 기준으로 한다.
@@ -35,7 +36,10 @@ push와 배포는 사람이 한다(CLAUDE.md). 이 문서는 그 절차와 확�
 - [ ] 브라우저 탭 아이콘이 패들 아이콘이다
 
 ## 알려진 문제
-- 시작 화면에서 질문 화면으로 갈 때 브라우저 콘솔에 404가 한 건 찍힌다. Next가 `quiz/__next.quiz/__PAGE__.txt`(폴더 안)로 만든 미리 받기 파일을 `quiz/__next.quiz.__PAGE__.txt`(점으로 이은 이름)로 요청해서 생긴다. 화면 이동은 `quiz.txt`로 대신 받아 정상 동작한다(2026-11-16 로컬 정적 서버에서 확인). 원인이 Next 정적 내보내기의 동작인지는 미확인이고, Cloudflare에서도 같은지 배포 후 확인한다.
+- 로컬 확인용 정적 서버에서는 질문 화면으로 갈 때 미리 받기 파일 `quiz/__next.quiz.__PAGE__.txt`가 404였다(파일은 `quiz/__next.quiz/__PAGE__.txt` 폴더 경로로 만들어진다). Cloudflare에서는 이 요청이 200으로 응답해 문제가 없다(2026-11-16 배포본에서 확인). 로컬 서버로 확인할 때만 무시하면 된다.
+
+## 배포 기록
+- 2026-11-16 첫 배포(Workers Builds, workers.dev 주소). 확인한 것: `/`, `/quiz`, `/result` 200, `/quiz/`·`/quiz.html`은 `/quiz`로 이동, 없는 주소는 한국어 404 화면과 404 상태, 375px 폭에서 시작→질문→결과 3개, "답변 고치기"는 답 유지, "질문 시작하기"는 답 초기화, 앱이 보낸 요청 중 실패 없음
 
 ## 아직 정하지 않은 것
 - 도메인: 정해지면 `layout.tsx`에 `metadataBase`, 공유 미리보기(Open Graph), `robots.txt`, `sitemap.xml`을 추가한다
