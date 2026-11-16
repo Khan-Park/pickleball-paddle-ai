@@ -146,7 +146,9 @@ export function Quiz() {
   const percent = ((index + 1) / questions.length) * 100;
 
   return (
-    <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 pt-4 pb-8">
+    // 질문이 옆에서 들어오는 동안 화면 밖으로 밀린 부분이 가로 스크롤을 만들지 않게 자른다.
+    // clip은 스크롤 영역을 만들지 않아 세로 스크롤·고정 요소에 영향이 없고, 안쪽 여백(px-5) 덕분에 포커스 테두리도 잘리지 않는다
+    <section data-testid="quiz" className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 overflow-x-clip px-5 pt-4 pb-8">
       <div className="flex items-center gap-3">
         <Button variant="text" size="md" onClick={() => goTo(index - 1)} className={index === 0 ? "invisible" : ""} disabled={index === 0}>
           ← 이전

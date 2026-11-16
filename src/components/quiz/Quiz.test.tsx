@@ -35,6 +35,13 @@ describe("질문 화면", () => {
     expect(screen.getByText("1 / 7")).toBeDefined();
   });
 
+  it("질문이 들어오는 연출이 가로 스크롤을 만들지 않게 화면 영역에서 자른다", () => {
+    render(<Quiz />);
+    const section = screen.getByTestId("quiz");
+    expect(section.className).toContain("overflow-x-clip");
+    expect(section.querySelector("fieldset")!.className).toContain("animate-slide-in");
+  });
+
   it("진행 막대는 폭이 아니라 scaleX로 늘어난다(T-033)", () => {
     render(<Quiz />);
     const fill = screen.getByTestId("progress-fill");
