@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toPaddleSpec, type PaddleDisplay } from "../../../data/schema";
@@ -12,6 +12,8 @@ import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal, won, type AffiliatePr
 import { ResultCard } from "./ResultCard";
 import { RankRow } from "./RankRow";
 import { StickyBuy } from "./StickyBuy";
+import { CompareSheet, type CompareColumn } from "./CompareSheet";
+import { Button } from "@/components/ui/Button";
 import { ConditionChips } from "./parts";
 import { Analyzing } from "./Analyzing";
 import { clearAnalyzeMode, peekAnalyzeMode, type AnalyzeMode } from "./analyzing-flag";
@@ -43,6 +45,10 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   // 서버와 첫 렌더에서는 undefined(아직 모름), 브라우저에서는 저장된 문자열 또는 null
   const raw = useSyncExternalStore<string | null | undefined>(subscribe, loadAnswersRaw, () => undefined);
   const [relaxed, setRelaxed] = useState<UserProfile | null>(null);
+  // 비교 시트와 2·3순위 상세 시트. 비교표에서 제품을 고르면 비교 시트를 먼저 닫고(close 이벤트 뒤) 그 제품을 연다(시트를 겹치지 않게)
+  const [compareOpen, setCompareOpen] = useState(false);
+  const [openRank, setOpenRank] = useState<number | null>(null);
+  const pendingPick = useRef<number | null>(null);
   // 질문을 막 끝내고 왔을 때만 분석 중 화면을 보여 준다(docs/plan/phase2.md 6.3). 서버에서는 읽지 않는다.
   // 첫 렌더(하이드레이션)에서는 답변을 아직 모르므로 스켈레톤이 나와 서버 결과와 같다
   const [analyze, setAnalyze] = useState<AnalyzeMode | null>(() => (typeof window === "undefined" ? null : peekAnalyzeMode()));
@@ -98,6 +104,28 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   }
   const hasAffiliate = programs.size > 0;
   const topPaddle = result.items[0] ? byId.get(result.items[0].paddle_id) : undefined;
+  const columns: CompareColumn[] = result.items.flatMap((item, i) => {
+    const paddle = byId.get(item.paddle_id);
+    return paddle ? [{ rank: i + 1, item, paddle }] : [];
+  });
+
+  function afterCompareClosed() {
+    setCompareOpen(false);
+    const rank = pendingPick.current;
+    pendingPick.current = null;
+    if (rank === null) return;
+    if (rank === 1) {
+      // 1순위는 화면에 있는 카드로 보낸다
+      const title = document.querySelector<HTMLElement>("[data-testid='result-card-wrap'] article h2");
+      if (title) {
+        title.tabIndex = -1;
+        title.scrollIntoView({ block: "start" });
+        title.focus();
+      }
+      return;
+    }
+    setOpenRank(rank);
+  }
 
   return (
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
@@ -118,9 +146,16 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
 
       <header className="flex flex-col gap-3">
         {answers ? <ConditionChips answers={answers} /> : null}
-        <h1 className="text-2xl font-bold leading-snug text-navy">
-          {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
-        </h1>
+        <div className="flex items-start justify-between gap-3">
+          <h1 className="text-2xl font-bold leading-snug text-navy">
+            {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
+          </h1>
+          {columns.length >= 2 ? (
+            <Button variant="secondary" size="md" onClick={() => setCompareOpen(true)} className="shrink-0">
+              비교하기
+            </Button>
+          ) : null}
+        </div>
         {relaxed ? <p className="text-sm font-medium text-caution">조건을 바꿔서 다시 찾은 결과입니다.</p> : null}
         {result.items.length > 0 && result.items.length < 3 ? (
           <p className="text-sm text-muted">조건에 맞는 제품이 {result.items.length}개뿐이라 있는 만큼만 보여 드립니다.</p>
@@ -138,7 +173,15 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
             {i === 0 ? (
               <ResultCard rank={1} item={item} paddle={paddle} today={today} buyAnchorId={TOP_BUY_ID} />
             ) : (
-              <RankRow rank={i + 1} item={item} paddle={paddle} today={today} />
+              <RankRow
+                rank={i + 1}
+                item={item}
+                paddle={paddle}
+                today={today}
+                open={openRank === i + 1}
+                onOpen={() => setOpenRank(i + 1)}
+                onClose={() => setOpenRank(null)}
+              />
             )}
           </div>
         ) : null;
@@ -183,6 +226,19 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
         답변 고치기
       </Link>
+
+      {columns.length >= 2 ? (
+        <CompareSheet
+          open={compareOpen}
+          onClose={afterCompareClosed}
+          columns={columns}
+          today={today}
+          onPick={(rank) => {
+            pendingPick.current = rank;
+            setCompareOpen(false);
+          }}
+        />
+      ) : null}
 
       {/* 스크롤해서 1순위 구매 버튼이 화면 밖으로 나가면 아래에 고정 버튼을 띄운다. 가리지 않도록 아래 여백을 둔다 */}
       {topPaddle?.purchase ? (
