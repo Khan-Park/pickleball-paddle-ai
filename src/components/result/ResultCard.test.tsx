@@ -109,3 +109,67 @@ describe("SpecScale", () => {
     expect(container.textContent).toContain("컨트롤 쪽");
   });
 });
+
+describe("구매 버튼과 가격 비교(T-019)", () => {
+  const shop = (x: Paddle) => ({ ...x, purchase: { url: `https://shop.example.com/${x.id}`, is_affiliate: false } });
+
+  it("1순위 카드와 2·3순위 시트에 판매처·가격 비교 버튼이 있고, 제휴가 아니면 대가 표시가 없다", () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    render(<Result paddles={PADDLES.map(shop)} />);
+    const top = screen.getByRole("article");
+    const buy = within(top).getByRole("link", { name: /판매처에서 보기/ });
+    expect(buy.getAttribute("href")).toMatch(/^https:\/\/shop\.example\.com\//);
+    expect(buy.getAttribute("rel")).toBe("noopener noreferrer");
+    const compare = within(top).getByRole("link", { name: /다른 곳 가격 비교/ });
+    expect(new URL(compare.getAttribute("href")!).hostname).toBe("search.shopping.naver.com");
+    expect(compare.getAttribute("target")).toBe("_blank");
+    expect(screen.queryByTestId("affiliate-disclosure")).toBeNull();
+    expect(document.querySelectorAll("dialog [data-testid='buy-buttons']")).toHaveLength(2);
+  });
+
+  it("구매 링크가 없는 제품에는 가격 비교 버튼도 두지 않는다", () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    render(<Result paddles={PADDLES} />);
+    expect(screen.queryByRole("link", { name: /다른 곳 가격 비교/ })).toBeNull();
+  });
+});
+
+describe("하단 고정 구매 버튼(T-019)", () => {
+  let report: (visible: boolean) => void = () => {};
+  const original = globalThis.IntersectionObserver;
+  beforeEach(() => {
+    globalThis.IntersectionObserver = class {
+      constructor(cb: (entries: { isIntersecting: boolean }[]) => void) {
+        report = (visible) => cb([{ isIntersecting: visible }]);
+      }
+      observe() {}
+      disconnect() {}
+    } as unknown as typeof IntersectionObserver;
+  });
+  afterEach(() => {
+    globalThis.IntersectionObserver = original;
+  });
+
+  it("1순위 구매 버튼이 화면 밖으로 나가면 나타나고, 다시 보이면 사라진다", async () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    render(<Result paddles={PADDLES.map((x) => ({ ...x, purchase: { url: `https://shop.example.com/${x.id}`, is_affiliate: false } }))} />);
+    expect(screen.queryByTestId("sticky-buy")).toBeNull();
+    const { act } = await import("@testing-library/react");
+    act(() => report(false));
+    const bar = screen.getByTestId("sticky-buy");
+    expect(within(bar).getByRole("link", { name: /판매처에서 보기/ })).toBeDefined();
+    act(() => report(true));
+    expect(screen.queryByTestId("sticky-buy")).toBeNull();
+  });
+
+  it("제휴 링크면 고정 버튼에도 링크 바로 위에 대가 표시가 함께 나온다", async () => {
+    saveAnswers({ ...lightLover, tournament: "no" });
+    render(<Result paddles={PADDLES.map((x) => ({ ...x, purchase: { url: `https://link.coupang.com/a/${x.id}`, is_affiliate: true, program: "coupang_partners" as const } }))} />);
+    const { act } = await import("@testing-library/react");
+    act(() => report(false));
+    const bar = screen.getByTestId("sticky-buy");
+    const disclosure = within(bar).getByTestId("affiliate-disclosure");
+    const link = within(bar).getByRole("link", { name: /광고/ });
+    expect(disclosure.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+});

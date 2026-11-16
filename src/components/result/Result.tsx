@@ -11,6 +11,7 @@ import { recommend, type RelaxationHint } from "@/lib/recommend/recommend";
 import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal, won, type AffiliateProgram } from "./labels";
 import { ResultCard } from "./ResultCard";
 import { RankRow } from "./RankRow";
+import { StickyBuy } from "./StickyBuy";
 import { ConditionChips } from "./parts";
 import { Analyzing } from "./Analyzing";
 import { clearAnalyzeMode, peekAnalyzeMode, type AnalyzeMode } from "./analyzing-flag";
@@ -18,6 +19,8 @@ import { CardSkeleton } from "@/components/ui/Skeleton";
 import { useReducedMotion } from "@/components/ui/useReducedMotion";
 
 const subscribe = () => () => {};
+/** 1순위 카드의 구매 묶음 id. 하단 고정 버튼이 이 요소가 보이는지 본다 */
+const TOP_BUY_ID = "top-buy";
 const readToday = () => todayLocal();
 
 /** 조건 완화 힌트를 눌렀을 때의 프로필. 저장된 답변은 바꾸지 않는다 */
@@ -94,6 +97,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
     if (purchase?.is_affiliate) programs.add(affiliateProgram(purchase));
   }
   const hasAffiliate = programs.size > 0;
+  const topPaddle = result.items[0] ? byId.get(result.items[0].paddle_id) : undefined;
 
   return (
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
@@ -132,7 +136,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         return paddle ? (
           <div key={item.paddle_id} className="animate-rise-in" style={{ animationDelay: `${i * 80}ms` }} data-testid="result-card-wrap">
             {i === 0 ? (
-              <ResultCard rank={1} item={item} paddle={paddle} today={today} />
+              <ResultCard rank={1} item={item} paddle={paddle} today={today} buyAnchorId={TOP_BUY_ID} />
             ) : (
               <RankRow rank={i + 1} item={item} paddle={paddle} today={today} />
             )}
@@ -179,6 +183,14 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
         답변 고치기
       </Link>
+
+      {/* 스크롤해서 1순위 구매 버튼이 화면 밖으로 나가면 아래에 고정 버튼을 띄운다. 가리지 않도록 아래 여백을 둔다 */}
+      {topPaddle?.purchase ? (
+        <>
+          <div aria-hidden="true" className="h-32" />
+          <StickyBuy paddle={topPaddle} anchorId={TOP_BUY_ID} />
+        </>
+      ) : null}
     </section>
   );
 }

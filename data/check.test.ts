@@ -185,8 +185,22 @@ describe("공식 출처 점검(D-024)", () => {
 });
 
 describe("구매 링크 점검", () => {
-  const withLink = (url: string, is_affiliate: boolean, program?: "coupang_partners" | "other") =>
-    goodPaddle({ purchase: program ? { url, is_affiliate, program } : { url, is_affiliate } });
+  // 판매처 링크는 출처에 있는 주소여야 하므로(T-019) 테스트용 제품의 출처에도 넣는다
+  const withLink = (url: string, is_affiliate: boolean, program?: "coupang_partners" | "other") => {
+    const base = goodPaddle();
+    return goodPaddle({ sources: [...base.sources, url], purchase: program ? { url, is_affiliate, program } : { url, is_affiliate } });
+  };
+
+  it("제휴가 아닌 판매처 링크가 출처(sources)에 없는 주소면 오류(사람이 확인한 페이지로만 보낸다)", () => {
+    const r = checkPaddles([goodPaddle({ purchase: { url: "https://shop.example.com/unchecked", is_affiliate: false } })], TODAY);
+    expect(r.errors).toHaveLength(1);
+    expect(r.errors[0]).toContain("출처");
+  });
+
+  it("제휴 링크는 출처에 없어도 된다(제휴 프로그램이 만든 주소)", () => {
+    const r = checkPaddles([goodPaddle({ purchase: { url: "https://link.coupang.com/a/xyz", is_affiliate: true, program: "coupang_partners" } })], TODAY);
+    expect(r.errors).toEqual([]);
+  });
 
   it("쿠팡 주소인데 제휴가 아니라고 적으면 오류(대가 표시가 빠지는 것을 막는다)", () => {
     const r = checkPaddles([withLink("https://link.coupang.com/a/abc", false)], TODAY);
