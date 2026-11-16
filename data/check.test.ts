@@ -191,6 +191,14 @@ describe("구매 링크 점검", () => {
     return goodPaddle({ sources: [...base.sources, url], purchase: program ? { url, is_affiliate, program } : { url, is_affiliate } });
   };
 
+  it("구매 링크가 없는 제품은 오류(실사용 기준 1, T-033)", () => {
+    const { purchase: _omit, ...rest } = goodPaddle();
+    void _omit;
+    const r = checkPaddles([rest], TODAY);
+    expect(r.errors).toHaveLength(1);
+    expect(r.errors[0]).toContain("구매 링크");
+  });
+
   it("제휴가 아닌 판매처 링크가 출처(sources)에 없는 주소면 오류(사람이 확인한 페이지로만 보낸다)", () => {
     const r = checkPaddles([goodPaddle({ purchase: { url: "https://shop.example.com/unchecked", is_affiliate: false } })], TODAY);
     expect(r.errors).toHaveLength(1);

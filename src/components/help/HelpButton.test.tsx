@@ -25,12 +25,25 @@ const openDialog = () => document.querySelector("dialog[open]") as HTMLElement |
 describe("HelpButton", () => {
   it("누르면 그 용어의 시트가 열리고, 시트 안에서 다른 용어로 바꿀 수 있다", () => {
     render(<HelpButton term="weight" label="무게란?" />);
-    fireEvent.click(screen.getByRole("button", { name: "무게 설명 보기" }));
+    fireEvent.click(screen.getByRole("button", { name: "무게란? 설명 보기" }));
     expect(openDialog()).not.toBeNull();
     expect(within(openDialog()!).getByRole("heading").textContent).toBe("무게");
     fireEvent.click(within(openDialog()!).getByRole("button", { name: "코어 두께" }));
     expect(within(openDialog()!).getByRole("heading").textContent).toBe("코어 두께");
     expect(openDialog()!.querySelector("[data-term]")!.getAttribute("data-term")).toBe("core");
+  });
+
+  it("보이는 글자가 있으면 버튼 이름이 그 글자로 시작한다(WCAG 2.5.3, T-033)", () => {
+    render(
+      <>
+        <HelpButton term="core" label="코어 두께란?" />
+        <HelpButton term="certification" />
+      </>,
+    );
+    const [withLabel, iconOnly] = screen.getAllByRole("button");
+    expect(withLabel!.getAttribute("aria-label")!.startsWith(withLabel!.textContent!.replace(/^i/, ""))).toBe(true);
+    expect(withLabel!.getAttribute("aria-label")).toBe("코어 두께란? 설명 보기");
+    expect(iconOnly!.getAttribute("aria-label")).toBe("대회 승인 설명 보기");
   });
 
   it("다시 열면 처음 용어로 돌아온다", () => {
@@ -49,7 +62,7 @@ describe("질문 화면의 용어 도움말", () => {
     render(<Quiz />);
     const legend = () => screen.getByRole("group").querySelector("legend")!.textContent;
     expect(legend()).toContain("무게");
-    fireEvent.click(screen.getByRole("button", { name: "무게 설명 보기" }));
+    fireEvent.click(screen.getByRole("button", { name: "무게란? 설명 보기" }));
     expect(openDialog()).not.toBeNull();
     expect(legend()).toContain("무게");
     expect(screen.queryAllByRole("button", { pressed: true, hidden: true })).toHaveLength(0);

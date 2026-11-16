@@ -4,7 +4,7 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import type { Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import { saveAnswers } from "@/lib/quiz/storage";
-import { markSubmitted, peekAnalyzeMode, STEP_MS } from "./analyzing-flag";
+import { ANALYZE_MAX_MS, analyzeTotalMs, markSubmitted, peekAnalyzeMode, STEP_MS } from "./analyzing-flag";
 import { todayLocal } from "./labels";
 import { Result } from "./Result";
 
@@ -88,6 +88,30 @@ describe("분석 중 화면", () => {
     expect(analyzing()).not.toBeNull();
     advance(STEP_MS.short * 3 + STEP_MS.short / 2);
     expect(analyzing()).toBeNull();
+  });
+
+  it("전체 시간은 기준(최대 1.2초) 이하다(T-033)", () => {
+    expect(analyzeTotalMs("full")).toBeLessThanOrEqual(ANALYZE_MAX_MS);
+    expect(analyzeTotalMs("short")).toBeLessThanOrEqual(ANALYZE_MAX_MS);
+    expect(analyzeTotalMs("full")).toBe(FULL);
+  });
+
+  it("끝나거나 건너뛰면 결과 제목으로 포커스가 간다(T-033)", () => {
+    markSubmitted();
+    render(<Result paddles={PADDLES} />);
+    advance(FULL);
+    expect(document.activeElement).toBe(screen.getByRole("heading", { level: 1 }));
+
+    cleanup();
+    markSubmitted();
+    render(<Result paddles={PADDLES} />);
+    fireEvent.click(screen.getByRole("button", { name: /건너뛰기/ }));
+    expect(document.activeElement).toBe(screen.getByRole("heading", { level: 1 }));
+  });
+
+  it("결과 주소로 바로 들어오면 포커스를 옮기지 않는다", () => {
+    render(<Result paddles={PADDLES} />);
+    expect(document.activeElement).toBe(document.body);
   });
 
   it("동작 줄이기를 켠 사용자에게는 보여 주지 않는다", () => {

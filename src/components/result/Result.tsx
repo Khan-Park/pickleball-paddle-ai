@@ -57,6 +57,15 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   useEffect(() => {
     if (analyze) clearAnalyzeMode();
   }, [analyze]);
+  // 분석 중 화면이 끝나거나 건너뛰면 결과 제목으로 포커스를 옮긴다(키보드·화면 낭독기 사용자가 결과 처음부터 읽게)
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const focusHeading = useRef(false);
+  useEffect(() => {
+    if (analyze === null && focusHeading.current) {
+      focusHeading.current = false;
+      headingRef.current?.focus();
+    }
+  }, [analyze]);
 
   const answers = useMemo(() => parseAnswers(raw ?? null), [raw]);
   const base = useMemo(() => {
@@ -93,7 +102,16 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
 
   // 동작 줄이기를 켠 사용자는 기다리지 않는다
   if (analyze && !reducedMotion) {
-    return <Analyzing count={paddles.length} mode={analyze} onDone={() => setAnalyze(null)} />;
+    return (
+      <Analyzing
+        count={paddles.length}
+        mode={analyze}
+        onDone={() => {
+          focusHeading.current = true;
+          setAnalyze(null);
+        }}
+      />
+    );
   }
 
   // 화면에 제휴 링크가 하나라도 있으면 게시물의 첫 부분에서 먼저 알린다(심사지침 Ⅴ.6, 쿠팡 파트너스 가이드)
@@ -147,7 +165,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       <header className="flex flex-col gap-3">
         {answers ? <ConditionChips answers={answers} /> : null}
         <div className="flex items-start justify-between gap-3">
-          <h1 className="text-2xl font-bold leading-snug text-navy">
+          <h1 ref={headingRef} tabIndex={-1} className="text-2xl font-bold leading-snug text-navy outline-none">
             {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
           </h1>
           {columns.length >= 2 ? (

@@ -39,4 +39,10 @@ export function clearAnalyzeMode(): void {
 }
 
 /** 단계 하나의 시간(ms). 단계는 3개다 */
-export const STEP_MS: Record<AnalyzeMode, number> = { full: 350, short: 170 };
+export const STEP_MS: Record<AnalyzeMode, number> = { full: 320, short: 170 };
+
+/** 분석 중 화면 전체 시간의 상한(docs/plan/phase2.md 6.3: 최대 1.2초) */
+export const ANALYZE_MAX_MS = 1200;
+
+/** 전체 시간 = 단계 3개 + 마지막 체크를 보여 주는 0.5단계. full 1,120ms, short 595ms */
+export const analyzeTotalMs = (mode: AnalyzeMode): number => STEP_MS[mode] * 3 + STEP_MS[mode] / 2;

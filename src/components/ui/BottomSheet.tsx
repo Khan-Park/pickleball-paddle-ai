@@ -9,6 +9,20 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
  * - 닫히면 열기 직전에 포커스가 있던 요소(보통 연 버튼)로 포커스를 돌려준다.
  * - 열려 있는 동안 뒤 페이지가 스크롤되지 않게 한다.
  */
+/**
+ * 열린 시트 수. 시트 위에 시트가 열릴 수 있으므로(상세 → 도움말) 마지막 시트가 닫힐 때만 스크롤 잠금을 푼다(T-033).
+ * 시트마다 잠금은 한 번만 걸고 한 번만 푼다(locked ref).
+ */
+let openSheets = 0;
+function lockScroll() {
+  openSheets += 1;
+  document.documentElement.style.overflow = "hidden";
+}
+function unlockScroll() {
+  openSheets = Math.max(0, openSheets - 1);
+  if (openSheets === 0) document.documentElement.style.overflow = "";
+}
+
 export function BottomSheet({
   open,
   onClose,
@@ -23,6 +37,7 @@ export function BottomSheet({
   const ref = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLElement | null>(null);
   const titleId = useId();
+  const locked = useRef(false);
   // onClose가 렌더마다 새 함수여도 이벤트 연결을 다시 하지 않게 최신 값을 담아 둔다
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -35,7 +50,10 @@ export function BottomSheet({
     if (open && !dialog.open) {
       opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       dialog.showModal();
-      document.documentElement.style.overflow = "hidden";
+      if (!locked.current) {
+        locked.current = true;
+        lockScroll();
+      }
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -46,7 +64,10 @@ export function BottomSheet({
     const dialog = ref.current;
     if (!dialog) return;
     const handleClose = () => {
-      document.documentElement.style.overflow = "";
+      if (locked.current) {
+        locked.current = false;
+        unlockScroll();
+      }
       opener.current?.focus();
       opener.current = null;
       onCloseRef.current();
@@ -56,7 +77,15 @@ export function BottomSheet({
   }, []);
 
   // 화면에서 사라질 때 열려 있었다면 스크롤 잠금을 푼다
-  useEffect(() => () => void (document.documentElement.style.overflow = ""), []);
+  useEffect(
+    () => () => {
+      if (locked.current) {
+        locked.current = false;
+        unlockScroll();
+      }
+    },
+    [],
+  );
 
   return (
     <dialog

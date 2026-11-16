@@ -35,6 +35,17 @@ describe("질문 화면", () => {
     expect(screen.getByText("1 / 7")).toBeDefined();
   });
 
+  it("진행 막대는 폭이 아니라 scaleX로 늘어난다(T-033)", () => {
+    render(<Quiz />);
+    const fill = screen.getByTestId("progress-fill");
+    // jsdom은 소수를 6자리로 줄여 저장하므로 숫자로 비교한다
+    const scale = () => Number(/^scaleX\(([\d.]+)\)$/.exec(fill.style.transform)?.[1]);
+    expect(fill.style.width).toBe("");
+    expect(scale()).toBeCloseTo(1 / 7, 5);
+    pick(/처음이거나 1년 미만/);
+    expect(scale()).toBeCloseTo(2 / 6, 5);
+  });
+
   it("초보 흐름: 질문 6개, '잘 모르겠어요' 선택지가 있고 선호 모양을 묻지 않는다", () => {
     render(<Quiz />);
     pick(/처음이거나 1년 미만/);

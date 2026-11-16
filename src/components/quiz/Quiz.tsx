@@ -151,10 +151,12 @@ export function Quiz() {
         <Button variant="text" size="md" onClick={() => goTo(index - 1)} className={index === 0 ? "invisible" : ""} disabled={index === 0}>
           ← 이전
         </Button>
-        <div className="h-2 flex-1 rounded-full bg-line" aria-hidden="true">
+        {/* 폭 대신 transform(scaleX)으로 늘려 레이아웃을 다시 계산하지 않는다(docs/plan/phase2.md 6.1, T-033 C) */}
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-line" aria-hidden="true">
           <div
-            className="h-2 rounded-full bg-accent transition-[width] duration-[var(--duration-slow)] ease-[var(--ease-enter)]"
-            style={{ width: `${percent}%` }}
+            data-testid="progress-fill"
+            className="h-2 w-full origin-left rounded-full bg-accent transition-transform duration-[var(--duration-slow)] ease-[var(--ease-enter)]"
+            style={{ transform: `scaleX(${percent / 100})` }}
           />
         </div>
         <p className="min-w-10 text-right text-small text-muted" aria-label={`전체 ${questions.length}개 중 ${index + 1}번째 질문`}>
