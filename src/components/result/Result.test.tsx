@@ -37,7 +37,10 @@ describe("결과 화면", () => {
   it("추천 3개를 순위·라벨·이유와 함께 보여 주고 점수 숫자는 보여 주지 않는다", () => {
     saveAnswers(beginner);
     render(<Result paddles={PADDLES} />);
-    const cards = screen.getAllByRole("article");
+    // 화면에는 1순위 카드 1개와 2·3순위 행 2개가 보이고, 2·3순위 카드는 닫힌 시트 안에 있다(T-018)
+    expect(screen.getAllByRole("article")).toHaveLength(1);
+    expect(screen.getAllByTestId("rank-row")).toHaveLength(2);
+    const cards = screen.getAllByRole("article", { hidden: true });
     expect(cards).toHaveLength(3);
     expect(cards[0]!.textContent).toMatch(/1순위 · (매우 잘 맞음|잘 맞음|보통)/);
     expect(within(cards[0]!).getByText("추천 이유")).toBeDefined();
@@ -48,7 +51,7 @@ describe("결과 화면", () => {
   it("스펙·가격 확인일·대회 승인을 표시하고, 미확인 제품은 숨기지 않고 '미확인'으로 적는다", () => {
     saveAnswers(beginner);
     render(<Result paddles={[PADDLES[0]!, PADDLES[3]!]} />);
-    const [first, second] = screen.getAllByRole("article");
+    const [first, second] = screen.getAllByRole("article", { hidden: true });
     const all = first!.textContent! + second!.textContent!;
     expect(all).toContain("약 90,000원");
     expect(all).toContain(`${today} 기준`);
