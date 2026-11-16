@@ -16,14 +16,14 @@ export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-5 pt-4 pb-8">
       <div {...rise(0, "flex items-center gap-2")}>
-        {/* 앱 아이콘(src/app/icon.svg)과 같은 그림. 서비스 이름이 정해지면 바꾼다 */}
+        {/* 앱 아이콘(src/app/icon.svg)과 같은 그림. 서비스 이름 "패들핏"(T-027) */}
         <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true" focusable="false">
           <rect width="64" height="64" rx="14" fill="var(--navy)" />
           <rect x="18" y="8" width="28" height="34" rx="9" fill="none" stroke="#ffffff" strokeWidth="4" />
           <rect x="28.5" y="42" width="7" height="15" rx="2" fill="#ffffff" />
           <circle cx="45" cy="47" r="5" fill="var(--accent-bright)" />
         </svg>
-        <span className="text-small font-bold text-navy">패들 추천</span>
+        <span className="text-small font-bold text-navy">패들핏</span>
         {/* 질문 없이 전체 목록을 보는 보조 길(T-026). 하단 고정 바를 높이지 않도록 상단 바 오른쪽에 둔다(-my-2로 줄 높이 유지) */}
         <Link
           href="/browse"

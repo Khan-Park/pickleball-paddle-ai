@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Quiz } from "@/components/quiz/Quiz";
 
-export const metadata: Metadata = { title: "질문 | 피클볼 패들 추천" };
+export const metadata: Metadata = { title: "질문" };
 
 export default function QuizPage() {
   return (
