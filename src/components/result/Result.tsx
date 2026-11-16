@@ -19,6 +19,8 @@ import { Analyzing } from "./Analyzing";
 import { clearAnalyzeMode, peekAnalyzeMode, type AnalyzeMode } from "./analyzing-flag";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 import { useReducedMotion } from "@/components/ui/useReducedMotion";
+import { ProductCatalogContext, type ProductCatalog } from "@/components/product/catalog";
+import { ProductSheet } from "@/components/product/ProductSheet";
 
 const subscribe = () => () => {};
 /** 1순위 카드의 구매 묶음 id. 하단 고정 버튼이 이 요소가 보이는지 본다 */
@@ -48,6 +50,8 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   // 비교 시트와 2·3순위 상세 시트. 비교표에서 제품을 고르면 비교 시트를 먼저 닫고(close 이벤트 뒤) 그 제품을 연다(시트를 겹치지 않게)
   const [compareOpen, setCompareOpen] = useState(false);
   const [openRank, setOpenRank] = useState<number | null>(null);
+  // "제품 자세히" 시트에서 연 제품 기록(T-024). 비어 있으면 닫힘. 비슷한 제품을 따라가면 쌓이고 "이전 제품"으로 줄어든다
+  const [productStack, setProductStack] = useState<string[]>([]);
   const pendingPick = useRef<number | null>(null);
   // 질문을 막 끝내고 왔을 때만 분석 중 화면을 보여 준다(docs/plan/phase2.md 6.3). 서버에서는 읽지 않는다.
   // 첫 렌더(하이드레이션)에서는 답변을 아직 모르므로 스켈레톤이 나와 서버 결과와 같다
@@ -145,7 +149,17 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
     setOpenRank(rank);
   }
 
+  // 상세 화면의 "비슷한 제품"이 쓰는 목록. 이번 추천 3개는 이미 화면에 있으므로 뺀다(T-024)
+  const catalog: ProductCatalog = {
+    paddles,
+    exclude: result.items.map((item) => item.paddle_id),
+    today,
+    openProduct: (id) => setProductStack((stack) => [...stack, id]),
+  };
+
   return (
+    // 들여쓰기를 늘리지 않으려고 Provider를 section과 같은 깊이에 둔다
+    <ProductCatalogContext.Provider value={catalog}>
     <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
       {/* 경제적 이해관계 표시: 제목보다 앞, 본문보다 큰 글자와 다른 색, 접히지 않는 위치 */}
       {hasAffiliate ? (
@@ -265,6 +279,15 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
           <StickyBuy paddle={topPaddle} anchorId={TOP_BUY_ID} />
         </>
       ) : null}
+
+      <ProductSheet
+        stack={productStack}
+        byId={byId}
+        today={today}
+        onBack={() => setProductStack((stack) => stack.slice(0, -1))}
+        onClose={() => setProductStack([])}
+      />
     </section>
+    </ProductCatalogContext.Provider>
   );
 }

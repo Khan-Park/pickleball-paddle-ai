@@ -9,6 +9,7 @@ import { compareUrl } from "@/lib/shared/compare";
 import { affiliateProgram, DISCLOSURE, PRICE_STALE_DAYS, SHAPE_LABEL, SURFACE_LABEL, won } from "./labels";
 import { FitBar, SpecScale } from "./parts";
 import { HelpButton } from "@/components/help/HelpButton";
+import { ProductExtras } from "@/components/product/ProductExtras";
 
 /**
  * 대회 승인 표시. 미확인도 숨기지 않고 적는다.
@@ -115,7 +116,7 @@ export function AdBadge({ className = "ml-2" }: { className?: string } = {}) {
 /** 스펙 막대의 범위(T-018). 지금 데이터(7.41~8.82oz, 12~16mm)가 모두 들어간다. 범위 밖 제품이 생기면 다시 정한다 */
 export const SPEC_RANGE = { weight: { min: 7.0, max: 9.0 }, core: { min: 11, max: 17 } } as const;
 
-function Price({ paddle, today }: { paddle: PaddleDisplay; today: string }) {
+export function Price({ paddle, today }: { paddle: PaddleDisplay; today: string }) {
   const priceAge = paddle.price_checked_at ? daysBetween(paddle.price_checked_at, today) : Number.NaN;
   return (
     <p className="text-body font-bold text-ink">
@@ -149,6 +150,17 @@ function Details({ item, paddle }: { item: Recommendation; paddle: PaddleDisplay
           </ul>
         </section>
       ) : null}
+      <SpecDetails paddle={paddle} />
+      {/* 스펙 근거와 비슷한 제품(T-024). 결과 화면 밖(카드만 그린 테스트 등)에서는 스펙 근거만 나온다 */}
+      <ProductExtras paddle={paddle} />
+    </div>
+  );
+}
+
+/** 스펙 막대와 형태·크기·표면. 추천 정보가 없는 제품 상세(T-024)도 같이 쓴다 */
+export function SpecDetails({ paddle }: { paddle: PaddleDisplay }) {
+  return (
+    <div className="flex flex-col gap-4">
       <SpecScale label="무게" value={paddle.weight_oz} unit="oz" {...SPEC_RANGE.weight} left="가벼움" right="묵직함" help="weight" />
       {/* 엔진 해석과 같은 방향: 코어가 얇을수록 파워, 두꺼울수록 컨트롤 */}
       <SpecScale label="코어 두께" value={paddle.core_mm} unit="mm" {...SPEC_RANGE.core} left="파워" right="컨트롤" help="core" />

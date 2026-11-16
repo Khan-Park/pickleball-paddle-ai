@@ -30,11 +30,11 @@
    - schema-fields: 화면용 필드에 `sources`·`verified_at`이 있고 `notes`가 없다
 
 ## 수용 기준
-- [ ] 1순위 "자세히 보기"와 2·3순위 시트에 스펙 근거(출처·확인일)와 비슷한 제품 2개가 있다
-- [ ] 비슷한 제품 계산은 구매 정보를 읽지 않는다(테스트)
-- [ ] 비슷한 제품을 따라가도 시트가 2단(상세 → 제품 자세히)보다 깊게 쌓이지 않는다
-- [ ] 내부 메모는 브라우저로 가지 않는다(테스트)
-- [ ] `npm run check`·`npm run build` 통과, 375px 브라우저 확인
+- [x] 1순위 "자세히 보기"와 2·3순위 시트에 스펙 근거(출처·확인일)와 비슷한 제품 2개가 있다
+- [x] 비슷한 제품 계산은 구매 정보를 읽지 않는다(테스트)
+- [x] 비슷한 제품을 따라가도 시트가 2단(상세 → 제품 자세히)보다 깊게 쌓이지 않는다
+- [x] 내부 메모는 브라우저로 가지 않는다(테스트)
+- [x] `npm run check`·`npm run build` 통과, 375px 브라우저 확인
 
 ## 건드릴 파일
 - `data/schema.ts`(`DISPLAY_EXTRA_FIELDS`만), `data/schema-fields.test.ts`, `src/app/result/page.tsx`(주석)
@@ -50,3 +50,14 @@
 
 ## 참고
 - docs/plan/m2.md, docs/decisions.md D-030·D-022, CLAUDE.md 핵심 규칙 1·2
+
+## 결과 (2026-11-16)
+- 화면용 필드에 `sources`·`verified_at` 추가(D-030). `notes`·`official_source_unavailable`은 계속 제외. 빌드된 결과 페이지에 `notes`·`official_source_unavailable`이 없는 것을 확인
+- 새 순수 함수 `src/lib/shared/similar.ts`: 스펙(무게·코어·형태·표면)만으로 거리 계산, 가격·구매 정보 미사용(소스 검사 테스트). 순수성 검사는 purity.test.ts가 아니라 similar.test.ts에 넣었다(엔진 폴더 밖 파일이라)
+- `src/components/product/`: 스펙 근거(`SpecSources`, 출처 종류: USA Pickleball 승인 목록 / 판매처 / 사이트 이름), 비슷한 제품(`SimilarProducts`), 추천 정보 없는 상세(`ProductDetail`), "제품 자세히" 시트(`ProductSheet`, 연 제품 기록 + "← 이전 제품", 내용이 바뀌면 제품 이름으로 포커스). 결과 화면은 컨텍스트(`ProductCatalogContext`)로 전체 목록·제외 목록·기준일을 넘긴다
+- 1순위 "자세히 보기"와 2·3순위 시트 끝에 스펙 근거 → 비슷한 제품
+- 테스트 341 → 352개. `npm run check`·`npm run build` 통과
+- 브라우저(정적 빌드, 375px, 실제 데이터): 1순위 JOOLA Heat Vision Scorpeus의 스펙 근거 3개(joola.com·판매처·USA Pickleball 승인 목록, 모두 새 창·noopener noreferrer), 비슷한 제품 2개(Franklin C45 Aurelius 표준형, JOOLA Hyperion Vision 하이브리드형. 추천 3개는 빠짐). 비슷한 제품을 누르면 "제품 자세히" 시트가 열리고 구매 버튼 2개·출처 3개·비슷한 제품 2개가 보임. 가로 넘침 없음
+- 실제 데이터에서 알게 된 것: 넓은 형 가벼운 제품이 추천 3개에 모두 들어가 있어, 비슷한 제품은 형태가 다른 제품이 나온다. 형태가 다르면 이유 첫 칸이 "표준형"처럼 형태 이름만 나온다(같으면 "같은 넓은 형")
+- 확인하지 못한 것: 시트 닫기·"이전 제품" 뒤 포커스의 실제 브라우저 동작(이 환경의 브라우저 창이 숨겨져 dialog close 이벤트가 오지 않는다. 단위 테스트로만 확인)
+- 작업 중 실수: 들여쓰기를 맞추려고 `npx prettier`를 실행해 설치되지 않은 패키지를 승인 없이 내려받아 실행했고, Result.tsx 전체 서식이 바뀌었다. 파일을 git에서 되돌리고 수정만 다시 넣었다(최종 변경은 23줄 추가)
