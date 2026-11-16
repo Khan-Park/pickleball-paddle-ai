@@ -22,5 +22,21 @@ export const OG_IMAGE = {
   alt: `${SITE_NAME}: 피클볼 패들 형태 4가지(표준형·넓은 형·하이브리드형·길쭉한 형)를 그린 그림`,
 } as const;
 
+/**
+ * 공유 미리보기(Open Graph) 공통 값(T-038). 하위 페이지의 openGraph는 부모 값을 통째로 바꾸므로 공통 값을 여기서 만든다.
+ * path를 주면 og:url을 그 주소로 적는다. 주소가 정해지지 않는 페이지(공유받은 화면의 ?p= 등)는 path 없이 쓴다.
+ */
+export function openGraphFor(path?: string) {
+  return {
+    type: "website" as const,
+    locale: "ko_KR",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE],
+    ...(path ? { url: path } : {}),
+  };
+}
+
 /** 검색 엔진에 알릴 페이지. 질문·결과는 탭에 저장된 답변이 있어야 의미가 있어 넣지 않는다 */
 export const SITEMAP_PATHS = ["/", "/browse"] as const;

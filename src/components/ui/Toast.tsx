@@ -17,6 +17,16 @@ export function showToast(message: string): void {
   window.dispatchEvent(new CustomEvent<string>(EVENT, { detail: message }));
 }
 
+/**
+ * 안내를 받아 보는 함수(T-038). 모달 시트가 열려 있으면 시트 밖 요소는 화면 낭독기에서 빠질 수 있어,
+ * 시트(BottomSheet)가 이것으로 같은 글자를 시트 안 상태 영역에도 넣는다. 돌려준 함수로 해제한다.
+ */
+export function subscribeToast(listener: (message: string) => void): () => void {
+  const handler = (event: Event) => listener((event as CustomEvent<string>).detail);
+  window.addEventListener(EVENT, handler);
+  return () => window.removeEventListener(EVENT, handler);
+}
+
 type PopoverElement = HTMLDivElement & { showPopover?: () => void; hidePopover?: () => void };
 
 export function ToastHost() {

@@ -19,11 +19,11 @@ M2 검수(docs/plan/m2-review.md 4장)의 "M2 안에서 고칠 것" 5건을 고�
 - 기록 위치: docs/plan/m2.md에 "M3로 넘김" 절을 만들고 B·C를 적는다. A는 T-024 카드, D는 m2-review 판단 기록
 
 ## 수용 기준
-- [ ] 어두운 화면에서 로고가 남색 바탕 + 흰 선으로 보인다(브라우저 흉내로 확인)
-- [ ] 빌드 산출물에서 `/browse`의 og:url이 `/browse`, `/shared`에는 og:url이 없고, 모든 페이지에 og:image·og:title이 그대로 있다
-- [ ] 시트가 열린 채 안내를 띄우면 시트 안 상태 영역에도 같은 글자가 들어간다(테스트)
-- [ ] 동작 줄이기 규칙에 지연 0이 있다(테스트)
-- [ ] `npm run check`·`npm run build` 통과
+- [x] 어두운 화면에서 로고가 남색 바탕 + 흰 선으로 보인다(브라우저 흉내로 확인)
+- [x] 빌드 산출물에서 `/browse`의 og:url이 `/browse`, `/shared`에는 og:url이 없고, 모든 페이지에 og:image·og:title이 그대로 있다
+- [x] 시트가 열린 채 안내를 띄우면 시트 안 상태 영역에도 같은 글자가 들어간다(테스트)
+- [x] 동작 줄이기 규칙에 지연 0이 있다(테스트)
+- [x] `npm run check`·`npm run build` 통과
 
 ## 건드릴 파일
 - `src/app/globals.css`, `src/app/page.tsx`(로고 색만), `src/app/layout.tsx`, `src/app/browse/page.tsx`, `src/lib/shared/site.ts`
@@ -39,3 +39,14 @@ M2 검수(docs/plan/m2-review.md 4장)의 "M2 안에서 고칠 것" 5건을 고�
 
 ## 참고
 - docs/plan/m2-review.md, docs/decisions.md D-022·D-030, T-024·T-027·T-028·T-037
+
+## 결과 (2026-11-17)
+- 로고: 새 토큰 `--brand`(#1e2a44, 어두운 화면에서도 같은 값). 시작 화면 로고 바탕이 이것을 쓴다. 어두운 화면 흉내에서 로고 바탕 rgb(30,42,68), 바탕 #0f1520, 제목 #eef2f8 확인. 흰 선과 상표 색 대비 계산은 테스트에 넣음
+- 동작 줄이기: 전역 규칙에 `animation-delay: 0s !important` 추가(빌드된 CSS에서 확인)
+- og:url: 레이아웃에서 빼고 `openGraphFor(경로)`(site.ts)로 공통 값을 만든다. 빌드 산출물: `/` → 사이트 주소, `/browse` → `/browse`, `/shared`·`/quiz`·`/result` → og:url 없음. 다섯 페이지 모두 og:image·og:title 그대로
+- 시트 안 안내 낭독: `subscribeToast`(Toast.tsx)로 시트가 열린 동안 같은 글자를 시트 안 `role="status"` 영역(눈에 보이지 않음)에 1초 넣는다
+- 필터 테스트: 펼친 뒤 `hidden === false`·`aria-expanded="true"`, 접은 뒤 `true` 확인
+- **고치다 알게 된 것**: T-028의 대비 테스트가 어두운 값 블록을 찾을 때 파일 맨 위 주석 속 같은 글자를 먼저 잡아, 밝은 값까지 어두운 블록에 섞어 읽고 있었다. 그래서 "어두운 값이 빠짐없이 있는지" 점검이 사실상 아무것도 막지 못했다(값 자체의 대비 계산은 어두운 값이 덮어써서 맞았다). 여는 괄호까지 붙여 실제 블록을 찾도록 바로잡았다. 동작 줄이기 블록 찾기도 같은 방식으로 바꿨다
+- 판단 기록: A는 T-024 수용 기준 문구, B·C는 docs/plan/m2.md 10장, 처리 요약은 docs/plan/m2-review.md 7장
+- 테스트 417 → 421개. `npm run check`·`npm run build` 통과
+- 확인하지 못한 것: 카카오톡이 og:url 없는 공유 주소를 어떻게 처리하는지, 화면 낭독기가 시트 안 상태 영역을 읽는지(실기기)

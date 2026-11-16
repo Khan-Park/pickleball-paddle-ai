@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/shared/site";
+import { OG_IMAGE, openGraphFor, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/shared/site";
 import { ToastHost } from "@/components/ui/Toast";
 import "./globals.css";
 
@@ -11,15 +11,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: SITE_TITLE, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
-  openGraph: {
-    type: "website",
-    locale: "ko_KR",
-    siteName: SITE_NAME,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    url: "/",
-    images: [OG_IMAGE],
-  },
+  // og:url은 넣지 않는다. 하위 페이지가 시작 화면 주소를 물려받지 않게, 고정 주소가 있는 페이지만 openGraphFor(경로)로 적는다(T-038)
+  openGraph: openGraphFor(),
   twitter: { card: "summary_large_image", title: SITE_TITLE, description: SITE_DESCRIPTION, images: [OG_IMAGE] },
 };
 

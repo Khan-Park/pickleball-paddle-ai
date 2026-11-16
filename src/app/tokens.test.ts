@@ -11,7 +11,8 @@ function tokensIn(block: string): Record<string, string> {
 }
 
 const lightBlock = css.slice(css.indexOf(":root {"), css.indexOf("}", css.indexOf(":root {")));
-const darkStart = css.indexOf("@media (prefers-color-scheme: dark)");
+// 주석에도 같은 글자가 있으므로 여는 괄호까지 붙여 실제 블록을 찾는다(T-038에서 바로잡음)
+const darkStart = css.indexOf("@media (prefers-color-scheme: dark) {");
 const darkBlock = css.slice(darkStart, css.indexOf("@theme inline", darkStart));
 const LIGHT = tokensIn(lightBlock);
 // 어두운 화면은 밝은 값 위에 덮어쓴다(정의하지 않은 토큰은 밝은 값 그대로)
@@ -58,7 +59,10 @@ describe("색 대비(T-033, T-028)", () => {
     expect(darkStart).toBeGreaterThan(0);
     const dark = tokensIn(darkBlock);
     // 장식용·그림자 외의 색 토큰은 어두운 값이 있어야 한다(빠뜨리면 어두운 바탕에 밝은 화면 색이 남는다)
-    for (const name of Object.keys(LIGHT)) expect(dark, `--${name}의 어두운 값`).toHaveProperty(name);
+    // 상표 색(--brand)은 일부러 밝은·어두운 화면에서 같은 값이다(T-038)
+    const SAME_IN_BOTH = new Set(["brand"]);
+    for (const name of Object.keys(LIGHT).filter((n) => !SAME_IN_BOTH.has(n))) expect(dark, `--${name}의 어두운 값`).toHaveProperty(name);
+    expect(dark).not.toHaveProperty("brand");
   });
 
   for (const [mode, tokens] of [
@@ -79,6 +83,22 @@ function filesUnder(dir: string): string[] {
     return statSync(path).isDirectory() ? filesUnder(path) : [path];
   });
 }
+
+describe("동작 줄이기(T-038)", () => {
+  it("동작 줄이기 규칙이 시간·반복·지연을 모두 없앤다", () => {
+    const start = css.indexOf("@media (prefers-reduced-motion: reduce) {");
+    const block = css.slice(start, css.indexOf("}", css.indexOf("{", css.indexOf("{", start) + 1)));
+    expect(block).toMatch(/animation-duration:\s*1ms !important/);
+    expect(block).toMatch(/animation-delay:\s*0s !important/);
+  });
+
+  it("로고 바탕은 어두운 화면에서도 남색인 상표 색(--brand)을 쓴다", () => {
+    const page = readFileSync(join(process.cwd(), "src/app/page.tsx"), "utf8");
+    expect(page).toContain('fill="var(--brand)"');
+    expect(LIGHT.brand).toBe(DARK.brand);
+    expect(contrast("#ffffff", DARK.brand!)).toBeGreaterThanOrEqual(4.5);
+  });
+});
 
 describe("고정 색 점검(T-028)", () => {
   it("화면 코드에 text-white·bg-white·bg-navy 같은 고정 색이 없다(토큰만 쓴다)", () => {
