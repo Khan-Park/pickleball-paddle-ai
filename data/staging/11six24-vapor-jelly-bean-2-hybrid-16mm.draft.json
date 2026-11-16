@@ -1,0 +1,74 @@
+{
+  "status": "승격됨 - 2026-11-17 사용자가 확인표를 승인해(면 소재 carbon) data/paddles.json에 반영(T-035)",
+  "paddle": {
+    "id": "11six24-vapor-jelly-bean-2-hybrid-16mm",
+    "brand": "11SIX24",
+    "model": "Vapor Jelly Bean 2 Hybrid 16mm",
+    "weight_oz": 8.15,
+    "core_mm": 16,
+    "shape": "hybrid",
+    "length_in": 16.25,
+    "width_in": 7.75,
+    "surface": "carbon",
+    "price_krw": 289000,
+    "price_checked_at": "2026-11-17",
+    "certification": {
+      "usa_pickleball": "unknown",
+      "checked_at": "2026-11-17"
+    },
+    "sources": [
+      "https://11six24.com/products/vapor-jelly-bean-2",
+      "https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp"
+    ],
+    "verified_at": "2026-11-17",
+    "purchase": {
+      "url": "https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp",
+      "is_affiliate": false
+    },
+    "notes": "무게는 제조사 범위 8.0–8.3oz의 중간값(파생). 면은 제조사 표기 CFC 3중(Toray T700 카본 + 파이버글라스) + HexGrit으로, 같은 브랜드 Hurache-X Power 2와 맞춰 carbon으로 분류. USAP 승인 목록에는 1세대 Vapor Jelly Bean 16mm만 있어 unknown."
+  },
+  "evidence": {
+    "shape": {
+      "원문": "Shape: Hybrid",
+      "비고": "제조사 표기(D-018 1순위). 치수 규칙으로도 hybrid(길이 16.25, 폭 7.75)"
+    },
+    "weight_oz": {
+      "원문": "Weight Range: 8.0–8.3 oz",
+      "범위_oz": [
+        8,
+        8.3
+      ],
+      "파생": "중간값 8.15"
+    },
+    "core_mm": {
+      "원문": "16mm EMA foam core"
+    },
+    "length_in": {
+      "원문": "Length: 16.25 in"
+    },
+    "width_in": {
+      "원문": "Width: 7.75 in"
+    },
+    "surface": {
+      "원문": "Face: HexGrit / HexGrit pairs with a CFC triple-layer face of Toray T700 carbon fiber and fiberglass",
+      "비고": "carbon과 composite 중 사람 확인. 기존 Hurache-X Power 2(HexGrit 카본)는 carbon"
+    },
+    "certification": {
+      "원문": "제조사: Approval: UPA-A Certified. USAP 목록 검색(11SIX24, Jelly) 결과: Vapor Jelly Bean 16mm 등 1세대만, Jelly Bean 2 없음",
+      "비고": "unknown은 승인 목록에서 같은 모델명을 찾지 못했다는 뜻. checked_at은 대조한 날"
+    },
+    "price_krw": {
+      "원문": "피앤피노 판매가 289,000원, 할인가 표기 없음, 판매 중(색상 3종)",
+      "비고": "2026-11-17 앱 안 브라우저로 상품 페이지 확인"
+    }
+  },
+  "source_meta": {
+    "url": "https://11six24.com/products/vapor-jelly-bean-2",
+    "read_at": "2026-11-17",
+    "method": "앱 안 브라우저로 제조사 상품 페이지 본문·구조화 데이터(Paddle Specs, material) 읽음. 같은 날 판매처 상품 페이지(https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp, 가격·옵션·판매 상태)와 USAP 승인 목록 검색(https://equipment.usapickleball.org/paddle-list/?gv_search=&filter_5=11SIX24&filter_55=Jelly&mode=all)도 읽음"
+  },
+  "open_questions": [
+    "면 소재를 carbon으로 둘지 composite로 둘지(T700 카본 + 파이버글라스 3중)",
+    "USAP 승인 목록에 2세대가 올라오면 approved로 바꾼다"
+  ]
+}
