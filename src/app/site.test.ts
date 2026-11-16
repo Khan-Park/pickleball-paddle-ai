@@ -2,7 +2,9 @@ import { execSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { OG_IMAGE, SITE_NAME, SITE_URL, SITEMAP_PATHS } from "@/lib/shared/site";
+import { OG_IMAGE, openGraphFor, SITE_NAME, SITE_URL, SITEMAP_PATHS } from "@/lib/shared/site";
+import { metadata as homeMetadata } from "./page";
+import { metadata as browseMetadata } from "./browse/page";
 import { metadata as rootMetadata } from "./layout";
 import { metadata as resultMetadata } from "./result/page";
 import { metadata as sharedMetadata } from "./shared/page";
@@ -15,6 +17,8 @@ describe("사이트 정보(T-027)", () => {
     expect(rootMetadata.metadataBase?.toString()).toBe(`${SITE_URL}/`);
     expect(rootMetadata.title).toMatchObject({ template: `%s | ${SITE_NAME}` });
     expect(rootMetadata.openGraph?.images).toEqual([OG_IMAGE]);
+    // 레이아웃에는 og:url이 없다. 하위 페이지가 시작 화면 주소를 물려받지 않게 한다(T-038)
+    expect(rootMetadata.openGraph).not.toHaveProperty("url");
     expect(OG_IMAGE.url.endsWith(".png")).toBe(true);
   });
 
@@ -51,6 +55,15 @@ function filesUnder(dir: string): string[] {
     return statSync(path).isDirectory() ? filesUnder(path) : [path];
   });
 }
+
+describe("페이지별 og:url(T-038)", () => {
+  it("시작 화면은 /, 둘러보기는 /browse, 공유받은 화면은 og:url 없이 공통 미리보기 값을 쓴다", () => {
+    expect(homeMetadata.openGraph).toMatchObject({ url: "/", images: [OG_IMAGE], siteName: SITE_NAME });
+    expect(browseMetadata.openGraph).toMatchObject({ url: "/browse", images: [OG_IMAGE], siteName: SITE_NAME });
+    expect(sharedMetadata.openGraph).toBeUndefined();
+    expect(openGraphFor()).not.toHaveProperty("url");
+  });
+});
 
 describe.skipIf(emailId() === null)("이메일 아이디 노출 점검(T-027)", () => {
   it("사이트 주소, src, docs에 이메일 아이디가 없다", () => {

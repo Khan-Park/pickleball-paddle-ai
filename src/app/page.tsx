@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { openGraphFor } from "@/lib/shared/site";
 import { StartButton } from "@/components/StartButton";
 import { ShapeShowcase } from "@/components/home/ShapeShowcase";
+
+/** 시작 화면만 og:url을 사이트 주소로 적는다(T-038) */
+export const metadata: Metadata = { openGraph: openGraphFor("/") };
 
 /** 신뢰 요소 3개(docs/plan/phase2.md 5.1). 과장 문구와 느낌표를 쓰지 않는다 */
 const TRUST_POINTS = [
@@ -18,7 +23,7 @@ export default function Home() {
       <div {...rise(0, "flex items-center gap-2")}>
         {/* 앱 아이콘(src/app/icon.svg)과 같은 그림. 서비스 이름 "패들핏"(T-027) */}
         <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true" focusable="false">
-          <rect width="64" height="64" rx="14" fill="var(--navy)" />
+          <rect width="64" height="64" rx="14" fill="var(--brand)" />
           <rect x="18" y="8" width="28" height="34" rx="9" fill="none" stroke="#ffffff" strokeWidth="4" />
           <rect x="28.5" y="42" width="7" height="15" rx="2" fill="#ffffff" />
           <circle cx="45" cy="47" r="5" fill="var(--accent-bright)" />

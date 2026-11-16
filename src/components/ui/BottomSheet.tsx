@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { subscribeToast, TOAST_MS } from "./Toast";
 
 /**
  * 아래에서 올라오는 시트. 비교표·용어 도움말·제품 상세가 같이 쓴다(docs/plan/phase2.md 5.5).
@@ -43,6 +44,22 @@ export function BottomSheet({
   const locked = useRef(false);
   // 끌어 닫기(T-037): 누른 위치. 끄는 동안에는 상태를 바꾸지 않고 dialog의 transform만 바꿔 다시 그리지 않는다
   const drag = useRef<{ startY: number; dy: number; id: number } | null>(null);
+  // 시트가 열린 동안 뜬 안내(판매처 이동 등)를 시트 안에서도 화면 낭독기에 알린다(T-038)
+  const [announce, setAnnounce] = useState("");
+  useEffect(() => {
+    if (!open) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const unsubscribe = subscribeToast((message) => {
+      setAnnounce(message);
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => setAnnounce(""), TOAST_MS);
+    });
+    return () => {
+      unsubscribe();
+      if (timer) clearTimeout(timer);
+      setAnnounce("");
+    };
+  }, [open]);
   // onClose가 렌더마다 새 함수여도 이벤트 연결을 다시 하지 않게 최신 값을 담아 둔다
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -162,6 +179,9 @@ export function BottomSheet({
           </div>
         </div>
         <div className="overflow-y-auto px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">{children}</div>
+        <p role="status" className="sr-only" data-testid="sheet-announce">
+          {announce}
+        </p>
       </div>
     </dialog>
   );

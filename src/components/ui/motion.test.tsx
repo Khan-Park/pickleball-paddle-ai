@@ -87,6 +87,24 @@ describe("판매처 이동 안내(T-037)", () => {
   });
 });
 
+describe("시트 안 안내 낭독(T-038)", () => {
+  it("시트가 열린 채 안내를 띄우면 시트 안 상태 영역에도 같은 글자가 들어가고, 시간이 지나면 비운다", () => {
+    vi.useFakeTimers();
+    render(<Sheet />);
+    const live = screen.getByTestId("sheet-announce");
+    expect(live.getAttribute("role")).toBe("status");
+    expect(document.querySelector("dialog")!.contains(live)).toBe(true);
+    act(() => {
+      showToast("판매처로 이동합니다");
+    });
+    expect(live.textContent).toBe("판매처로 이동합니다");
+    act(() => {
+      vi.advanceTimersByTime(TOAST_MS);
+    });
+    expect(live.textContent).toBe("");
+  });
+});
+
 describe("시트 끌어 닫기(T-037)", () => {
   it(`손잡이 줄을 ${DRAG_CLOSE_PX}px 넘게 끌었다 놓으면 닫힌다`, () => {
     render(<Sheet />);

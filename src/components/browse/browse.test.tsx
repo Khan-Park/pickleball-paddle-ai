@@ -118,6 +118,9 @@ describe("필터 접기(T-037)", () => {
     expect(screen.getByTestId("browse-filters").hidden).toBe(true);
     expect(screen.getByTestId("browse-filter-summary").textContent).toBe("모든 제품");
     fireEvent.click(chip("넓은 형"));
+    // 펼친 상태에서는 칩 영역이 보인다(T-038에서 보강)
+    expect(screen.getByTestId("browse-filters").hidden).toBe(false);
+    expect(screen.getByTestId("browse-filter-toggle").getAttribute("aria-expanded")).toBe("true");
     fireEvent.click(chip("10~20만"));
     fireEvent.click(screen.getByTestId("browse-filter-toggle"));
     expect(screen.getByTestId("browse-filters").hidden).toBe(true);

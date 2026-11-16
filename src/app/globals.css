@@ -8,6 +8,8 @@
  */
 :root {
   --navy: #1e2a44;
+  /* 상표 색(앱 아이콘 바탕). 화면 색이 아니므로 어두운 화면에서도 바꾸지 않는다(T-038) */
+  --brand: #1e2a44;
   /* 코트 청록. 주 버튼, 선택 테두리, 진행·적합도 막대, 강조 글자, 포커스 링 */
   --accent: #0f6e56;
   /* 청록 바탕 위 글자(주 버튼·체크 등). 어두운 화면에서는 청록이 밝아지므로 어두운 글자가 된다 */
@@ -240,6 +242,8 @@ dialog.bottom-sheet::backdrop {
   ::backdrop {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
+    /* 시작 지연도 없앤다(늦게 나타나는 요소가 빈 채로 기다리지 않게, T-038) */
+    animation-delay: 0s !important;
     transition-duration: 1ms !important;
     scroll-behavior: auto !important;
   }
