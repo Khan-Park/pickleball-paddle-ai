@@ -52,3 +52,19 @@
 ## 참고
 - data/staging/README.md(초안 규칙·조사 방법), docs/data/product-candidates.md, docs/data/price-check.md
 - docs/decisions.md D-018·D-019·D-020·D-024·D-025·D-028·D-029, T-022 결과
+
+## 1차 확인: 후보표 (2026-11-17, 피앤피노 판매 중, 승인은 USA Pickleball 목록 대조)
+피앤피노 피클볼 목록 23쪽(패들 이름 248개 중 116개 품절)을 읽었다. 상품 페이지의 스펙은 글자가 아니라 이미지라 읽을 수 없어, 스펙은 제조사 페이지에서 확인한다.
+
+| 후보 | 판매가 | 채울 칸 | 승인 목록 | 사용자 선택 |
+|---|---|---|---|---|
+| JOOLA Collin Johns Scorpeus CFS 16mm | 90,000 | 넓은 형 10만 이하 | Collin Johns Scorpeus CFS 16mm (entry 5381) | 초안 |
+| Franklin Signature Carbon Traditional 13mm | 159,000 | 표준형 10~20만 | Signature Carbon T (entry 11939, 두께 표기 없음 → 같은 모델인지 확인) | 초안 |
+| JOOLA Double Vision Hyperion 16mm | 189,000 | 하이브리드 10~20만 대회 | Hyperion Double Vision 16mm (entry 11835) | 초안 |
+| JOOLA Ben Johns Hyperion Pro 3S Dual 16mm | 299,000 | 하이브리드 20~30만 | Hyperion 3S Dual 16mm | 초안 |
+| JOOLA Magnus 3S Dual 14mm | 299,000 | 표준형 20~30만(형태 미확인) | Magnus 3S Dual 14mm | 조사 |
+| Franklin FS Tour Dynasty 14·16mm | 280,000 | 표준형 20~30만(형태 미확인) | FS Tour Dynasty 14MM·16MM | 조사 |
+| JOOLA Agassi Edge 16mm | 159,000 | 표준형 또는 넓은 형 10~20만(형태 미확인) | Agassi Edge 16mm | 조사 |
+| 11SIX24 Vapor Jelly Bean 2 Hybrid 16mm | 289,000 | 하이브리드 20~30만 | 'Vapor Jelly Bean 16mm'만 있음(2세대 표기 없음 → 미확인) | 조사 |
+
+찾지 못한 것: 판매 중인 **길쭉한 형 10만 원 이하** 제품(10만 원 이하 판매 중 패들은 TRION·ProKennex·GLUX LumaAir·STAR·Picklepoppers 정도이고 형태·코어가 공개되지 않았거나 이미 데이터에 있다). **표준형 10만 원 이하** 추가 후보도 없다
