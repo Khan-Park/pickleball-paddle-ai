@@ -4,7 +4,7 @@
  */
 
 import type { Shape } from "../../../data/schema";
-import { SHAPE_LABEL } from "../shared/shape-labels";
+import { SHAPE_LABEL } from "../shared/shape-labels.ts";
 
 export type QuestionId = "experience" | "play_style" | "weight" | "arm" | "shapes" | "budget" | "tournament";
 

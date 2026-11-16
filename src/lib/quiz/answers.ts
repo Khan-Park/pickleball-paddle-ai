@@ -1,5 +1,5 @@
-import { parseUserProfile, type ProfileParseResult } from "../recommend/profile";
-import { nextQuestion, visibleQuestions, type QuestionId, type QuizAnswers } from "./questions";
+import { parseUserProfile, type ProfileParseResult } from "../recommend/profile.ts";
+import { nextQuestion, visibleQuestions, type QuestionId, type QuizAnswers } from "./questions.ts";
 
 const SKILL = { under_1y: "beginner", "1_to_3y": "intermediate", over_3y: "advanced" } as const;
 const WEIGHT = { light: "light", medium: "medium", heavy: "heavy", any: "no_preference" } as const;
