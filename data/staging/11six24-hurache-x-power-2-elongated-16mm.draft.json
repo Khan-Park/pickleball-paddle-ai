@@ -1,5 +1,5 @@
 {
-  "status": "보류 - 폭이 없음 (필수 필드). 수집본에 없어 제조사 자료가 필요",
+  "status": "승격 2026-11-16 - paddles.json에 넣음(폭·무게는 제조사 값)",
   "paddle": {
     "id": "11six24-hurache-x-power-2-elongated-16mm",
     "brand": "11SIX24",

@@ -1,5 +1,5 @@
 {
-  "status": "초안 - 사람 확인 전 (paddles.json에 넣지 않음)",
+  "status": "제외 확정 2026-11-16 - 국내 판매처 없음, 일부 옵션 품절, 후속 모델 Boomstik ST가 이미 paddles.json에 있다(사용자 승인). 제조사 값은 초안과 일치",
   "paddle": {
     "id": "selkirk-labs-project-boomstik-elongated",
     "brand": "Selkirk",

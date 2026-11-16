@@ -1,5 +1,5 @@
 {
-  "status": "보류 - 코어 두께가 없음 (필수 필드). 수집본에 없어 제조사 자료가 필요",
+  "status": "보류 - 코어 두께·표면이 없음. 2026-11-16 재조사: 공개 자료에는 후속 모델(Pro Speed II) 값만 있다",
   "paddle": {
     "id": "prokennex-kinetic-pro-speed",
     "brand": "ProKennex",

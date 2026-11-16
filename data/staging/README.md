@@ -83,3 +83,18 @@
 - `data/paddles.json`에 17개가 있다(확인표 3회 승인으로 19개를 올린 뒤 2개 제외).
 - **제외한 2개**: ProKennex Power, SKARO PKR-T700. 판매처가 코어 두께가 아니라 '패들 두께'(13mm, 16mm)로만 적었다. 그 값을 코어 두께로 넣었더니 상급·파워 사용자에게 입문용 ProKennex Power가 1순위로 나왔다. 코어 두께는 파워/컨트롤 점수의 45%를 차지하므로 근거가 약한 값은 쓰지 않는다. 초안은 보류로 남겼다.
 - 교훈: 판매처 표기에서 '두께'가 코어 두께인지 패들 전체 두께인지 구분한다. 코어 두께로 명시되지 않으면 `core_mm`을 비운다.
+
+## 보류 재검토 (2026-11-16)
+보류 9개(초안 10개)를 제조사 사이트, USA Pickleball 승인 목록, 판매처에서 다시 찾았다. 위 표의 상태보다 각 초안 파일의 `status`가 최신이다.
+
+| 제품 | 결과 | 근거 |
+|---|---|---|
+| 11SIX24 Hurache-X Power 2 Elongated | **승격** | 제조사 페이지의 폭 7.5in. 무게는 제조사 범위 8.0–8.3oz의 중간값 8.15. 승인 목록에 Power 2가 없어 unknown |
+| Vatic Pro V-SOL Tour Bloom | **승격** | 표면은 USA Pickleball 등록(entry 13671) Carbon Fiber. 나머지 값은 판매처 이미지와 대조해 일치 |
+| Honolulu J6CR Crystal Blue Endurance | **승격** | 무게는 Pickleball Central 스펙표 8.0–8.2oz의 중간값 8.1. 대회 승인을 unknown으로 정정(목록의 J6CR은 일반 카본판). 제조사 공식 사이트 없음 |
+| TRION V-1 Power / Control | 보류 | 폭을 찾지 못함. 판매처 문의 필요 |
+| ProKennex Kinetic Pro Speed | 보류 | 코어 두께·표면을 찾지 못함 |
+| ProKennex Power, SKARO PKR-T700 | 보류 | 코어 두께를 찾지 못함('패들 두께'만 있음) |
+| Selkirk LABS Project Boomstik (2개) | **제외 확정** | 국내 판매처 없음, 일부 품절, 후속 모델 Boomstik ST가 이미 있음 |
+
+승격 후 `data/paddles.json`은 20개다.
