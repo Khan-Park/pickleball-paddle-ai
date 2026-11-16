@@ -10,6 +10,8 @@ import type { UserProfile } from "@/lib/recommend/profile";
 import { recommend, type RelaxationHint } from "@/lib/recommend/recommend";
 import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal, won, type AffiliateProgram } from "./labels";
 import { ResultCard } from "./ResultCard";
+import { RankRow } from "./RankRow";
+import { ConditionChips } from "./parts";
 import { Analyzing } from "./Analyzing";
 import { clearAnalyzeMode, peekAnalyzeMode, type AnalyzeMode } from "./analyzing-flag";
 import { CardSkeleton } from "@/components/ui/Skeleton";
@@ -47,11 +49,11 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
     if (analyze) clearAnalyzeMode();
   }, [analyze]);
 
+  const answers = useMemo(() => parseAnswers(raw ?? null), [raw]);
   const base = useMemo(() => {
-    const answers = parseAnswers(raw ?? null);
     const result = answers ? answersToProfile(answers) : null;
     return result && result.success ? result.profile : null;
-  }, [raw]);
+  }, [answers]);
 
   const missing = raw !== undefined && base === null;
   useEffect(() => {
@@ -110,7 +112,8 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         </div>
       ) : null}
 
-      <header className="flex flex-col gap-2">
+      <header className="flex flex-col gap-3">
+        {answers ? <ConditionChips answers={answers} /> : null}
         <h1 className="text-2xl font-bold leading-snug text-navy">
           {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
         </h1>
@@ -123,11 +126,16 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
       {/* 1→2→3순위 순서로 떠오르며 나타난다(카드마다 80ms 늦게) */}
+      {/* 1순위는 크게, 2·3순위는 한 줄 행(누르면 시트). 순위 순서로 떠오르며 나타난다(카드마다 80ms 늦게) */}
       {result.items.map((item, i) => {
         const paddle = byId.get(item.paddle_id);
         return paddle ? (
           <div key={item.paddle_id} className="animate-rise-in" style={{ animationDelay: `${i * 80}ms` }} data-testid="result-card-wrap">
-            <ResultCard rank={i + 1} item={item} paddle={paddle} today={today} />
+            {i === 0 ? (
+              <ResultCard rank={1} item={item} paddle={paddle} today={today} />
+            ) : (
+              <RankRow rank={i + 1} item={item} paddle={paddle} today={today} />
+            )}
           </div>
         ) : null;
       })}
