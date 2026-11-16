@@ -62,23 +62,11 @@
       "비고": "2026-11-17 앱 안 브라우저로 상품 페이지 확인"
     }
   },
-  "source_meta": [
-    {
-      "url": "https://11six24.com/products/vapor-jelly-bean-2",
-      "read_at": "2026-11-17",
-      "method": "앱 안 브라우저로 제조사 상품 페이지 본문·구조화 데이터(Paddle Specs, material) 읽음"
-    },
-    {
-      "url": "https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp",
-      "read_at": "2026-11-17",
-      "method": "앱 안 브라우저로 판매처 상품 페이지(가격·옵션·판매 상태) 읽음"
-    },
-    {
-      "url": "https://equipment.usapickleball.org/paddle-list/?gv_search=&filter_5=11SIX24&filter_55=Jelly&mode=all",
-      "read_at": "2026-11-17",
-      "method": "USAP 승인 목록 검색"
-    }
-  ],
+  "source_meta": {
+    "url": "https://11six24.com/products/vapor-jelly-bean-2",
+    "read_at": "2026-11-17",
+    "method": "앱 안 브라우저로 제조사 상품 페이지 본문·구조화 데이터(Paddle Specs, material) 읽음. 같은 날 판매처 상품 페이지(https://pnpino.com/products/11six24-%ED%94%BC%ED%81%B4%EB%B3%BC-%ED%8C%A8%EB%93%A4-%EB%9D%BC%EC%BC%93-%EB%B2%A0%EC%9D%B4%ED%8D%BC-%EC%A0%A4%EB%A6%AC%EB%B9%88-2-vapor-jelly-bean-2-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-16mm-afjp, 가격·옵션·판매 상태)와 USAP 승인 목록 검색(https://equipment.usapickleball.org/paddle-list/?gv_search=&filter_5=11SIX24&filter_55=Jelly&mode=all)도 읽음"
+  },
   "open_questions": [
     "면 소재를 carbon으로 둘지 composite로 둘지(T700 카본 + 파이버글라스 3중)",
     "USAP 승인 목록에 2세대가 올라오면 approved로 바꾼다"
