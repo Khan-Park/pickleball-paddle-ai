@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { paddleSchema } from "../../../data/schema";
+import { paddleSchema } from "../../../data/schema.ts";
 
 const krw = (label: string) =>
   z

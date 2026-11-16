@@ -1,6 +1,6 @@
 import type { PaddleSpec } from "../../../data/schema";
-import { CERT_MAX_AGE_DAYS } from "../shared/limits";
-import { daysBetween } from "../shared/dates";
+import { CERT_MAX_AGE_DAYS } from "../shared/limits.ts";
+import { daysBetween } from "../shared/dates.ts";
 import type { BudgetRange, UserProfile } from "./profile";
 
 export { CERT_MAX_AGE_DAYS };
