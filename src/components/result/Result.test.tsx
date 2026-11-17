@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import type { Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
@@ -20,6 +22,13 @@ const PADDLES: Paddle[] = [
   p({ id: "unknown", brand: "가짜", model: "미확인 16", core_mm: 16, weight_oz: 7.8, shape: "hybrid", price_krw: 120000, certification: { usa_pickleball: "unknown", checked_at: today } }),
 ];
 const beginner: QuizAnswers = { experience: "under_1y", play_style: "unsure", weight: "any", arm: "no", budget: "any", tournament: "no" };
+
+// jsdom 31에는 <dialog>의 showModal·close가 없다(ui.test.tsx와 같은 최소 대체)
+beforeAll(() => {
+  const proto = HTMLDialogElement.prototype as HTMLDialogElement & { showModal?: () => void; close?: () => void };
+  if (typeof proto.showModal !== "function") proto.showModal = function (this: HTMLDialogElement) { this.setAttribute("open", ""); };
+  if (typeof proto.close !== "function") proto.close = function (this: HTMLDialogElement) { this.removeAttribute("open"); };
+});
 
 beforeEach(() => {
   replace.mockClear();
@@ -247,5 +256,59 @@ describe("대회 승인 배지와 조건 완화", () => {
     fireEvent.click(screen.getByRole("button", { name: /350,000원까지 올려서 다시 보기/ }));
     const names = screen.getAllByRole("article").map((a) => a.querySelector("h2")!.textContent);
     expect(names).toEqual(["가짜 고가"]);
+  });
+});
+
+describe("결과 레이아웃(T-045)", () => {
+  const isBefore = (a: Element, b: Element) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+
+  it("DOM 순서: 대가 표시 → 히어로 제목 → 조건 요약 줄 → 카드", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={PADDLES.map((x) => ({ ...x, purchase: { url: `https://link.coupang.com/a/${x.id}`, is_affiliate: true, program: "coupang_partners" as const } }))} />);
+    const notice = screen.getByTestId("affiliate-page-notice");
+    const hero = screen.getByTestId("hero-media");
+    const h1 = screen.getByRole("heading", { level: 1 });
+    const summary = screen.getByTestId("condition-summary");
+    const firstCard = screen.getAllByTestId("result-card-wrap")[0]!;
+    expect(hero.contains(h1)).toBe(true);
+    expect(isBefore(notice, h1)).toBe(true);
+    expect(isBefore(h1, summary)).toBe(true);
+    expect(isBefore(summary, firstCard)).toBe(true);
+  });
+
+  it("Result.tsx에 시각 재배치 클래스가 없다", () => {
+    const src = readFileSync(join(process.cwd(), "src/components/result/Result.tsx"), "utf8");
+    expect(src).not.toMatch(/\b(order-|flex-row-reverse|flex-col-reverse|col-start-|row-start-)/);
+  });
+
+  it.each([
+    [3, "답변에 맞는 패들 3개를 찾았어요"],
+    [2, "답변에 맞는 패들 2개를 찾았어요"],
+    [1, "답변에 맞는 패들 1개를 찾았어요"],
+  ])("제목에 결과 개수(%i개)가 들어간다", (n, title) => {
+    saveAnswers(beginner);
+    render(<Result paddles={PADDLES.slice(0, n)} />);
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(title);
+  });
+
+  it("결과가 없으면 찾지 못했다고 쓴다", () => {
+    saveAnswers({ ...beginner, budget: "under_100k", tournament: "yes" });
+    render(<Result paddles={[PADDLES[2]!]} />);
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("조건에 맞는 패들을 찾지 못했습니다");
+  });
+
+  it("팔 불편 답은 조건 줄과 '추천 기준 보기' 시트에 없다", () => {
+    saveAnswers({ ...beginner, arm: "yes" });
+    render(<Result paddles={PADDLES} />);
+    const summary = screen.getByTestId("condition-summary");
+    fireEvent.click(within(summary).getByRole("button", { name: "추천 기준 보기" }));
+    const text = `${summary.textContent} ${screen.getByTestId("criteria-list").textContent}`;
+    expect(text).not.toMatch(/팔|손목|어깨|불편/);
+    expect(screen.getByTestId("criteria-list").querySelectorAll("li").length).toBeGreaterThan(0);
+  });
+
+  it("1024px 이상에서는 하단 고정 구매 버튼과 그 자리 여백을 숨긴다", () => {
+    const src = readFileSync(join(process.cwd(), "src/components/result/StickyBuy.tsx"), "utf8");
+    expect(src).toMatch(/fixed inset-x-0 bottom-0[^"]*lg:hidden/);
   });
 });
