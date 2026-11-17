@@ -53,3 +53,4 @@
 - 토큰 10개와 `--text-hero` 추가, 기존 토큰 값 변화 없음. 대비 검사 65개(tokens·copy) 통과, 전체 451개 통과, 빌드 통과
 - 빌드 결과 CSS에서 `--hero-scrim`은 color-mix를 지원하지 않는 브라우저용으로 `var(--hero)`(불투명) 대체값이 붙는다(Tailwind 처리). 대비 면에서는 더 안전한 쪽
 - 화면 컴포넌트는 바꾸지 않아 화면 변화 없음(새 토큰을 쓰는 곳 0건)
+- (T-042에서 바로잡음) `--text-hero`는 색 토큰 `--color-hero`와 이름이 겹쳐 `text-hero` 클래스가 색으로 해석됐다. `--text-hero-title`로 바꾸고 이름 겹침 검사를 tokens.test에 추가했다

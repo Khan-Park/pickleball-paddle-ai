@@ -120,9 +120,9 @@
   --color-focus-on-hero: var(--focus-on-hero);
   --color-hero-scrim: var(--hero-scrim);
 
-  /* 데스크톱 큰 제목 전용(T-039) */
-  --text-hero: 2.5rem;
-  --text-hero--line-height: 1.2;
+  /* 데스크톱 큰 제목 전용(T-039). 이름이 색 토큰 --color-hero와 겹치면 text-hero가 색으로 해석돼 --text-hero-title로 바꿨다(T-042) */
+  --text-hero-title: 2.5rem;
+  --text-hero-title--line-height: 1.2;
 
   /* 글자 크기 6단계(모바일 기준). 굵기는 보통(400)과 굵게(700) 두 가지만 쓴다 */
   --text-display: 1.75rem;
