@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { openGraphFor } from "@/lib/shared/site";
 import { StartButton } from "@/components/StartButton";
 import { ShapeShowcase } from "@/components/home/ShapeShowcase";
+import { SiteHeader } from "@/components/site/SiteHeader";
 
 /** 시작 화면만 og:url을 사이트 주소로 적는다(T-038) */
 export const metadata: Metadata = { openGraph: openGraphFor("/") };
@@ -19,57 +19,43 @@ const rise = (i: number, className = "") => ({ className: `animate-rise-in ${cla
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-5 pt-4 pb-8">
-      <div {...rise(0, "flex items-center gap-2")}>
-        {/* 앱 아이콘(src/app/icon.svg)과 같은 그림. 서비스 이름 "패들핏"(T-027) */}
-        <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true" focusable="false">
-          <rect width="64" height="64" rx="14" fill="var(--brand)" />
-          <rect x="18" y="8" width="28" height="34" rx="9" fill="none" stroke="#ffffff" strokeWidth="4" />
-          <rect x="28.5" y="42" width="7" height="15" rx="2" fill="#ffffff" />
-          <circle cx="45" cy="47" r="5" fill="var(--accent-bright)" />
-        </svg>
-        <span className="text-small font-bold text-navy">패들핏</span>
-        {/* 질문 없이 전체 목록을 보는 보조 길(T-026). 하단 고정 바를 높이지 않도록 상단 바 오른쪽에 둔다(-my-2로 줄 높이 유지) */}
-        <Link
-          href="/browse"
-          className="-my-2 ml-auto inline-flex min-h-11 items-center rounded-control px-2 text-small font-bold text-accent underline underline-offset-4 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
-        >
-          질문 없이 둘러보기
-        </Link>
-      </div>
+    <>
+      {/* 로고와 "패들 둘러보기"는 공통 헤더로 옮겼다(T-040. 전에는 이 화면 위쪽 바에 있었다) */}
+      <SiteHeader current="home" />
+      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-5 pt-6 pb-8">
+        <header {...rise(0, "flex flex-col gap-2")}>
+          <h1 className="text-display font-bold text-navy">질문 1분, 나에게 맞는 패들 3개</h1>
+          <p className="text-body text-muted">경력·성향·예산을 알려 주시면 스펙 근거로 이유와 함께 보여 드립니다.</p>
+        </header>
 
-      <header {...rise(1, "flex flex-col gap-2")}>
-        <h1 className="text-display font-bold text-navy">질문 1분, 나에게 맞는 패들 3개</h1>
-        <p className="text-body text-muted">경력·성향·예산을 알려 주시면 스펙 근거로 이유와 함께 보여 드립니다.</p>
-      </header>
-
-      <div {...rise(2)}>
-        <ShapeShowcase />
-      </div>
-
-      <ul data-testid="trust-points" {...rise(3, "flex flex-col gap-3")}>
-        {TRUST_POINTS.map((p) => (
-          <li key={p.title} className="flex gap-3">
-            <span aria-hidden="true" className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-caption font-bold text-on-accent">
-              ✓
-            </span>
-            <span>
-              <span className="block text-small font-bold text-ink">{p.title}</span>
-              <span className="block text-caption text-muted">{p.body}</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      <p className="text-caption text-muted">제조사와 판매처가 공개한 스펙을 기준으로 한 추천입니다. 실제 타구감은 사람마다 다를 수 있습니다.</p>
-
-      {/* 하단 고정 시작 버튼(엄지 영역). 가리지 않도록 아래 여백을 둔다 */}
-      <div aria-hidden="true" className="h-20" />
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur-sm">
-        <div {...rise(4, "mx-auto w-full max-w-xl px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]")}>
-          <StartButton />
+        <div {...rise(1)}>
+          <ShapeShowcase />
         </div>
-      </div>
-    </main>
+
+        <ul data-testid="trust-points" {...rise(2, "flex flex-col gap-3")}>
+          {TRUST_POINTS.map((p) => (
+            <li key={p.title} className="flex gap-3">
+              <span aria-hidden="true" className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-caption font-bold text-on-accent">
+                ✓
+              </span>
+              <span>
+                <span className="block text-small font-bold text-ink">{p.title}</span>
+                <span className="block text-caption text-muted">{p.body}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-caption text-muted">제조사와 판매처가 공개한 스펙을 기준으로 한 추천입니다. 실제 타구감은 사람마다 다를 수 있습니다.</p>
+
+        {/* 하단 고정 시작 버튼(엄지 영역). 가리지 않도록 아래 여백을 둔다 */}
+        <div aria-hidden="true" className="h-20" />
+        <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur-sm">
+          <div {...rise(3, "mx-auto w-full max-w-xl px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]")}>
+            <StartButton />
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
