@@ -1,5 +1,6 @@
 "use client";
 
+import { formatWeight } from "@/lib/shared/weight";
 import type { PaddleDisplay } from "../../../data/schema";
 import { SHAPE_LABEL } from "@/lib/shared/shape-labels";
 import { certShort } from "@/lib/shared/cert";
@@ -27,7 +28,7 @@ export function ProductRow({
   const ad = paddle.purchase?.is_affiliate === true;
   const short = certShort(paddle.certification, today);
   const cert = short === "미확인" ? "승인 미확인" : short;
-  const spec = `${SHAPE_LABEL[paddle.shape]} · ${paddle.weight_oz}oz · 코어 ${paddle.core_mm}mm`;
+  const spec = `${SHAPE_LABEL[paddle.shape]} · ${formatWeight(paddle.weight_oz)} · 코어 ${paddle.core_mm}mm`;
   const price = paddle.price_krw !== undefined ? `약 ${won(paddle.price_krw)}` : "가격 정보 없음";
   const label = [rank !== undefined ? `${rank}순위 ${name}` : name, ad ? "광고" : null, spec, price, cert.replace("✓ ", "")].filter(Boolean).join(", ");
   return (

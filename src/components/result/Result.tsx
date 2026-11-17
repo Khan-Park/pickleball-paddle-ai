@@ -13,7 +13,9 @@ import { AffiliatePageNotice, affiliatePrograms } from "./AffiliatePageNotice";
 import { ResultCard } from "./ResultCard";
 import { RankRow } from "./RankRow";
 import { StickyBuy } from "./StickyBuy";
-import { CompareSheet, toCompareColumns, type RecommendedColumn } from "@/components/compare/CompareSheet";
+import { CompareSheet, CompareTable, toCompareColumns, type RecommendedColumn } from "@/components/compare/CompareSheet";
+import { DESKTOP_QUERY, useMediaQuery } from "@/components/ui/useMediaQuery";
+import { buttonClass } from "@/components/ui/Button";
 import { Button } from "@/components/ui/Button";
 import { HeroMedia } from "@/components/site/HeroMedia";
 import { ConditionSummary } from "./ConditionSummary";
@@ -29,6 +31,8 @@ const subscribe = () => () => {};
 /** 1순위 카드의 구매 묶음 id. 하단 고정 버튼이 이 요소가 보이는지 본다 */
 const TOP_BUY_ID = "top-buy";
 const readToday = () => todayLocal();
+/** 데스크톱에서 카드 아래 펼쳐 둔 비교 표 */
+const COMPARE_SECTION_ID = "result-compare";
 
 /** 조건 완화 힌트를 눌렀을 때의 프로필. 저장된 답변은 바꾸지 않는다 */
 function relax(profile: UserProfile, hint: RelaxationHint): UserProfile {
@@ -60,6 +64,8 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   // 첫 렌더(하이드레이션)에서는 답변을 아직 모르므로 스켈레톤이 나와 서버 결과와 같다
   const [analyze, setAnalyze] = useState<AnalyzeMode | null>(() => (typeof window === "undefined" ? null : peekAnalyzeMode()));
   const reducedMotion = useReducedMotion();
+  // 1024px 이상이면 카드 3열 + 펼친 비교 표(T-046). 두 배치를 함께 그리지 않는다(구매 링크·id가 두 벌 생기지 않게)
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   // 한 번 보여 주기 시작하면 표시를 지운다(새로고침에서 다시 나오지 않게)
   useEffect(() => {
     if (analyze) clearAnalyzeMode();
@@ -182,7 +188,12 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
             </h1>
             <p className="text-small text-on-hero-muted">답하신 조건과 공개된 스펙으로 고른 결과입니다.</p>
           </div>
-          {columns ? (
+          {columns && isDesktop ? (
+            // 데스크톱은 카드 아래에 비교 표를 펼쳐 둔다. 같은 비교를 대화상자로 또 띄우지 않고 표로 이동한다
+            <a href={`#${COMPARE_SECTION_ID}`} className={buttonClass({ variant: "heroSecondary", size: "md", className: "shrink-0" })}>
+              비교 표 보기
+            </a>
+          ) : columns ? (
             <Button variant="heroSecondary" size="md" onClick={() => setCompareOpen(true)} className="shrink-0">
               비교하기
             </Button>
@@ -205,7 +216,43 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
 
       {/* 1→2→3순위 순서로 떠오르며 나타난다(카드마다 80ms 늦게) */}
       {/* 1순위는 크게, 2·3순위는 한 줄 행(누르면 시트). 순위 순서로 떠오르며 나타난다(카드마다 80ms 늦게) */}
-      {result.items.map((item, i) => {
+      {isDesktop ? (
+        // 데스크톱 3열(T-046). 1~3순위가 같은 모양이고 구매 묶음을 접지 않는다
+        <div className="grid grid-cols-3 gap-6" data-testid="result-columns">
+          {result.items.map((item, i) => {
+            const paddle = byId.get(item.paddle_id);
+            return paddle ? (
+              <div key={item.paddle_id} className="animate-rise-in" style={{ animationDelay: `${i * 80}ms` }} data-testid="result-card-wrap" data-paddle-id={paddle.id}>
+                <ResultCard rank={i + 1} item={item} paddle={paddle} today={today} mode="column" buyAnchorId={i === 0 ? TOP_BUY_ID : undefined} />
+              </div>
+            ) : null;
+          })}
+        </div>
+      ) : null}
+
+      {isDesktop && columns ? (
+        <section id={COMPARE_SECTION_ID} aria-labelledby={`${COMPARE_SECTION_ID}-title`} className="scroll-mt-6 rounded-card border border-line bg-card p-5 shadow-card" data-testid="inline-compare">
+          <h2 id={`${COMPARE_SECTION_ID}-title`} className="pb-3 text-heading font-bold text-navy">
+            한눈에 보는 스펙 비교
+          </h2>
+          <CompareTable
+            mode="recommended"
+            columns={columns}
+            today={today}
+            onPick={(paddleId) => {
+              // 카드가 모두 화면에 있으므로 그 카드 제목으로 보낸다
+              const title = document.querySelector<HTMLElement>(`[data-testid='result-card-wrap'][data-paddle-id='${paddleId}'] article h2`);
+              if (title) {
+                title.tabIndex = -1;
+                title.scrollIntoView({ block: "start" });
+                title.focus();
+              }
+            }}
+          />
+        </section>
+      ) : null}
+
+      {isDesktop ? null : result.items.map((item, i) => {
         const paddle = byId.get(item.paddle_id);
         return paddle ? (
           <div key={item.paddle_id} className="animate-rise-in" style={{ animationDelay: `${i * 80}ms` }} data-testid="result-card-wrap">
@@ -275,7 +322,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       {/* 결과만 공유(T-025). 화면에 보이는 추천(조건 완화 결과 포함)의 제품 id만 담는다 */}
       {result.items.length > 0 ? <ShareButtons paddleIds={result.items.map((item) => item.paddle_id)} /> : null}
 
-      {columns ? (
+      {columns && !isDesktop ? (
         <CompareSheet
           mode="recommended"
           open={compareOpen}
