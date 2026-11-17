@@ -34,6 +34,28 @@
   --backdrop: rgb(15 23 42 / 0.45);
   --shadow-rgb: 30 42 68;
 
+  /*
+   * 리디자인 토큰(T-039, docs/plan/m2.5-redesign.md 3.7·4장). 라임은 강조 띠·1순위 배지·꾸밈에만 쓰고 글자색으로 쓰지 않는다(copy.test.ts가 검사).
+   * 라임·히어로 값은 시안 그림에서 읽은 추정값이다.
+   */
+  --lime: #c5f23a;
+  /* 라임 위 글자. 모드와 무관한 고정값 */
+  --on-lime: #1e2a44;
+  /* 넓은 강조 바탕. 위 글자는 --ink */
+  --lime-soft: #eefbc8;
+  /* 히어로 띠·사진 덮개 기준색. 두 모드 모두 짙다 */
+  --hero: #0f2a36;
+  /* 히어로 위 글자(고정값) */
+  --on-hero: #ffffff;
+  --on-hero-muted: #c9d6dc;
+  /* 히어로 위 주 버튼. 기존 틸은 히어로와 2.4:1이라 밝은 틸 + 짙은 글자를 쓴다(고정값) */
+  --accent-on-hero: #3cc39a;
+  --on-accent-on-hero: #04261c;
+  /* 히어로 위 포커스 링 */
+  --focus-on-hero: #c5f23a;
+  /* 사진 덮개. 75%는 사진이 없는 최악의 경우에도 히어로 위 글자가 4.5:1을 넘는 값(T-042에서 사진과 함께 다시 확인) */
+  --hero-scrim: color-mix(in srgb, var(--hero) 75%, transparent);
+
   /* 모션. 시간 3단계와 곡선 2개(나타남은 ease-out, 사라짐은 ease-in) */
   --duration-fast: 120ms;
   --duration-base: 220ms;
@@ -63,6 +85,11 @@
     --confirm-soft: #143222;
     --backdrop: rgb(0 0 0 / 0.6);
     --shadow-rgb: 0 0 0;
+    /* 라임은 눈부심을 줄이려 채도를 조금 낮추고, 히어로는 어두운 바탕과 구분되게 조금 밝힌다(T-039) */
+    --lime: #b8e62e;
+    --lime-soft: #2a3312;
+    --hero: #10303a;
+    --focus-on-hero: #b8e62e;
   }
 }
 
@@ -82,6 +109,20 @@
   --color-caution-soft: var(--caution-soft);
   --color-confirm: var(--confirm);
   --color-confirm-soft: var(--confirm-soft);
+  --color-lime: var(--lime);
+  --color-on-lime: var(--on-lime);
+  --color-lime-soft: var(--lime-soft);
+  --color-hero: var(--hero);
+  --color-on-hero: var(--on-hero);
+  --color-on-hero-muted: var(--on-hero-muted);
+  --color-accent-on-hero: var(--accent-on-hero);
+  --color-on-accent-on-hero: var(--on-accent-on-hero);
+  --color-focus-on-hero: var(--focus-on-hero);
+  --color-hero-scrim: var(--hero-scrim);
+
+  /* 데스크톱 큰 제목 전용(T-039) */
+  --text-hero: 2.5rem;
+  --text-hero--line-height: 1.2;
 
   /* 글자 크기 6단계(모바일 기준). 굵기는 보통(400)과 굵게(700) 두 가지만 쓴다 */
   --text-display: 1.75rem;

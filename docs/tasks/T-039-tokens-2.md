@@ -24,17 +24,17 @@
 - **덮개 불투명도**: 흰 바탕 위 최악의 경우로 계산하면 흰 글자는 65% 이상, 설명 글자는 75%에서 4.5:1을 넘는다(4.51). 우선 75%로 정하고, 사진을 고르는 T-042에서 다시 본다
 
 ## 수용 기준
-- [ ] 위 토큰이 `globals.css`에 있고, 색 토큰은 어두운 블록에도 있다(고정값 토큰은 예외 목록으로 관리)
-- [ ] `tokens.test.ts`에 4.2 조합을 밝은·어두운 모두 추가하고 통과한다
+- [x] 위 토큰이 `globals.css`에 있고, 색 토큰은 어두운 블록에도 있다(고정값 토큰은 예외 목록으로 관리)
+- [x] `tokens.test.ts`에 4.2 조합을 밝은·어두운 모두 추가하고 통과한다
   - 4.5:1 기준(글자): on-lime/lime, ink/lime-soft, navy/lime-soft, on-hero/hero, on-hero-muted/hero, on-accent-on-hero/accent-on-hero, on-hero/덮개 합성색, on-hero-muted/덮개 합성색
   - 3:1 기준(비텍스트): accent-on-hero/hero, focus-on-hero/hero, accent/card, accent/surface
   - 덮개 합성색은 card 위에 hero를 덮개 비율로 섞은 색이다(사진이 없는 최악의 경우를 근사)
-- [ ] 새 `copy.test.ts`: `src`의 테스트가 아닌 `.ts`·`.tsx` 파일에 `AI`(낱말)·`인공지능`이 0건이다
-- [ ] 같은 파일에서 색 규칙을 검사한다
+- [x] 새 `copy.test.ts`: `src`의 테스트가 아닌 `.ts`·`.tsx` 파일에 `AI`(낱말)·`인공지능`이 0건이다
+- [x] 같은 파일에서 색 규칙을 검사한다
   - `text-lime` 계열 클래스가 0건이다
   - `bg-lime`과 `text-on-accent`·`text-on-hero`를 같은 class 문자열에 쓰지 않는다
-- [ ] 화면 변화가 없다. 기존 테스트가 그대로 통과하고, 기존 토큰 값은 바뀌지 않는다
-- [ ] `npm run check` 통과
+- [x] 화면 변화가 없다. 기존 테스트가 그대로 통과하고, 기존 토큰 값은 바뀌지 않는다
+- [x] `npm run check` 통과
 
 ## 건드릴 파일
 - `src/app/globals.css`, `src/app/tokens.test.ts`, 새 `src/app/copy.test.ts`, 이 카드
@@ -48,3 +48,8 @@
 
 ## 참고
 - docs/plan/m2.5-redesign.md 3.7·4장, docs/decisions.md D-028·D-037·D-038, src/app/tokens.test.ts
+
+## 결과 (2026-11-17)
+- 토큰 10개와 `--text-hero` 추가, 기존 토큰 값 변화 없음. 대비 검사 65개(tokens·copy) 통과, 전체 451개 통과, 빌드 통과
+- 빌드 결과 CSS에서 `--hero-scrim`은 color-mix를 지원하지 않는 브라우저용으로 `var(--hero)`(불투명) 대체값이 붙는다(Tailwind 처리). 대비 면에서는 더 안전한 쪽
+- 화면 컴포넌트는 바꾸지 않아 화면 변화 없음(새 토큰을 쓰는 곳 0건)
