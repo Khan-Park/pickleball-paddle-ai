@@ -48,7 +48,36 @@ const PAIRS: [string, string][] = [
   ["caution", "caution-soft"],
   ["confirm", "card"],
   ["confirm", "confirm-soft"],
+  // 리디자인 토큰(T-039, docs/plan/m2.5-redesign.md 4.2)
+  ["on-lime", "lime"],
+  ["ink", "lime-soft"],
+  ["navy", "lime-soft"],
+  ["on-hero", "hero"],
+  ["on-hero-muted", "hero"],
+  ["on-accent-on-hero", "accent-on-hero"],
 ];
+
+/** 글자가 아닌 요소(버튼 경계·포커스 링·선택 테두리)는 3:1 이상(WCAG 1.4.11) */
+const NON_TEXT_PAIRS: [string, string][] = [
+  ["accent-on-hero", "hero"],
+  ["focus-on-hero", "hero"],
+  ["accent", "card"],
+  ["accent", "surface"],
+];
+
+/** 사진 덮개 불투명도(%). `--hero-scrim: color-mix(in srgb, var(--hero) N%, transparent)`에서 읽는다 */
+const SCRIM_PERCENT = Number(/--hero-scrim:\s*color-mix\(in srgb, var\(--hero\) (\d+)%, transparent\)/.exec(lightBlock)?.[1]);
+
+/** 바탕 위에 앞 색을 비율 t(0~1)로 덮은 색 */
+function mix(top: string, base: string, t: number): string {
+  return (
+    "#" +
+    [1, 3, 5]
+      .map((i) => Math.round(parseInt(top.slice(i, i + 2), 16) * t + parseInt(base.slice(i, i + 2), 16) * (1 - t)))
+      .map((v) => v.toString(16).padStart(2, "0"))
+      .join("")
+  );
+}
 
 describe("색 대비(T-033, T-028)", () => {
   it("공식이 알려진 값과 맞는다(검은 글자/흰 바탕 21:1)", () => {
@@ -60,7 +89,8 @@ describe("색 대비(T-033, T-028)", () => {
     const dark = tokensIn(darkBlock);
     // 장식용·그림자 외의 색 토큰은 어두운 값이 있어야 한다(빠뜨리면 어두운 바탕에 밝은 화면 색이 남는다)
     // 상표 색(--brand)은 일부러 밝은·어두운 화면에서 같은 값이다(T-038)
-    const SAME_IN_BOTH = new Set(["brand"]);
+    // 라임·히어로 위 글자와 히어로 위 버튼도 모드와 무관한 고정값이다(T-039)
+    const SAME_IN_BOTH = new Set(["brand", "on-lime", "on-hero", "on-hero-muted", "accent-on-hero", "on-accent-on-hero"]);
     for (const name of Object.keys(LIGHT).filter((n) => !SAME_IN_BOTH.has(n))) expect(dark, `--${name}의 어두운 값`).toHaveProperty(name);
     expect(dark).not.toHaveProperty("brand");
   });
@@ -74,7 +104,27 @@ describe("색 대비(T-033, T-028)", () => {
       expect(tokens[bg], `--${bg}`).toBeDefined();
       expect(contrast(tokens[fg]!, tokens[bg]!)).toBeGreaterThanOrEqual(4.5);
     });
+
+    it.each(NON_TEXT_PAIRS)(`${mode}: --%s 경계가 --%s 바탕에서 3:1 이상`, (fg, bg) => {
+      expect(tokens[fg], `--${fg}`).toBeDefined();
+      expect(tokens[bg], `--${bg}`).toBeDefined();
+      expect(contrast(tokens[fg]!, tokens[bg]!)).toBeGreaterThanOrEqual(3);
+    });
+
+    it.each(["on-hero", "on-hero-muted"])(`${mode}: --%s 글자가 card 위 사진 덮개에서 4.5:1 이상(사진 없는 최악의 경우 근사)`, (fg) => {
+      const scrim = mix(tokens.hero!, tokens.card!, SCRIM_PERCENT / 100);
+      expect(contrast(tokens[fg]!, scrim)).toBeGreaterThanOrEqual(4.5);
+    });
   }
+
+  it("사진 덮개 불투명도를 읽을 수 있고 0~100 사이다", () => {
+    expect(SCRIM_PERCENT).toBeGreaterThan(0);
+    expect(SCRIM_PERCENT).toBeLessThanOrEqual(100);
+  });
+
+  it("라임은 밝은 화면 바탕에서 글자로 쓸 수 없는 대비다(그래서 글자색 금지, copy.test.ts)", () => {
+    expect(contrast(LIGHT.lime!, LIGHT.card!)).toBeLessThan(3);
+  });
 });
 
 function filesUnder(dir: string): string[] {
