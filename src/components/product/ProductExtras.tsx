@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import type { PaddleDisplay } from "../../../data/schema";
 import { similarPaddles } from "@/lib/shared/similar";
-import { certShort } from "@/components/result/CompareSheet";
+import { certShort } from "@/lib/shared/cert";
 import { won } from "@/components/result/labels";
 import { useProductCatalog } from "./catalog";
 

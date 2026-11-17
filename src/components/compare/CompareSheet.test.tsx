@@ -1,13 +1,16 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import type { Paddle } from "../../../data/schema";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { toPaddleDisplay, type Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import type { QuizAnswers } from "@/lib/quiz/questions";
 import { saveAnswers } from "@/lib/quiz/storage";
-import { certShort, COMPARE_ROWS } from "./CompareSheet";
-import { todayLocal } from "./labels";
-import { Result } from "./Result";
+import { certShort } from "@/lib/shared/cert";
+import { todayLocal } from "@/components/result/labels";
+import { Result } from "@/components/result/Result";
+import { CompareSheet, RECOMMENDED_ROWS, SPEC_ROWS, toCompareColumns, type CompareSheetProps, type PickedColumn } from "./CompareSheet";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn(), push: vi.fn() }) }));
 
@@ -58,7 +61,7 @@ describe("비교표(T-020)", () => {
     openCompare();
     expect(document.querySelector("dialog[open]")).not.toBeNull();
     const rows = within(table()).getAllByRole("row", { hidden: true });
-    expect(rows).toHaveLength(1 + COMPARE_ROWS.length);
+    expect(rows).toHaveLength(1 + RECOMMENDED_ROWS.length);
     expect(within(table()).getAllByRole("columnheader", { hidden: true })).toHaveLength(3);
     for (const row of rows.slice(1)) expect(within(row).getAllByRole("cell", { hidden: true })).toHaveLength(3);
     expect(table().textContent).not.toMatch(/\d+점|점수/);
@@ -104,5 +107,63 @@ describe("비교표(T-020)", () => {
     expect(certShort({ usa_pickleball: "approved", checked_at: "2000-01-01" }, today)).toBe("재확인 필요");
     expect(certShort({ usa_pickleball: "approved", checked_at: "2999-01-01" }, today)).toBe("재확인 필요");
     expect(certShort({ usa_pickleball: "unknown", checked_at: today }, today)).toBe("미확인");
+  });
+});
+
+describe("비교 부품 일반화(T-047)", () => {
+  const picked = (ids: string[]): PickedColumn[] => ids.map((id) => ({ paddle: toPaddleDisplay(PADDLES.find((x) => x.id === id)!) }));
+  const renderPicked = (ids: string[]) =>
+    render(<CompareSheet mode="picked" open onClose={() => {}} today={today} onPick={() => {}} columns={toCompareColumns(picked(ids))!} />);
+
+  it("담은 제품 비교는 스펙 7줄만 있고 적합도·핵심 이유·순위가 없다", () => {
+    renderPicked(["a", "b", "c"]);
+    const t = table();
+    expect(t.dataset.mode).toBe("picked");
+    const labels = [...t.querySelectorAll("[data-row]")].map((r) => (r as HTMLElement).dataset.row);
+    expect(labels).toEqual(SPEC_ROWS.map((r) => r.label));
+    expect(labels).not.toContain("적합도");
+    expect(labels).not.toContain("핵심 이유");
+    expect(screen.getByRole("heading", { name: "담은 3개 비교" })).toBeDefined();
+    for (const header of within(t).getAllByRole("columnheader")) expect(header.textContent).not.toMatch(/순위|^\d/);
+    expect(within(t).getAllByRole("button").map((b) => b.getAttribute("aria-label"))).toEqual(["가짜 에이. 자세히 보기", "가짜 비. 자세히 보기", "가짜 씨. 자세히 보기"]);
+  });
+
+  it("추천 비교는 적합도 + 스펙 7줄 + 핵심 이유 = 9줄이다", () => {
+    expect(RECOMMENDED_ROWS.map((r) => r.label)).toEqual(["적합도", ...SPEC_ROWS.map((r) => r.label), "핵심 이유"]);
+  });
+
+  it("열 머리를 누르면 제품 id를 넘긴다", () => {
+    const onPick = vi.fn();
+    render(<CompareSheet mode="picked" open onClose={() => {}} today={today} onPick={onPick} columns={toCompareColumns(picked(["b", "c"]))!} />);
+    fireEvent.click(screen.getByRole("button", { name: "가짜 씨. 자세히 보기" }));
+    expect(onPick).toHaveBeenCalledWith("c");
+  });
+
+  it("담은 제품에도 제휴 링크가 있으면 '광고'를 붙인다", () => {
+    const cols = picked(["a", "b"]).map((c, i) => (i === 0 ? { paddle: { ...c.paddle, purchase: { url: "https://link.coupang.com/a/x", is_affiliate: true } } } : c));
+    render(<CompareSheet mode="picked" open onClose={() => {}} today={today} onPick={() => {}} columns={toCompareColumns(cols)!} />);
+    expect(screen.getAllByTestId("compare-ad")).toHaveLength(1);
+  });
+
+  it("열은 2~3개만: 1개·4개는 비교 열로 바뀌지 않고, 타입을 우회해도 표를 그리지 않는다", () => {
+    expect(toCompareColumns(picked(["a"]))).toBeNull();
+    expect(toCompareColumns(picked(["a", "b", "c", "a"]))).toBeNull();
+    expect(toCompareColumns(picked(["a", "b"]))).not.toBeNull();
+    const one = picked(["a"]);
+    // @ts-expect-error 1열은 타입 오류다
+    render(<CompareSheet mode="picked" open onClose={() => {}} today={today} onPick={() => {}} columns={one} />);
+    expect(screen.queryByTestId("compare-table")).toBeNull();
+  });
+
+  it("4열은 타입 오류다", () => {
+    const [a, b, c] = picked(["a", "b", "c"]);
+    // @ts-expect-error 4열은 타입 오류다
+    const four: CompareSheetProps["columns"] = [a!, b!, c!, a!];
+    expect(four).toHaveLength(4);
+  });
+
+  it("비교 부품 소스는 구매 링크 주소(purchase.url)를 읽지 않는다", () => {
+    const src = readFileSync(join(process.cwd(), "src/components/compare/CompareSheet.tsx"), "utf8");
+    expect(src).not.toMatch(/purchase\??\.url/);
   });
 });

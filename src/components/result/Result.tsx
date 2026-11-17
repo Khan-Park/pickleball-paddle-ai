@@ -13,7 +13,7 @@ import { AffiliatePageNotice, affiliatePrograms } from "./AffiliatePageNotice";
 import { ResultCard } from "./ResultCard";
 import { RankRow } from "./RankRow";
 import { StickyBuy } from "./StickyBuy";
-import { CompareSheet, type CompareColumn } from "./CompareSheet";
+import { CompareSheet, toCompareColumns, type RecommendedColumn } from "@/components/compare/CompareSheet";
 import { Button } from "@/components/ui/Button";
 import { ConditionChips } from "./parts";
 import { Analyzing } from "./Analyzing";
@@ -124,10 +124,12 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   const programs = affiliatePrograms(result.items.map((item) => byId.get(item.paddle_id)));
   const hasAffiliate = programs.size > 0;
   const topPaddle = result.items[0] ? byId.get(result.items[0].paddle_id) : undefined;
-  const columns: CompareColumn[] = result.items.flatMap((item, i) => {
+  const columnList: RecommendedColumn[] = result.items.flatMap((item, i) => {
     const paddle = byId.get(item.paddle_id);
     return paddle ? [{ rank: i + 1, item, paddle }] : [];
   });
+  // 2~3개일 때만 비교한다(T-047: 비교 부품이 2~3열만 받는다)
+  const columns = toCompareColumns(columnList);
 
   function afterCompareClosed() {
     setCompareOpen(false);
@@ -168,7 +170,7 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
           <h1 ref={headingRef} tabIndex={-1} className="text-2xl font-bold leading-snug text-navy outline-none">
             {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
           </h1>
-          {columns.length >= 2 ? (
+          {columns ? (
             <Button variant="secondary" size="md" onClick={() => setCompareOpen(true)} className="shrink-0">
               비교하기
             </Button>
@@ -254,14 +256,16 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         </Link>
       </div>
 
-      {columns.length >= 2 ? (
+      {columns ? (
         <CompareSheet
+          mode="recommended"
           open={compareOpen}
           onClose={afterCompareClosed}
           columns={columns}
           today={today}
-          onPick={(rank) => {
-            pendingPick.current = rank;
+          onPick={(paddleId) => {
+            // 비교 부품은 제품 id를 넘긴다. 결과 화면은 순위로 상세·카드를 찾는다
+            pendingPick.current = columnList.find((c) => c.paddle.id === paddleId)?.rank ?? null;
             setCompareOpen(false);
           }}
         />

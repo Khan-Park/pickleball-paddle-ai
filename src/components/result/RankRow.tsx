@@ -5,7 +5,7 @@ import type { Recommendation } from "@/lib/recommend/recommend";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { won } from "./labels";
 import { AdBadge, ResultCard } from "./ResultCard";
-import { certShort } from "./CompareSheet";
+import { certShort } from "@/lib/shared/cert";
 
 /**
  * 2·3순위 한 줄 행(docs/plan/phase2.md 7.2). 누르면 바텀시트로 1순위와 같은 전체 정보를 펼친 상태로 보여 준다.
