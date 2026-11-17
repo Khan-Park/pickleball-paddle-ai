@@ -6,6 +6,7 @@ import { answersToProfile } from "@/lib/quiz/answers";
 import { visibleQuestions, type QuizAnswers, type QuizQuestion, type ShapeValue } from "@/lib/quiz/questions";
 import { clearAnswers, loadAnswersRaw, parseAnswers, saveAnswers } from "@/lib/quiz/storage";
 import { ShapeIcon } from "@/components/ShapeIcon";
+import { BallIcon } from "@/components/BallIcon";
 import { Button } from "@/components/ui/Button";
 import { markSubmitted } from "@/components/result/analyzing-flag";
 import { HelpButton } from "@/components/help/HelpButton";
@@ -148,18 +149,28 @@ export function Quiz() {
   return (
     // 질문이 옆에서 들어오는 동안 화면 밖으로 밀린 부분이 가로 스크롤을 만들지 않게 자른다.
     // clip은 스크롤 영역을 만들지 않아 세로 스크롤·고정 요소에 영향이 없고, 안쪽 여백(px-5) 덕분에 포커스 테두리도 잘리지 않는다
-    <section data-testid="quiz" className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 overflow-x-clip px-5 pt-4 pb-8">
+    <section data-testid="quiz" className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 overflow-x-clip px-5 pt-4 pb-8 lg:pt-12 lg:pb-16">
       <div className="flex items-center gap-3">
         <Button variant="text" size="md" onClick={() => goTo(index - 1)} className={index === 0 ? "invisible" : ""} disabled={index === 0}>
           ← 이전
         </Button>
         {/* 폭 대신 transform(scaleX)으로 늘려 레이아웃을 다시 계산하지 않는다(docs/plan/phase2.md 6.1, T-033 C) */}
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-line" aria-hidden="true">
+        <div className="relative flex-1" aria-hidden="true" data-testid="progress">
+          <div className="h-2.5 overflow-hidden rounded-full bg-line">
+            <div
+              data-testid="progress-fill"
+              className="h-2.5 w-full origin-left rounded-full bg-accent transition-transform duration-[var(--duration-slow)] ease-[var(--ease-enter)]"
+              style={{ transform: `scaleX(${percent / 100})` }}
+            />
+          </div>
+          {/* 채움 끝을 따라가는 공 그림(꾸밈, 라임은 여기만, 3.7). 막대 폭만 한 칸을 translateX로 밀어 공이 채움 끝에 오게 한다(T-044) */}
           <div
-            data-testid="progress-fill"
-            className="h-2 w-full origin-left rounded-full bg-accent transition-transform duration-[var(--duration-slow)] ease-[var(--ease-enter)]"
-            style={{ transform: `scaleX(${percent / 100})` }}
-          />
+            data-testid="progress-ball"
+            className="pointer-events-none absolute inset-0 transition-transform duration-[var(--duration-slow)] ease-[var(--ease-enter)]"
+            style={{ transform: `translateX(${percent - 100}%)` }}
+          >
+            <BallIcon size="sm" className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 text-accent" />
+          </div>
         </div>
         <p className="min-w-10 text-right text-small text-muted" aria-label={`전체 ${questions.length}개 중 ${index + 1}번째 질문`}>
           {index + 1} / {questions.length}
@@ -178,8 +189,12 @@ export function Quiz() {
         data-direction={direction}
         className={`flex flex-col gap-4 ${direction === "back" ? "animate-slide-in-back" : "animate-slide-in-forward"}`}
       >
-        <legend ref={legendRef} tabIndex={-1} className="mb-2 text-title font-bold text-navy outline-none">
-          {question.title}
+        <legend ref={legendRef} tabIndex={-1} className="mb-2 outline-none">
+          {/* 질문 번호 줄(T-044). 진행 표시와 같은 내용이라 화면 낭독기에는 숨긴다 */}
+          <span aria-hidden="true" className="mb-1 block text-small font-bold text-accent" data-testid="question-eyebrow">
+            질문 {index + 1}
+          </span>
+          <span className="block text-title font-bold text-navy lg:text-display">{question.title}</span>
         </legend>
         {question.note ? <p className="text-small text-muted">{question.note}</p> : null}
         {QUESTION_HELP[question.id] ? (
@@ -195,12 +210,13 @@ export function Quiz() {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => (question.multiple ? toggleShape(option.value as ShapeValue) : choose(option.value))}
-                className={`min-h-16 rounded-card border px-4 py-3 text-left outline-offset-2 transition-[transform,background-color,border-color] duration-[var(--duration-fast)] ease-[var(--ease-enter)] focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
-                  selected ? "border-accent bg-accent-soft" : "border-line bg-card hover:border-accent"
+                // 테두리는 늘 2px. 고르지 않은 카드는 바깥 1px 선(ring)으로 보이게 해서 고를 때 글자가 밀리지 않는다(T-044)
+                className={`min-h-16 rounded-card border-2 px-4 py-3 text-left outline-offset-2 transition-[transform,background-color,border-color] duration-[var(--duration-fast)] ease-[var(--ease-enter)] focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
+                  selected ? "border-accent bg-accent-soft" : "border-transparent bg-card shadow-card ring-1 ring-line hover:ring-accent"
                 }`}
               >
                 <span className="flex items-center gap-4">
-                  {question.id === "shapes" ? <ShapeIcon shape={option.value} className="shrink-0 text-navy" /> : null}
+                  {question.id === "shapes" ? <ShapeIcon shape={option.value} className={`shrink-0 ${selected ? "text-accent" : "text-navy"}`} /> : null}
                   <span className="flex-1">
                     <span className={`block text-body font-bold ${selected ? "text-accent-ink" : "text-ink"}`}>{option.label}</span>
                     {option.hint ? <span className="mt-0.5 block text-small text-muted">{option.hint}</span> : null}
