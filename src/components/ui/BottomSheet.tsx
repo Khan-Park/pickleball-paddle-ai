@@ -120,7 +120,8 @@ export function BottomSheet({
       onClick={(event) => {
         if (event.target === event.currentTarget) ref.current?.close();
       }}
-      className="bottom-sheet mx-auto mt-auto mb-0 w-full max-w-xl rounded-t-sheet bg-card p-0 text-ink shadow-sheet open:animate-sheet-in"
+      // 1024px 이상은 화면 가운데 대화상자 모양(T-047, docs/plan/m2.5-redesign.md 4.4). 동작은 같고 모양만 바뀐다
+      className="bottom-sheet mx-auto mt-auto mb-0 w-full max-w-xl rounded-t-sheet bg-card p-0 text-ink shadow-sheet open:animate-sheet-in lg:my-auto lg:max-w-3xl lg:rounded-sheet lg:open:animate-reveal"
     >
       <div className="flex max-h-[85dvh] flex-col">
         {/*
@@ -164,7 +165,7 @@ export function BottomSheet({
             }
           }}
         >
-          <div aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-line" />
+          <div aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-line lg:hidden" />
           <div className="flex items-center justify-between gap-4">
             <h2 id={titleId} className="text-heading font-bold text-navy">
               {title}

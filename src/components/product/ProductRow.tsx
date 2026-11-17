@@ -2,7 +2,7 @@
 
 import type { PaddleDisplay } from "../../../data/schema";
 import { SHAPE_LABEL } from "@/lib/shared/shape-labels";
-import { certShort } from "@/components/result/CompareSheet";
+import { certShort } from "@/lib/shared/cert";
 import { AdBadge } from "@/components/result/ResultCard";
 import { won } from "@/components/result/labels";
 
