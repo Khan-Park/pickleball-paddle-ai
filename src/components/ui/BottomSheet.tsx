@@ -121,7 +121,8 @@ export function BottomSheet({
         if (event.target === event.currentTarget) ref.current?.close();
       }}
       // 1024px 이상은 화면 가운데 대화상자 모양(T-047, docs/plan/m2.5-redesign.md 4.4). 동작은 같고 모양만 바뀐다
-      className="bottom-sheet mx-auto mt-auto mb-0 w-full max-w-xl rounded-t-sheet bg-card p-0 text-ink shadow-sheet open:animate-sheet-in lg:my-auto lg:max-w-3xl lg:rounded-sheet lg:open:animate-reveal"
+      // overflow-hidden: 시트 틀(dialog)은 스크롤하지 않는다. 스크롤은 안쪽 내용 영역 하나만 한다(아래 relative 설명)
+      className="bottom-sheet mx-auto mt-auto mb-0 w-full max-w-xl overflow-hidden rounded-t-sheet bg-card p-0 text-ink shadow-sheet open:animate-sheet-in lg:my-auto lg:max-w-3xl lg:rounded-sheet lg:open:animate-reveal"
     >
       <div className="flex max-h-[85dvh] flex-col">
         {/*
@@ -179,7 +180,15 @@ export function BottomSheet({
             </button>
           </div>
         </div>
-        <div className="overflow-y-auto px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">{children}</div>
+        {/*
+          relative: 안쪽의 화면 낭독기용 숨김 글자(sr-only, position:absolute)가 이 영역을 기준으로 놓이게 한다.
+          없으면 기준이 시트 틀(dialog)이 되어 스크롤 영역에 잘리지 않고 시트 틀을 늘린다. 그러면 휴대폰에서 시트 틀 전체가
+          스크롤되어 제목 줄이 사라지고 아래가 비어 보였다(2026-11-17 사용자 제보, 카카오톡 인앱 브라우저).
+          min-h-0: 세로 flex 안에서 이 영역이 줄어들어 스크롤되게 한다. overscroll-contain: 끝에서 뒤 화면이 따라 밀리지 않게 한다
+        */}
+        <div className="relative min-h-0 overflow-y-auto overscroll-contain px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]" data-testid="sheet-body">
+          {children}
+        </div>
         <p role="status" className="sr-only" data-testid="sheet-announce">
           {announce}
         </p>
