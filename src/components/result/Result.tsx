@@ -15,7 +15,8 @@ import { RankRow } from "./RankRow";
 import { StickyBuy } from "./StickyBuy";
 import { CompareSheet, toCompareColumns, type RecommendedColumn } from "@/components/compare/CompareSheet";
 import { Button } from "@/components/ui/Button";
-import { ConditionChips } from "./parts";
+import { HeroMedia } from "@/components/site/HeroMedia";
+import { ConditionSummary } from "./ConditionSummary";
 import { Analyzing } from "./Analyzing";
 import { clearAnalyzeMode, peekAnalyzeMode, type AnalyzeMode } from "./analyzing-flag";
 import { CardSkeleton } from "@/components/ui/Skeleton";
@@ -160,27 +161,45 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
   return (
     // 들여쓰기를 늘리지 않으려고 Provider를 section과 같은 깊이에 둔다
     <ProductCatalogContext.Provider value={catalog}>
-    <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8">
+    {/* 순서(D-037): 대가 표시 → 히어로(h1) → 조건 요약 줄 → 카드. DOM 순서 그대로 보이게 하고 시각 재배치 클래스를 쓰지 않는다(T-045) */}
+    <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 py-8 lg:max-w-6xl lg:px-8">
       {/* 경제적 이해관계 표시: 제목보다 앞, 본문보다 큰 글자와 다른 색, 접히지 않는 위치 */}
       <AffiliatePageNotice programs={programs} />
 
-      <header className="flex flex-col gap-3">
-        {answers ? <ConditionChips answers={answers} /> : null}
-        <div className="flex items-start justify-between gap-3">
-          <h1 ref={headingRef} tabIndex={-1} className="text-2xl font-bold leading-snug text-navy outline-none">
-            {result.items.length > 0 ? "답변에 맞는 패들입니다" : "조건에 맞는 패들을 찾지 못했습니다"}
-          </h1>
+      <HeroMedia slot="result" className="rounded-card">
+        {/* 비교하기는 설명 아래 왼쪽에 둔다. 오른쪽 아래는 대체 배경의 패들 그림 자리라 겹친다 */}
+        <header className="flex flex-col items-start gap-3 px-5 py-8 lg:px-8 lg:py-10">
+          <div className="flex flex-col gap-2">
+            <h1 ref={headingRef} tabIndex={-1} className="text-title font-bold outline-none lg:text-display" data-testid="result-title">
+              {result.items.length > 0 ? (
+                <>
+                  답변에 맞는 {/* 라임은 글자 아래 꾸밈선으로만(3.7) */}
+                  <span className="underline decoration-lime decoration-4 underline-offset-8">패들 {result.items.length}개</span>를 찾았어요
+                </>
+              ) : (
+                "조건에 맞는 패들을 찾지 못했습니다"
+              )}
+            </h1>
+            <p className="text-small text-on-hero-muted">답하신 조건과 공개된 스펙으로 고른 결과입니다.</p>
+          </div>
           {columns ? (
-            <Button variant="secondary" size="md" onClick={() => setCompareOpen(true)} className="shrink-0">
+            <Button variant="heroSecondary" size="md" onClick={() => setCompareOpen(true)} className="shrink-0">
               비교하기
             </Button>
           ) : null}
+        </header>
+      </HeroMedia>
+
+      {relaxed || (result.items.length > 0 && result.items.length < 3) ? (
+        <div className="-mt-2 flex flex-col gap-1">
+          {relaxed ? <p className="text-sm font-medium text-caution">조건을 바꿔서 다시 찾은 결과입니다.</p> : null}
+          {result.items.length > 0 && result.items.length < 3 ? (
+            <p className="text-sm text-muted">조건에 맞는 제품이 {result.items.length}개뿐이라 있는 만큼만 보여 드립니다.</p>
+          ) : null}
         </div>
-        {relaxed ? <p className="text-sm font-medium text-caution">조건을 바꿔서 다시 찾은 결과입니다.</p> : null}
-        {result.items.length > 0 && result.items.length < 3 ? (
-          <p className="text-sm text-muted">조건에 맞는 제품이 {result.items.length}개뿐이라 있는 만큼만 보여 드립니다.</p>
-        ) : null}
-      </header>
+      ) : null}
+
+      <ConditionSummary answers={answers} profile={profile} />
 
       {profile.arm_discomfort ? <p className="rounded-lg border border-line bg-card p-4 text-sm leading-relaxed text-ink">{NOTICE.arm}</p> : null}
 
@@ -243,10 +262,8 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         <p>{NOTICE.price}</p>
       </footer>
 
-      {/* 결과만 공유(T-025). 화면에 보이는 추천(조건 완화 결과 포함)의 제품 id만 담는다 */}
-      {result.items.length > 0 ? <ShareButtons paddleIds={result.items.map((item) => item.paddle_id)} /> : null}
-
-      <div className="flex flex-wrap gap-x-6 gap-y-2">
+      {/* 아래 행동 줄. "결과 저장"은 T-050에서 넣는다 */}
+      <div className="flex flex-wrap gap-x-6 gap-y-2" data-testid="result-actions">
         <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
           답변 고치기
         </Link>
@@ -255,6 +272,8 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
           전체 둘러보기
         </Link>
       </div>
+      {/* 결과만 공유(T-025). 화면에 보이는 추천(조건 완화 결과 포함)의 제품 id만 담는다 */}
+      {result.items.length > 0 ? <ShareButtons paddleIds={result.items.map((item) => item.paddle_id)} /> : null}
 
       {columns ? (
         <CompareSheet
@@ -274,7 +293,8 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
       {/* 스크롤해서 1순위 구매 버튼이 화면 밖으로 나가면 아래에 고정 버튼을 띄운다. 가리지 않도록 아래 여백을 둔다 */}
       {topPaddle?.purchase ? (
         <>
-          <div aria-hidden="true" className="h-32" />
+          {/* 1024px 이상은 카드 안 구매 버튼이 보여 고정 버튼을 숨긴다(T-045) */}
+          <div aria-hidden="true" className="h-32 lg:hidden" />
           <StickyBuy paddle={topPaddle} anchorId={TOP_BUY_ID} />
         </>
       ) : null}

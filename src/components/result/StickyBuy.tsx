@@ -25,7 +25,8 @@ export function StickyBuy({ paddle, anchorId }: { paddle: PaddleDisplay; anchorI
   const name = `${paddle.brand} ${paddle.model}`;
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-card shadow-sheet animate-sheet-in"
+      // 1024px 이상은 카드 안 구매 버튼이 보이므로 숨긴다(T-045)
+      className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-card shadow-sheet animate-sheet-in lg:hidden"
       data-testid="sticky-buy"
     >
       <div className="mx-auto flex w-full max-w-xl flex-col gap-1 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
