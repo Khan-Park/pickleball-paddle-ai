@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { loadAnswers, saveAnswers } from "@/lib/quiz/storage";
 import { ShapeIcon } from "@/components/ShapeIcon";
 import { Quiz, SELECT_DELAY_MS } from "./Quiz";
@@ -255,5 +255,43 @@ describe("질문 화면: 선택 피드백과 전환 연출(T-016)", () => {
     } finally {
       window.matchMedia = original;
     }
+  });
+});
+
+describe("질문 화면 시각 개편(T-044)", () => {
+  it("진행 막대 채움은 틸이고, 라임은 공 그림에만 있다", () => {
+    render(<Quiz />);
+    const progress = screen.getByTestId("progress");
+    expect(screen.getByTestId("progress-fill").className).toContain("bg-accent");
+    const ball = within(progress).getByTestId("ball-icon");
+    // 라임은 공 그림(svg) 안에서만 쓴다. 진행 영역의 다른 요소에는 라임 클래스가 없다
+    for (const el of progress.querySelectorAll("*")) {
+      if (ball.contains(el) || el === ball) continue;
+      expect(el.getAttribute("class") ?? "").not.toMatch(/lime/);
+    }
+    expect(ball.querySelector("circle")!.getAttribute("fill")).toBe("var(--lime)");
+  });
+
+  it("공 그림은 진행률만큼 translateX로 움직이고, 화면 낭독기에서 숨겨진다", () => {
+    render(<Quiz />);
+    const holder = screen.getByTestId("progress-ball");
+    const shift = () => Number(/^translateX\((-?[\d.]+)%\)$/.exec(holder.style.transform)?.[1]);
+    expect(holder.style.left).toBe("");
+    expect(shift()).toBeCloseTo(100 / 7 - 100, 3);
+    expect(screen.getByTestId("progress").getAttribute("aria-hidden")).toBe("true");
+    pick(/처음이거나 1년 미만/);
+    expect(shift()).toBeCloseTo((2 / 6) * 100 - 100, 3);
+  });
+
+  it("질문 번호 줄이 제목 위에 있고, 선택 표시는 색 + 체크 + aria-pressed다", () => {
+    render(<Quiz />);
+    expect(screen.getByTestId("question-eyebrow").textContent).toBe("질문 1");
+    const option = screen.getAllByRole("button", { pressed: false })[0]!;
+    expect(option.className).toContain("border-transparent");
+    fireEvent.click(screen.getByRole("button", { name: /처음이거나 1년 미만/ }));
+    const chosen = screen.getByRole("button", { name: /처음이거나 1년 미만/, pressed: true });
+    expect(chosen.className).toContain("border-accent");
+    expect(chosen.className).toContain("bg-accent-soft");
+    expect(chosen.textContent).toContain("✓");
   });
 });
