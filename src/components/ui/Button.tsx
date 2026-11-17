@@ -1,20 +1,24 @@
 import type { ComponentProps } from "react";
 
-export type ButtonVariant = "primary" | "secondary" | "text";
+export type ButtonVariant = "primary" | "secondary" | "text" | "hero" | "heroSecondary";
 export type ButtonSize = "md" | "lg";
 
 type ButtonStyle = { variant?: ButtonVariant; size?: ButtonSize; fullWidth?: boolean; className?: string };
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 text-center font-bold outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent " +
+  "inline-flex items-center justify-center gap-2 text-center font-bold outline-offset-2 focus-visible:outline-2 " +
   "transition-transform duration-[var(--duration-fast)] ease-[var(--ease-enter)] active:scale-[0.98] " +
   "disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100";
 
+// 포커스 링 색은 모양마다 정한다. 짙은 히어로 위 버튼은 --focus-on-hero(라임)를 써야 해서 공통 클래스에 두지 않는다(T-043)
 const VARIANT: Record<ButtonVariant, string> = {
   // 한 화면에 주 버튼은 하나만 둔다(docs/plan/phase2.md 7.2)
-  primary: "rounded-control bg-accent text-on-accent hover:brightness-110",
-  secondary: "rounded-control border border-line bg-card text-ink hover:border-accent",
-  text: "rounded-control text-muted underline underline-offset-4 hover:text-ink",
+  primary: "rounded-control bg-accent text-on-accent hover:brightness-110 focus-visible:outline-accent",
+  secondary: "rounded-control border border-line bg-card text-ink hover:border-accent focus-visible:outline-accent",
+  text: "rounded-control text-muted underline underline-offset-4 hover:text-ink focus-visible:outline-accent",
+  // 짙은 히어로 위(T-043). 기존 틸은 히어로와 2.4:1이라 밝은 틸 + 짙은 글자(T-039)
+  hero: "rounded-control bg-accent-on-hero text-on-accent-on-hero hover:brightness-110 focus-visible:outline-focus-on-hero",
+  heroSecondary: "rounded-control border border-on-hero-muted text-on-hero hover:border-on-hero focus-visible:outline-focus-on-hero",
 };
 
 // 터치 영역: md 44px, lg 52px 이상(엄지로 누르기 쉽게)

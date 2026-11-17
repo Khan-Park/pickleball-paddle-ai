@@ -164,6 +164,8 @@
   /* 분석 중 화면 그림 */
   --animate-paddle-swing: paddle-swing 0.9s ease-in-out infinite;
   --animate-ball-bounce: ball-bounce 0.9s ease-in-out infinite;
+  /* 홈 등록 제품 띠(D-040, T-043). 목록 두 벌을 이어 붙인 길이의 절반만큼 왼쪽으로 민다. 멈춤 버튼·동작 줄이기는 ProductMarquee가 처리한다 */
+  --animate-marquee: marquee 60s linear infinite;
 }
 
 @keyframes shimmer {
@@ -235,6 +237,15 @@
   }
   50% {
     transform: translate(-22px, -10px);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
