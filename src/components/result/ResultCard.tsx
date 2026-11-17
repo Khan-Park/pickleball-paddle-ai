@@ -11,6 +11,7 @@ import { FitBar, SpecScale } from "./parts";
 import { HelpButton } from "@/components/help/HelpButton";
 import { ProductExtras } from "@/components/product/ProductExtras";
 import { showToast } from "@/components/ui/Toast";
+import { formatWeight } from "@/lib/shared/weight";
 
 /** 새 창으로 넘어갈 때 짧은 안내(phase2 6.2, T-037). 대가 표시(D-022)를 대신하지 않는다 */
 export const TOAST_TEXT = {
@@ -198,13 +199,58 @@ export function SpecDetails({ paddle }: { paddle: PaddleDisplay }) {
   );
 }
 
+/** 데스크톱 카드의 펼친 본문(T-046): 강점(이유) → 유의할 점(주의) → 스펙 4줄. 특성 배지·코어 소재·점수 숫자는 넣지 않는다 */
+function ColumnBody({ item, paddle }: { item: Recommendation; paddle: PaddleDisplay }) {
+  const specs = [
+    ["무게", formatWeight(paddle.weight_oz)],
+    ["코어 두께", `${paddle.core_mm}mm`],
+    ["형태", SHAPE_LABEL[paddle.shape]],
+    ["길이 × 폭", `${paddle.length_in} × ${paddle.width_in}in`],
+  ] as const;
+  return (
+    <div className="flex flex-col gap-4" data-testid="column-body">
+      {item.reasons.length > 0 ? (
+        <section>
+          <h3 className="text-small font-bold text-ink">강점</h3>
+          <ul className="mt-1 list-disc pl-5 text-small text-ink">
+            {item.reasons.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {item.cautions.length > 0 ? (
+        <section className="rounded-control bg-caution-soft px-3 py-2">
+          <h3 className="text-small font-bold text-caution">⚠ 유의할 점</h3>
+          <ul className="mt-1 list-disc pl-5 text-small text-caution">
+            {item.cautions.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 border-t border-line pt-3 text-small" data-testid="spec-rows">
+        {specs.map(([label, value]) => (
+          <div key={label} className="contents">
+            <dt className="text-muted">{label}</dt>
+            <dd className="font-bold text-ink">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
 type Props = {
   rank: number;
   item: Recommendation;
   paddle: PaddleDisplay;
   today: string;
-  /** top: 1순위 요약 + "자세히" 펼치기. full: 시트 안에서 모두 펼친 상태 */
-  mode?: "top" | "full";
+  /**
+   * top: 1순위 요약 + "자세히" 펼치기(모바일). full: 시트 안에서 모두 펼친 상태.
+   * column: 데스크톱 3열 카드(T-046). 강점·유의할 점·스펙 4줄·구매를 펼쳐 두고, 스펙 막대·출처만 "자세히"에 접는다
+   */
+  mode?: "top" | "full" | "column";
   /** 구매 묶음의 id. 결과 화면이 이 요소가 보이는지 보고 하단 고정 버튼을 띄운다(T-019) */
   buyAnchorId?: string;
 };
@@ -217,13 +263,27 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
   const name = `${paddle.brand} ${paddle.model}`;
   const affiliate = paddle.purchase?.is_affiliate === true;
   return (
-    <article className="flex flex-col gap-4 rounded-card border border-line bg-card p-5 shadow-card" aria-label={`${rank}순위 ${name}`}>
+    <article className={`flex flex-col gap-4 rounded-card border bg-card p-5 shadow-card ${mode === "column" && rank === 1 ? "border-lime" : "border-line"} ${mode === "column" ? "h-full" : ""}`} aria-label={`${rank}순위 ${name}`}>
       <header className="flex flex-col gap-2">
-        <p className="text-small font-bold text-accent">
-          {rank}순위 · {item.label}
-          {/* 제휴 링크가 있는 카드는 제목 근처에서 먼저 광고임을 알린다 */}
-          {affiliate ? <AdBadge /> : null}
-        </p>
+        {mode === "column" ? (
+          <p className="flex flex-wrap items-center gap-2 text-small font-bold">
+            {/* 1순위는 라임 바탕 + 짙은 글자(꾸밈, 3.7). 순위는 글자로 쓰므로 색만으로 구분하지 않는다 */}
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-caption font-bold ${rank === 1 ? "bg-lime text-on-lime" : "bg-surface text-navy"}`}
+              data-testid="rank-badge"
+            >
+              {rank}순위
+            </span>
+            <span className="text-accent">{item.label}</span>
+            {affiliate ? <AdBadge className="" /> : null}
+          </p>
+        ) : (
+          <p className="text-small font-bold text-accent">
+            {rank}순위 · {item.label}
+            {/* 제휴 링크가 있는 카드는 제목 근처에서 먼저 광고임을 알린다 */}
+            {affiliate ? <AdBadge /> : null}
+          </p>
+        )}
         <h2 className={`${mode === "top" ? "text-title" : "text-heading"} font-bold text-navy`}>{name}</h2>
         <FitBar score={item.score} label={item.label} />
       </header>
@@ -237,7 +297,7 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
             </p>
           ) : null}
           <div className="flex flex-wrap items-center gap-1.5" data-testid="spec-chips">
-            {[`${paddle.weight_oz}oz`, `코어 ${paddle.core_mm}mm`, SHAPE_LABEL[paddle.shape]].map((chip) => (
+            {[formatWeight(paddle.weight_oz), `코어 ${paddle.core_mm}mm`, SHAPE_LABEL[paddle.shape]].map((chip) => (
               <span key={chip} className="rounded-full border border-line px-2.5 py-0.5 text-caption font-bold text-ink">
                 {chip}
               </span>
@@ -247,7 +307,9 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
         </>
       ) : null}
 
-      <div className="flex flex-col gap-2">
+      {mode === "column" ? <ColumnBody item={item} paddle={paddle} /> : null}
+
+      <div className={`flex flex-col gap-2 ${mode === "column" ? "mt-auto" : ""}`}>
         <Price paddle={paddle} today={today} />
         <div className="flex flex-wrap items-center gap-1">
           <CertBadge certification={paddle.certification} today={today} />
@@ -257,7 +319,7 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
 
       <BuyButtons paddle={paddle} name={name} anchorId={buyAnchorId} />
 
-      {mode === "top" ? (
+      {mode === "top" || mode === "column" ? (
         <details className="group border-t border-line pt-3">
           <summary className="flex min-h-11 cursor-pointer items-center justify-between text-small font-bold text-ink">
             자세히 보기
@@ -267,7 +329,15 @@ export function ResultCard({ rank, item, paddle, today, mode = "top", buyAnchorI
           </summary>
           {/* 펼칠 때 내용이 아래에서 떠오르며 나타남(높이를 늘이는 연출은 하지 않는다, phase2 6.1, T-037) */}
           <div className="pt-3 group-open:animate-reveal" data-testid="details-body">
-            <Details item={item} paddle={paddle} />
+            {mode === "column" ? (
+              // 강점·유의할 점은 카드에 이미 펼쳐 있어 스펙 막대·출처·비슷한 제품만
+              <div className="flex flex-col gap-4">
+                <SpecDetails paddle={paddle} />
+                <ProductExtras paddle={paddle} />
+              </div>
+            ) : (
+              <Details item={item} paddle={paddle} />
+            )}
           </div>
         </details>
       ) : (

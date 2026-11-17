@@ -5,6 +5,7 @@ import type { Recommendation } from "@/lib/recommend/recommend";
 import { certShort } from "@/lib/shared/cert";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { SHAPE_LABEL, SURFACE_LABEL, won } from "@/components/result/labels";
+import { formatWeight } from "@/lib/shared/weight";
 
 /** 결과 화면의 추천 열: 순위·적합도·핵심 이유가 있다 */
 export type RecommendedColumn = { rank: number; item: Recommendation; paddle: PaddleDisplay };
@@ -23,7 +24,7 @@ type Row<C> = { label: string; value: (c: C, today: string) => string; text?: bo
 
 /** 두 쓰임이 같이 쓰는 스펙 7줄. 점수 숫자는 넣지 않는다. 구매 링크 주소는 읽지 않는다 */
 export const SPEC_ROWS: Row<{ paddle: PaddleDisplay }>[] = [
-  { label: "무게", value: (c) => `${c.paddle.weight_oz}oz` },
+  { label: "무게", value: (c) => formatWeight(c.paddle.weight_oz) },
   { label: "코어 두께", value: (c) => `${c.paddle.core_mm}mm` },
   { label: "형태", value: (c) => SHAPE_LABEL[c.paddle.shape] },
   { label: "길이 × 폭", value: (c) => `${c.paddle.length_in} × ${c.paddle.width_in}in` },
@@ -39,16 +40,16 @@ export const RECOMMENDED_ROWS: Row<RecommendedColumn>[] = [
   { label: "핵심 이유", value: (c) => c.item.reasons[0] ?? "—", text: true },
 ];
 
-type CommonProps = {
-  open: boolean;
-  onClose: () => void;
+type TableProps = {
   today: string;
   /** 열 머리를 누르면 그 제품 id. 부르는 쪽이 이 시트를 닫은 뒤 상세를 연다(시트를 겹치지 않는다) */
   onPick: (paddleId: string) => void;
 };
 
-export type CompareSheetProps = CommonProps &
+export type CompareTableProps = TableProps &
   ({ mode: "recommended"; columns: CompareColumns<RecommendedColumn> } | { mode: "picked"; columns: CompareColumns<PickedColumn> });
+
+export type CompareSheetProps = CompareTableProps & { open: boolean; onClose: () => void };
 
 /** 표 그리기용으로 맞춘 열 */
 type Col = { paddle: PaddleDisplay; rank?: number; values: string[] };
@@ -59,9 +60,26 @@ type Col = { paddle: PaddleDisplay; rank?: number; values: string[] };
  * 제품끼리 값이 다른 줄은 굵게, 모두 같은 줄은 흐리게 하고 "모두 같음"을 글자로 붙인다(색만으로 구분하지 않음).
  * 제휴 링크가 있는 제품은 열 머리에 "광고"를 붙인다(대가 표시, 핵심 규칙 3).
  */
-export function CompareSheet(props: CompareSheetProps) {
-  const { open, onClose, today, onPick } = props;
+export function CompareSheet({ open, onClose, ...table }: CompareSheetProps) {
   // 실행 중에 개수가 잘못 들어와도(타입을 우회한 경우) 표를 그리지 않는다
+  if (table.columns.length !== 2 && table.columns.length !== 3) return null;
+  return (
+    <BottomSheet open={open} onClose={onClose} title={compareTitle(table)}>
+      <CompareTable {...table} />
+    </BottomSheet>
+  );
+}
+
+function compareTitle(props: CompareTableProps): string {
+  return props.mode === "recommended" ? `추천 ${props.columns.length}개 비교` : `담은 ${props.columns.length}개 비교`;
+}
+
+/**
+ * 비교 표만(T-046). 시트 안(모바일·둘러보기)과 결과 화면 데스크톱 카드 아래(펼쳐 둔 표)가 같이 쓴다.
+ * 2~3열이 아니면 그리지 않는다.
+ */
+export function CompareTable(props: CompareTableProps) {
+  const { today, onPick } = props;
   if (props.columns.length !== 2 && props.columns.length !== 3) return null;
 
   const rows: { label: string; text?: boolean }[] = props.mode === "recommended" ? RECOMMENDED_ROWS : SPEC_ROWS;
@@ -69,11 +87,11 @@ export function CompareSheet(props: CompareSheetProps) {
     props.mode === "recommended"
       ? props.columns.map((c) => ({ paddle: c.paddle, rank: c.rank, values: RECOMMENDED_ROWS.map((r) => r.value(c, today)) }))
       : props.columns.map((c) => ({ paddle: c.paddle, values: SPEC_ROWS.map((r) => r.value(c, today)) }));
-  const title = props.mode === "recommended" ? `추천 ${cols.length}개 비교` : `담은 ${cols.length}개 비교`;
+  const title = compareTitle(props);
   const grid = cols.length === 3 ? "grid-cols-3" : "grid-cols-2";
 
   return (
-    <BottomSheet open={open} onClose={onClose} title={title}>
+    <>
       <div role="table" aria-label={title} className="flex flex-col" data-testid="compare-table" data-mode={props.mode}>
         <div role="row" className={`grid ${grid} gap-2 border-b border-line pb-3`}>
           {cols.map((c) => {
@@ -129,6 +147,6 @@ export function CompareSheet(props: CompareSheetProps) {
         })}
       </div>
       <p className="pt-3 text-caption text-muted">제품 이름을 누르면 자세한 정보와 구매 버튼을 볼 수 있습니다.</p>
-    </BottomSheet>
+    </>
   );
 }

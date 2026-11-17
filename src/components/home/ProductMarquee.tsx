@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Shape } from "../../../data/schema";
 import { ShapeIcon } from "@/components/ShapeIcon";
 import { SHAPE_LABEL } from "@/lib/shared/shape-labels";
+import { formatWeight } from "@/lib/shared/weight";
 import { useReducedMotion } from "@/components/ui/useReducedMotion";
 
 /** 띠에 보여 주는 값만. 가격·구매 링크·적합도는 받지 않는다(D-040) */
@@ -18,7 +19,7 @@ function Item({ item }: { item: MarqueeItem }) {
         <span className="block truncate text-caption text-muted">{item.brand}</span>
         <span className="block truncate text-small font-bold text-ink">{item.model}</span>
         <span className="mt-1 block text-caption text-muted">
-          {SHAPE_LABEL[item.shape]} · {item.weight_oz}oz · {item.core_mm}mm
+          {SHAPE_LABEL[item.shape]} · {formatWeight(item.weight_oz)} · {item.core_mm}mm
         </span>
       </span>
     </li>

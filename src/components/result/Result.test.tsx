@@ -312,3 +312,101 @@ describe("결과 레이아웃(T-045)", () => {
     expect(src).toMatch(/fixed inset-x-0 bottom-0[^"]*lg:hidden/);
   });
 });
+
+describe("결과 카드 데스크톱 3열(T-046)", () => {
+  const desktop = () => {
+    const original = window.matchMedia;
+    window.matchMedia = ((q: string) => ({ matches: q.includes("64rem"), media: q, addEventListener() {}, removeEventListener() {} })) as unknown as typeof window.matchMedia;
+    return () => {
+      window.matchMedia = original;
+    };
+  };
+  const AD = PADDLES.map((x) => ({ ...x, purchase: { url: `https://link.coupang.com/a/${x.id}`, is_affiliate: true, program: "coupang_partners" as const } }));
+
+  it("1024px 이상: 카드 3장 모두 구매 묶음이 접히지 않고, 줄 형태가 없으며, 1순위 배지는 라임 + 글자다", () => {
+    const restore = desktop();
+    try {
+      saveAnswers(beginner);
+      render(<Result paddles={PADDLES.map((x) => ({ ...x, purchase: { url: `https://example.com/${x.id}`, is_affiliate: false } }))} />);
+      const cards = within(screen.getByTestId("result-columns")).getAllByRole("article");
+      expect(cards).toHaveLength(3);
+      for (const card of cards) {
+        const buy = within(card).getByTestId("buy-buttons");
+        expect(buy.closest("details")).toBeNull();
+      }
+      expect(screen.queryAllByTestId("rank-row")).toHaveLength(0);
+      const badges = screen.getAllByTestId("rank-badge");
+      expect(badges.map((b) => b.textContent)).toEqual(["1순위", "2순위", "3순위"]);
+      expect(badges[0]!.className).toContain("bg-lime");
+      expect(badges[0]!.className).toContain("text-on-lime");
+      expect(badges[1]!.className).not.toContain("bg-lime");
+    } finally {
+      restore();
+    }
+  });
+
+  it("제휴 카드마다 '광고'가 이름 근처에 있고, 대가 표시 문구가 구매 링크 바로 앞에 있다", () => {
+    const restore = desktop();
+    try {
+      saveAnswers(beginner);
+      render(<Result paddles={AD} />);
+      for (const card of within(screen.getByTestId("result-columns")).getAllByRole("article")) {
+        const header = card.querySelector("header")!;
+        expect(within(header).getByTestId("affiliate-badge")).toBeDefined();
+        const disclosure = within(card).getByTestId("affiliate-disclosure");
+        const link = within(card).getByRole("link", { name: /판매처/ });
+        expect(disclosure.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      }
+    } finally {
+      restore();
+    }
+  });
+
+  it("카드에 특성 배지·코어 소재·점수 숫자가 없고, 강점·스펙 4줄(무게 g 병기)이 있다", () => {
+    const restore = desktop();
+    try {
+      saveAnswers(beginner);
+      render(<Result paddles={PADDLES} />);
+      const grid = screen.getByTestId("result-columns");
+      expect(grid.textContent).not.toMatch(/스핀|파워형|안정성|기동성|코어 소재|폴리프로필렌|노멕스|\d+점|%/);
+      const rows = within(grid).getAllByTestId("spec-rows");
+      expect(rows).toHaveLength(3);
+      expect([...rows[0]!.querySelectorAll("dt")].map((d) => d.textContent)).toEqual(["무게", "코어 두께", "형태", "길이 × 폭"]);
+      expect(rows[0]!.textContent).toMatch(/oz · 약 \d+g/);
+    } finally {
+      restore();
+    }
+  });
+
+  it("카드 아래에 비교 표가 펼쳐 있고(시트 없음), 히어로 버튼은 표로 이동한다", () => {
+    const restore = desktop();
+    try {
+      saveAnswers(beginner);
+      render(<Result paddles={PADDLES} />);
+      const inline = screen.getByTestId("inline-compare");
+      expect(within(inline).getByTestId("compare-table")).toBeDefined();
+      expect(screen.getByTestId("result-columns").compareDocumentPosition(inline) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(screen.getByRole("link", { name: "비교 표 보기" }).getAttribute("href")).toBe("#result-compare");
+      expect(screen.queryByRole("button", { name: "비교하기" })).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it("추천이 1개면 비교 표가 없다", () => {
+    const restore = desktop();
+    try {
+      saveAnswers(beginner);
+      render(<Result paddles={PADDLES.slice(0, 1)} />);
+      expect(screen.queryByTestId("inline-compare")).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it("모바일 1순위 카드의 무게 칩도 g을 함께 쓴다", () => {
+    saveAnswers(beginner);
+    render(<Result paddles={PADDLES} />);
+    expect(screen.getByTestId("spec-chips").textContent).toMatch(/oz · 약 \d+g/);
+  });
+});
