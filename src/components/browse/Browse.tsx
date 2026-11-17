@@ -22,6 +22,10 @@ import { ProductSheet } from "@/components/product/ProductSheet";
 import { AffiliatePageNotice, affiliatePrograms } from "@/components/result/AffiliatePageNotice";
 import { NOTICE, todayLocal } from "@/components/result/labels";
 import { Button } from "@/components/ui/Button";
+import { showToast } from "@/components/ui/Toast";
+import { CompareSheet, toCompareColumns } from "@/components/compare/CompareSheet";
+import { loadTray, saveTray, toggleTray, TRAY_MAX } from "@/lib/shared/compare-tray";
+import { CompareTray } from "./CompareTray";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 
 const subscribe = () => () => {};
@@ -106,6 +110,24 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
     return () => window.removeEventListener("hashchange", focusIfSearch);
   }, [ready]);
 
+  // 비교함(T-049). 이 탭의 sessionStorage에 id만 둔다. 화면이 준비되면 한 번 불러오고, 바뀔 때마다 저장한다
+  const [tray, setTray] = useState<string[]>([]);
+  const [trayLoaded, setTrayLoaded] = useState(false);
+  const [trayMessage, setTrayMessage] = useState("");
+  const [compareOpen, setCompareOpen] = useState(false);
+  // 비교 표에서 고른 제품. 비교 시트가 닫힌 뒤(close 이벤트) 상세 시트를 연다(시트를 겹치지 않는다, 결과 화면과 같음)
+  const pendingPick = useRef<string | null>(null);
+  useEffect(() => {
+    if (!ready || trayLoaded) return;
+    // 저장소는 브라우저에서만 읽을 수 있어 화면이 준비된 뒤 한 번 불러온다(외부 저장소와 맞추는 일)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTray(loadTray(new Set(paddles.map((p) => p.id))));
+    setTrayLoaded(true);
+  }, [ready, trayLoaded, paddles]);
+  useEffect(() => {
+    if (trayLoaded) saveTray(tray);
+  }, [tray, trayLoaded]);
+
   if (!today) {
     return (
       <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-4 px-5 py-8" aria-busy="true">
@@ -128,6 +150,29 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
   const filtered = !isFilterEmpty(filter);
   const summary = filterSummary(filter);
   const programs = affiliatePrograms(list);
+
+  const trayItems = tray.flatMap((id) => {
+    const p = byId.get(id);
+    return p ? [p] : [];
+  });
+  const trayColumns = toCompareColumns(trayItems.map((paddle) => ({ paddle })));
+  const toggleCompare = (id: string, name: string) => {
+    const next = toggleTray(tray, id);
+    if (next.result === "full") {
+      const message = `최대 ${TRAY_MAX}개까지 비교할 수 있습니다`;
+      showToast(message);
+      setTrayMessage(message);
+      return;
+    }
+    setTray(next.ids);
+    setTrayMessage(next.result === "added" ? `${name}을(를) 비교함에 담았습니다 (${next.ids.length}/${TRAY_MAX})` : `${name}을(를) 비교함에서 뺐습니다`);
+  };
+  const afterCompareClosed = () => {
+    setCompareOpen(false);
+    const id = pendingPick.current;
+    pendingPick.current = null;
+    if (id) setProductStack([id]);
+  };
 
   const catalog: ProductCatalog = {
     paddles,
@@ -237,8 +282,23 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
         {list.length > 0 ? (
           <ul className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-3" data-testid="browse-list">
             {list.map((paddle, i) => (
-              <li key={paddle.id} className="animate-rise-in" style={{ animationDelay: `${Math.min(i, 5) * 40}ms` }}>
-                <ProductRow paddle={paddle} today={today} onOpen={() => setProductStack([paddle.id])} testId="browse-row" />
+              <li key={paddle.id} className="flex animate-rise-in items-stretch gap-2" style={{ animationDelay: `${Math.min(i, 5) * 40}ms` }}>
+                <div className="min-w-0 flex-1">
+                  <ProductRow paddle={paddle} today={today} onOpen={() => setProductStack([paddle.id])} testId="browse-row" />
+                </div>
+                {/* 줄 전체가 "자세히" 버튼이라 담기 버튼은 줄 옆에 따로 둔다(T-049). 3개가 차도 막지 않고 누르면 안내한다 */}
+                <button
+                  type="button"
+                  aria-pressed={tray.includes(paddle.id)}
+                  aria-label={`${paddle.brand} ${paddle.model} 비교 담기`}
+                  onClick={() => toggleCompare(paddle.id, `${paddle.brand} ${paddle.model}`)}
+                  data-testid="compare-toggle"
+                  className={`flex w-16 shrink-0 flex-col items-center justify-center rounded-card border px-1 text-caption font-bold outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent ${
+                    tray.includes(paddle.id) ? "border-accent bg-accent-soft text-accent-ink" : "border-line bg-card text-ink hover:border-accent"
+                  }`}
+                >
+                  {tray.includes(paddle.id) ? "✓ 담음" : "비교 담기"}
+                </button>
               </li>
             ))}
           </ul>
@@ -263,6 +323,33 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
         <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
           질문에 답하고 추천받기
         </Link>
+
+        {/* 비교함 안내(담기·빼기·가득 참). 화면 낭독기용 */}
+        <p role="status" className="sr-only" data-testid="compare-tray-status">
+          {trayMessage}
+        </p>
+        {trayItems.length > 0 ? <div aria-hidden="true" className="h-28 lg:h-20" /> : null}
+        <CompareTray
+          items={trayItems}
+          onCompare={() => setCompareOpen(true)}
+          onClear={() => {
+            setTray([]);
+            setTrayMessage("비교함을 비웠습니다");
+          }}
+        />
+        {trayColumns ? (
+          <CompareSheet
+            mode="picked"
+            open={compareOpen}
+            onClose={afterCompareClosed}
+            columns={trayColumns}
+            today={today}
+            onPick={(paddleId) => {
+              pendingPick.current = paddleId;
+              setCompareOpen(false);
+            }}
+          />
+        ) : null}
 
         <ProductSheet
           stack={productStack}

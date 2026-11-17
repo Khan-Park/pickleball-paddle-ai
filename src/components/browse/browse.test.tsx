@@ -222,3 +222,70 @@ describe("둘러보기 검색·브랜드·무게·데스크톱(T-048)", () => {
     }
   });
 });
+
+describe("둘러보기 비교 담기(T-049)", () => {
+  const ITEMS = [
+    p("a", { brand: "가짜", model: "에이", weight_oz: 7.8, price_krw: 100_000 }),
+    p("b", { brand: "가짜", model: "비", weight_oz: 8.0, price_krw: 110_000 }),
+    p("c", { brand: "가짜", model: "씨", weight_oz: 8.2, price_krw: 120_000 }),
+    p("d", { brand: "가짜", model: "디", weight_oz: 8.4, price_krw: 130_000 }),
+  ];
+  const toggle = (name: string) => screen.getByRole("button", { name: `가짜 ${name} 비교 담기` });
+
+  it("담기 버튼은 aria-pressed와 제품 이름을 갖고, 1개면 '비교하기'가 없고 2개부터 있다", () => {
+    render(<Browse paddles={ITEMS} />);
+    expect(screen.queryByTestId("compare-tray")).toBeNull();
+    fireEvent.click(toggle("에이"));
+    expect(toggle("에이").getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByTestId("compare-tray-count").textContent).toBe("담은 패들 1/3");
+    expect(within(screen.getByTestId("compare-tray")).queryByRole("button", { name: "비교하기" })).toBeNull();
+    fireEvent.click(toggle("비"));
+    expect(within(screen.getByTestId("compare-tray")).getByRole("button", { name: "비교하기" })).toBeDefined();
+  });
+
+  it("4번째는 담기지 않고 최대 개수를 안내한다", () => {
+    render(<Browse paddles={ITEMS} />);
+    for (const n of ["에이", "비", "씨"]) fireEvent.click(toggle(n));
+    fireEvent.click(toggle("디"));
+    expect(toggle("디").getAttribute("aria-pressed")).toBe("false");
+    expect(screen.getByTestId("compare-tray-count").textContent).toBe("담은 패들 3/3");
+    expect(screen.getByTestId("compare-tray-status").textContent).toBe("최대 3개까지 비교할 수 있습니다");
+  });
+
+  it("저장소에는 id 배열만 들어가고, 다시 그리면 남아 있으며 없어진 id는 빠진다", () => {
+    const { unmount } = render(<Browse paddles={ITEMS} />);
+    fireEvent.click(toggle("씨"));
+    fireEvent.click(toggle("에이"));
+    expect(Object.keys(window.sessionStorage)).toEqual(["pb.compare.tray.v1"]);
+    expect(JSON.parse(window.sessionStorage.getItem("pb.compare.tray.v1")!)).toEqual(["c", "a"]);
+    unmount();
+    // 새로고침 흉내: c가 데이터에서 없어졌다
+    render(<Browse paddles={ITEMS.filter((x) => x.id !== "c")} />);
+    expect(screen.getByTestId("compare-tray-count").textContent).toBe("담은 패들 1/3");
+    expect(toggle("에이").getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("'비교하기'는 담은 제품 모드(스펙 7줄, 적합도 없음)로 열리고, 이름을 누르면 비교를 닫은 뒤 상세를 연다", () => {
+    render(<Browse paddles={ITEMS} />);
+    fireEvent.click(toggle("에이"));
+    fireEvent.click(toggle("비"));
+    fireEvent.click(within(screen.getByTestId("compare-tray")).getByRole("button", { name: "비교하기" }));
+    const table = screen.getByTestId("compare-table");
+    expect(table.dataset.mode).toBe("picked");
+    expect(table.querySelectorAll("[data-row]")).toHaveLength(7);
+    expect(table.textContent).not.toContain("적합도");
+    fireEvent.click(within(table).getByRole("button", { name: "가짜 비. 자세히 보기" }));
+    expect(table.closest("dialog")!.hasAttribute("open")).toBe(false);
+    const open = [...document.querySelectorAll("dialog[open]")];
+    expect(open).toHaveLength(1);
+    expect(open[0]!.textContent).toContain("가짜 비");
+  });
+
+  it("'비우기'는 비교함을 없애고 저장소 값도 지운다", () => {
+    render(<Browse paddles={ITEMS} />);
+    fireEvent.click(toggle("에이"));
+    fireEvent.click(within(screen.getByTestId("compare-tray")).getByRole("button", { name: "비우기" }));
+    expect(screen.queryByTestId("compare-tray")).toBeNull();
+    expect(window.sessionStorage.getItem("pb.compare.tray.v1")).toBeNull();
+  });
+});
