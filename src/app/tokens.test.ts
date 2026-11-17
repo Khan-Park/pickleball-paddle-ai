@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { HERO_GRADIENT_ACCENT_OPACITY } from "@/components/site/HeroMedia";
 
 // 색 토큰의 글자 대비를 계산해 확인한다(WCAG 2.x 상대 휘도 공식, 본문 글자 기준 4.5:1). 밝은·어두운 화면 모두(T-028)
 const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
@@ -124,6 +125,26 @@ describe("색 대비(T-033, T-028)", () => {
 
   it("라임은 밝은 화면 바탕에서 글자로 쓸 수 없는 대비다(그래서 글자색 금지, copy.test.ts)", () => {
     expect(contrast(LIGHT.lime!, LIGHT.card!)).toBeLessThan(3);
+  });
+
+  it.each([
+    ["밝은 화면", LIGHT],
+    ["어두운 화면", DARK],
+  ] as const)("%s: 히어로 대체 배경의 가장 밝은 곳(틸을 덮은 끝)에서도 히어로 글자가 4.5:1 이상(T-042)", (_, tokens) => {
+    const end = mix(tokens.accent!, tokens.hero!, HERO_GRADIENT_ACCENT_OPACITY);
+    expect(contrast(tokens["on-hero"]!, end)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(tokens["on-hero-muted"]!, end)).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe("토큰 이름(T-042)", () => {
+  it("색 토큰과 글자 크기 토큰 이름이 겹치지 않는다(text-○○가 색인지 크기인지 모호해진다)", () => {
+    const theme = css.slice(css.indexOf("@theme inline"));
+    const colors = new Set([...theme.matchAll(/--color-([a-z-]+):/g)].map((m) => m[1]));
+    // --text-○○--line-height 같은 보조 값은 빼고 크기 이름만 모은다
+    const sizes = [...theme.matchAll(/--text-([a-z]+(?:-[a-z]+)*):/g)].map((m) => m[1]!);
+    expect(sizes.length).toBeGreaterThan(0);
+    expect(sizes.filter((n) => colors.has(n))).toEqual([]);
   });
 });
 
