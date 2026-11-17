@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { toPaddleDisplay, type Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import { saveAnswers } from "@/lib/quiz/storage";
@@ -141,5 +141,84 @@ describe("둘러보기로 가는 길(T-026)", () => {
     saveAnswers({ experience: "under_1y", play_style: "unsure", weight: "any", arm: "no", budget: "any", tournament: "no" });
     render(<Result paddles={PADDLES} />);
     expect(screen.getByRole("link", { name: "전체 둘러보기" }).getAttribute("href")).toBe("/browse");
+  });
+});
+
+describe("둘러보기 검색·브랜드·무게·데스크톱(T-048)", () => {
+  const MIXED = [
+    p("j-light", { brand: "JOOLA", model: "Hyperion Lite", weight_oz: 7.1, price_krw: 200_000 }),
+    p("j-mid", { brand: "JOOLA", model: "Perseus", weight_oz: 7.9, price_krw: 250_000 }),
+    p("s-mid", { brand: "Selkirk", model: "Vanguard", weight_oz: 8.0, price_krw: 280_000 }),
+    p("f-heavy", { brand: "Franklin", model: "Signature", weight_oz: 8.6, price_krw: 120_000 }),
+  ];
+  const search = () => screen.getByTestId("browse-search") as HTMLInputElement;
+
+  it("검색칸은 필터를 펼치지 않아도 보이고, 대소문자·공백을 무시해 찾는다", () => {
+    render(<Browse paddles={MIXED} />);
+    expect(screen.getByTestId("browse-filters").hidden).toBe(true);
+    expect(screen.getByLabelText("브랜드·모델 검색")).toBe(search());
+    fireEvent.change(search(), { target: { value: "joola  PER" } });
+    expect(rows()).toEqual(["j-mid"]);
+    expect(screen.getByTestId("browse-filter-summary").textContent).toContain("joola  PER");
+  });
+
+  it("브랜드 칩은 데이터에서 만들고, 무게 칩과 함께 그리고 조건으로 거른다", () => {
+    render(<Browse paddles={MIXED} />);
+    fireEvent.click(chip("^JOOLA$"));
+    expect(rows()).toEqual(["j-light", "j-mid"]);
+    fireEvent.click(chip("^중간"));
+    expect(rows()).toEqual(["j-mid"]);
+    expect(screen.getByTestId("browse-filter-summary").textContent).toBe("JOOLA · 중간 무게");
+    const brandChips = within(screen.getByRole("group", { name: "브랜드(여러 개 선택)" })).getAllByRole("button").map((b) => b.textContent?.replace("✓ ", ""));
+    expect(brandChips).toEqual(["Franklin", "JOOLA", "Selkirk"]);
+  });
+
+  it("'필터 지우기'는 검색어까지 지우고, 0건이면 검색 안내를 보여 준다", () => {
+    render(<Browse paddles={MIXED} />);
+    fireEvent.change(search(), { target: { value: "줄라" } });
+    expect(screen.getByTestId("browse-empty").textContent).toContain("영문 브랜드·모델 이름으로 찾아 주세요");
+    fireEvent.click(within(screen.getByTestId("browse-empty")).getByRole("button", { name: "필터 지우기" }));
+    expect(search().value).toBe("");
+    expect(rows()).toHaveLength(4);
+  });
+
+  it("검색어·필터는 주소와 저장소에 남지 않는다", () => {
+    const before = window.location.href;
+    render(<Browse paddles={MIXED} />);
+    fireEvent.change(search(), { target: { value: "selkirk" } });
+    fireEvent.click(chip("^Selkirk$"));
+    fireEvent.click(chip("^묵직함"));
+    expect(window.location.href).toBe(before);
+    expect(window.sessionStorage.length).toBe(0);
+    expect(window.localStorage.length).toBe(0);
+  });
+
+  it("주소 해시가 #search면 검색칸에 포커스하고, 해시가 바뀔 때도 옮긴다", () => {
+    window.history.replaceState(null, "", "#search");
+    try {
+      render(<Browse paddles={MIXED} />);
+      expect(document.activeElement).toBe(search());
+      (document.activeElement as HTMLElement).blur();
+      act(() => {
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
+      });
+      expect(document.activeElement).toBe(search());
+    } finally {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  });
+
+  it("데스크톱: 필터가 늘 펼쳐져 있고 접기 버튼이 없으며, 목록이 2열 격자다", () => {
+    const original = window.matchMedia;
+    window.matchMedia = ((q: string) => ({ matches: q.includes("64rem"), media: q, addEventListener() {}, removeEventListener() {} })) as unknown as typeof window.matchMedia;
+    try {
+      render(<Browse paddles={MIXED} />);
+      expect(screen.getByTestId("browse-filters").hidden).toBe(false);
+      expect(screen.queryByTestId("browse-filter-toggle")).toBeNull();
+      expect(screen.getByTestId("browse-list").className).toContain("lg:grid-cols-2");
+      expect(screen.getByTestId("browse-filter-column").className).toContain("lg:col-span-3");
+    } finally {
+      window.matchMedia = original;
+    }
   });
 });
