@@ -3,6 +3,7 @@ import paddlesJson from "../../../data/paddles.json";
 import { paddlesSchema, toPaddleDisplay } from "../../../data/schema";
 import { Browse } from "@/components/browse/Browse";
 import { openGraphFor } from "@/lib/shared/site";
+import { SiteHeader } from "@/components/site/SiteHeader";
 
 export const metadata: Metadata = { title: "둘러보기", openGraph: openGraphFor("/browse") };
 
@@ -11,8 +12,11 @@ const paddles = paddlesSchema.parse(paddlesJson).map(toPaddleDisplay);
 
 export default function BrowsePage() {
   return (
-    <main className="flex flex-1 flex-col">
-      <Browse paddles={paddles} />
-    </main>
+    <>
+      <SiteHeader current="browse" />
+      <main className="flex flex-1 flex-col">
+        <Browse paddles={paddles} />
+      </main>
+    </>
   );
 }

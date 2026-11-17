@@ -132,9 +132,9 @@ describe("필터 접기(T-037)", () => {
 });
 
 describe("둘러보기로 가는 길(T-026)", () => {
-  it("시작 화면에 '질문 없이 둘러보기'가 있다", () => {
+  it("시작 화면의 공통 헤더에 둘러보기 링크가 있다(T-040에서 위쪽 바를 헤더로 옮김)", () => {
     render(<Home />);
-    expect(screen.getByRole("link", { name: "질문 없이 둘러보기" }).getAttribute("href")).toBe("/browse");
+    expect(screen.getByRole("link", { name: /둘러보기$/ }).getAttribute("href")).toBe("/browse");
   });
 
   it("결과 화면에 '전체 둘러보기'가 있다", () => {

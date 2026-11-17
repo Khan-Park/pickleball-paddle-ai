@@ -143,7 +143,8 @@ describe("동작 줄이기(T-038)", () => {
   });
 
   it("로고 바탕은 어두운 화면에서도 남색인 상표 색(--brand)을 쓴다", () => {
-    const page = readFileSync(join(process.cwd(), "src/app/page.tsx"), "utf8");
+    // 로고는 T-040에서 공통 헤더로 옮겼다
+    const page = readFileSync(join(process.cwd(), "src/components/site/SiteHeader.tsx"), "utf8");
     expect(page).toContain('fill="var(--brand)"');
     expect(LIGHT.brand).toBe(DARK.brand);
     expect(contrast("#ffffff", DARK.brand!)).toBeGreaterThanOrEqual(4.5);

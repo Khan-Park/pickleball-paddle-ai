@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import paddlesJson from "../../../data/paddles.json";
 import { paddlesSchema, toPaddleDisplay } from "../../../data/schema";
 import { Result } from "@/components/result/Result";
+import { SiteHeader } from "@/components/site/SiteHeader";
 
 // 결과는 탭에 저장된 답변으로 그린다. 검색 결과에 빈 결과 화면이 나오지 않게 색인하지 않는다(T-027)
 export const metadata: Metadata = { title: "추천 결과", robots: { index: false, follow: true } };
@@ -14,8 +15,11 @@ const paddles = paddlesSchema.parse(paddlesJson).map(toPaddleDisplay);
 
 export default function ResultPage() {
   return (
-    <main className="flex flex-1 flex-col">
-      <Result paddles={paddles} />
-    </main>
+    <>
+      <SiteHeader />
+      <main className="flex flex-1 flex-col">
+        <Result paddles={paddles} />
+      </main>
+    </>
   );
 }

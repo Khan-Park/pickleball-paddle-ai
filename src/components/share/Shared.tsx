@@ -54,11 +54,7 @@ export function Shared({ paddles }: { paddles: PaddleDisplay[] }) {
 
   return (
     <ProductCatalogContext.Provider value={catalog}>
-      <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 pt-4 pb-8">
-        <Link href="/" className="-ml-1 self-start rounded-control px-1 py-2 text-small font-bold text-muted outline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-accent">
-          ← 처음으로
-        </Link>
-
+      <section className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-5 pt-6 pb-8">
         {/* 제휴 링크가 있으면 제목보다 앞에서 먼저 알린다(D-022) */}
         <AffiliatePageNotice programs={programs} />
 
