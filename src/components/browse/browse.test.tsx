@@ -281,6 +281,18 @@ describe("둘러보기 비교 담기(T-049)", () => {
     expect(open[0]!.textContent).toContain("가짜 비");
   });
 
+  it("화면이 다시 그려지기 전에 연달아 눌러도 모두 담긴다(빠른 연속 탭)", () => {
+    render(<Browse paddles={ITEMS} />);
+    act(() => {
+      toggle("에이").click();
+      toggle("비").click();
+      toggle("씨").click();
+      toggle("디").click();
+    });
+    expect(screen.getByTestId("compare-tray-count").textContent).toBe("담은 패들 3/3");
+    expect(JSON.parse(window.sessionStorage.getItem("pb.compare.tray.v1")!)).toEqual(["a", "b", "c"]);
+  });
+
   it("'비우기'는 비교함을 없애고 저장소 값도 지운다", () => {
     render(<Browse paddles={ITEMS} />);
     fireEvent.click(toggle("에이"));

@@ -111,9 +111,17 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
   }, [ready]);
 
   // 비교함(T-049). 이 탭의 sessionStorage에 id만 둔다. 화면이 준비되면 한 번 불러오고, 바뀔 때마다 저장한다
-  const [tray, setTray] = useState<string[]>([]);
+  const [tray, setTrayState] = useState<string[]>([]);
+  // 빠르게 연달아 누를 때 화면이 다시 그려지기 전 값으로 계산하지 않도록 최신 목록을 따로 들고 있는다
+  const trayRef = useRef<string[]>([]);
+  const setTray = (ids: string[]) => {
+    trayRef.current = ids;
+    setTrayState(ids);
+  };
   const [trayLoaded, setTrayLoaded] = useState(false);
   const [trayMessage, setTrayMessage] = useState("");
+  // 비교함 실제 높이. 목록 끝(마지막 줄·링크)이 비교함에 가리지 않게 같은 높이의 여백을 둔다
+  const [trayHeight, setTrayHeight] = useState(0);
   const [compareOpen, setCompareOpen] = useState(false);
   // 비교 표에서 고른 제품. 비교 시트가 닫힌 뒤(close 이벤트) 상세 시트를 연다(시트를 겹치지 않는다, 결과 화면과 같음)
   const pendingPick = useRef<string | null>(null);
@@ -157,7 +165,7 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
   });
   const trayColumns = toCompareColumns(trayItems.map((paddle) => ({ paddle })));
   const toggleCompare = (id: string, name: string) => {
-    const next = toggleTray(tray, id);
+    const next = toggleTray(trayRef.current, id);
     if (next.result === "full") {
       const message = `최대 ${TRAY_MAX}개까지 비교할 수 있습니다`;
       showToast(message);
@@ -328,9 +336,10 @@ export function Browse({ paddles }: { paddles: PaddleDisplay[] }) {
         <p role="status" className="sr-only" data-testid="compare-tray-status">
           {trayMessage}
         </p>
-        {trayItems.length > 0 ? <div aria-hidden="true" className="h-28 lg:h-20" /> : null}
+        {trayHeight > 0 ? <div aria-hidden="true" style={{ height: trayHeight }} data-testid="compare-tray-spacer" /> : null}
         <CompareTray
           items={trayItems}
+          onHeight={setTrayHeight}
           onCompare={() => setCompareOpen(true)}
           onClear={() => {
             setTray([]);
