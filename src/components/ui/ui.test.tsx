@@ -171,3 +171,23 @@ describe("BottomSheet", () => {
     expect(document.documentElement.style.overflow).toBe("");
   });
 });
+
+describe("BottomSheet 스크롤 구조(2026-11-17 휴대폰 제보)", () => {
+  it("시트 틀은 스크롤하지 않고, 안쪽 내용 영역이 숨김 글자(sr-only)의 기준이 되어 스크롤을 혼자 맡는다", () => {
+    render(
+      <BottomSheet open onClose={() => {}} title="시트">
+        <p>
+          내용<span className="sr-only">숨김 글자</span>
+        </p>
+      </BottomSheet>,
+    );
+    const dialog = document.querySelector("dialog")!;
+    const body = screen.getByTestId("sheet-body");
+    // jsdom은 배치를 계산하지 않아 클래스로 확인한다. 실제 높이는 브라우저에서 dialog.scrollHeight === clientHeight로 확인했다
+    expect(dialog.className).toContain("overflow-hidden");
+    expect(body.className).toMatch(/\brelative\b/);
+    expect(body.className).toContain("min-h-0");
+    expect(body.className).toContain("overflow-y-auto");
+    expect(body.contains(screen.getByText("숨김 글자"))).toBe(true);
+  });
+});
