@@ -4,7 +4,7 @@ import Link from "next/link";
 import { clearAnswers } from "@/lib/quiz/storage";
 
 /** 지금 보고 있는 화면. 헤더에서 해당 링크에 aria-current="page"를 단다 */
-export type SiteSection = "home" | "browse" | "other";
+export type SiteSection = "home" | "browse" | "saved" | "other";
 
 const LINK = "inline-flex min-h-11 items-center rounded-control px-2 outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent";
 const MENU = `${LINK} text-small font-bold text-ink hover:text-accent aria-[current=page]:text-accent aria-[current=page]:underline aria-[current=page]:underline-offset-4`;
@@ -12,7 +12,7 @@ const MENU = `${LINK} text-small font-bold text-ink hover:text-accent aria-[curr
 /**
  * 공통 헤더(T-040, docs/plan/m2.5-redesign.md 2장 헤더 행). 질문 화면을 뺀 모든 화면의 <main> 앞에 둔다.
  * <main> 밖에 있으므로 본문 첫 부분의 대가 표시는 헤더 다음·제목 앞이 된다(3.6, D-022).
- * 저장 아이콘은 T-050에서, "추천 가이드"는 넣지 않는다(U3). 로고는 한글 "패들핏"만(U6).
+ * 저장 아이콘은 이 기기에 저장한 추천(`/saved`, T-050). "추천 가이드"는 넣지 않는다(U3). 로고는 한글 "패들핏"만(U6).
  */
 export function SiteHeader({ current = "other" }: { current?: SiteSection }) {
   const page = (section: SiteSection) => (current === section ? ("page" as const) : undefined);
@@ -54,6 +54,29 @@ export function SiteHeader({ current = "other" }: { current?: SiteSection }) {
                 <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <circle cx="11" cy="11" r="7" />
                   <path d="m20 20-3.5-3.5" />
+                </svg>
+              </Link>
+            </li>
+            <li>
+              {/* 이 기기에 저장한 추천(T-050). 책갈피 모양, 저장 화면에서는 채운 모양 */}
+              <Link
+                href="/saved"
+                aria-label="저장한 추천"
+                aria-current={page("saved")}
+                className={`${LINK} min-w-11 justify-center text-ink hover:text-accent aria-[current=page]:text-accent`}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill={current === "saved" ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 3h12v18l-6-4.5L6 21z" />
                 </svg>
               </Link>
             </li>

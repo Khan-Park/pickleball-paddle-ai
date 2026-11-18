@@ -5,7 +5,6 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { toPaddleDisplay, type Paddle } from "../../../data/schema";
 import { fakePaddle } from "../../../data/test-fixtures";
 import { loadAnswers, saveAnswers } from "@/lib/quiz/storage";
-import { todayLocal } from "@/components/result/labels";
 import { Browse } from "@/components/browse/Browse";
 import { Result } from "@/components/result/Result";
 import { Shared } from "@/components/share/Shared";
@@ -16,6 +15,9 @@ import SharedPage from "@/app/shared/page";
 import NotFound from "@/app/not-found";
 import QuizPage from "@/app/quiz/page";
 import { SiteHeader } from "./SiteHeader";
+import { Saved } from "@/components/saved/Saved";
+import { writeSaved } from "@/lib/shared/saved";
+import { todayLocal } from "@/components/result/labels";
 
 const search = new URLSearchParams();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn(), push: vi.fn() }), useSearchParams: () => search }));
@@ -70,10 +72,10 @@ describe("공통 헤더(T-040)", () => {
     expect(screen.getAllByRole("link").filter((a) => a.hasAttribute("aria-current"))).toEqual([]);
   });
 
-  it("링크는 로고·패들 찾기·둘러보기·검색이고, 모두 이름이 있고 키보드로 갈 수 있다", () => {
+  it("링크는 로고·패들 찾기·둘러보기·검색·저장이고, 모두 이름이 있고 키보드로 갈 수 있다", () => {
     render(<SiteHeader />);
     const links = within(screen.getByTestId("site-header")).getAllByRole("link");
-    expect(links.map((a) => a.getAttribute("href"))).toEqual(["/", "/quiz", "/browse", "/browse#search"]);
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(["/", "/quiz", "/browse", "/browse#search", "/saved"]);
     for (const a of links) {
       expect(a.textContent?.trim() || a.getAttribute("aria-label")).toBeTruthy();
       expect(a.tabIndex).toBe(0);
@@ -90,10 +92,20 @@ describe("공통 헤더(T-040)", () => {
     expect(loadAnswers()).toBeNull();
   });
 
-  it("저장 아이콘·추천 가이드·영문 로고는 아직 없다(T-050, U3, U6)", () => {
+  it("추천 가이드·영문 로고는 없다(U3, U6)", () => {
     render(<SiteHeader />);
     const text = screen.getByTestId("site-header").textContent ?? "";
-    expect(text).not.toMatch(/저장|가이드|PaddleFit/);
+    expect(text).not.toMatch(/가이드|PaddleFit/);
+  });
+
+  it("저장 아이콘은 /saved로 가고, 저장 화면에서만 aria-current=page다(T-050)", () => {
+    render(<SiteHeader current="saved" />);
+    const link = screen.getByRole("link", { name: "저장한 추천" });
+    expect(link.getAttribute("href")).toBe("/saved");
+    expect(link.getAttribute("aria-current")).toBe("page");
+    cleanup();
+    render(<SiteHeader />);
+    expect(screen.getByRole("link", { name: "저장한 추천" }).getAttribute("aria-current")).toBeNull();
   });
 });
 
@@ -102,6 +114,13 @@ describe("대가 표시 순서: 헤더 → 대가 표시 → 제목(T-040, 기�
     ["둘러보기", () => <Browse paddles={AD_PADDLES} />],
     ["결과", () => <Result paddles={AD_PADDLES} />],
     ["공유받은 화면", () => <Shared paddles={AD_PADDLES} />],
+    [
+      "저장 화면",
+      () => {
+        writeSaved([{ id: "s1", saved_at: todayLocal(), paddle_ids: ["a", "b"], conditions: [], relaxed: false, scoring_version: "0.2.0" }]);
+        return <Saved paddles={AD_PADDLES} />;
+      },
+    ],
   ])("%s", (_, body) => {
     saveAnswers({ experience: "under_1y", play_style: "unsure", weight: "any", arm: "no", budget: "any", tournament: "no" });
     search.set("p", "a,b,c");

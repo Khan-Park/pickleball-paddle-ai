@@ -9,6 +9,7 @@ import type { QuizAnswers } from "@/lib/quiz/questions";
 import { saveAnswers } from "@/lib/quiz/storage";
 import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal } from "./labels";
 import { Result } from "./Result";
+import { SAVED_FIELDS, SAVED_KEY } from "@/lib/shared/saved";
 
 const replace = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace }) }));
@@ -33,6 +34,7 @@ beforeAll(() => {
 beforeEach(() => {
   replace.mockClear();
   window.sessionStorage.clear();
+  window.localStorage.clear();
 });
 afterEach(cleanup);
 
@@ -408,5 +410,48 @@ describe("결과 카드 데스크톱 3열(T-046)", () => {
     saveAnswers(beginner);
     render(<Result paddles={PADDLES} />);
     expect(screen.getByTestId("spec-chips").textContent).toMatch(/oz · 약 \d+g/);
+  });
+
+  describe("결과 저장(T-050)", () => {
+    it("누르면 이 기기에 1건이 저장되고 저장 화면 링크가 나온다", () => {
+      saveAnswers(beginner);
+      render(<Result paddles={PADDLES} />);
+      expect(screen.queryByTestId("saved-link")).toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: "결과 저장" }));
+      const saved = JSON.parse(window.localStorage.getItem(SAVED_KEY)!);
+      expect(saved).toHaveLength(1);
+      expect(Object.keys(saved[0]).sort()).toEqual([...SAVED_FIELDS].sort());
+      expect(saved[0].paddle_ids).toHaveLength(3);
+      expect(saved[0].conditions).toContain("입문(1년 미만)");
+      expect(screen.getByTestId("saved-link").getAttribute("href")).toBe("/saved");
+      expect(screen.getByTestId("save-result-status").textContent).toBe("결과를 저장했습니다");
+      // 같은 결과를 다시 저장해도 1건
+      fireEvent.click(screen.getByRole("button", { name: "결과 저장" }));
+      expect(JSON.parse(window.localStorage.getItem(SAVED_KEY)!)).toHaveLength(1);
+    });
+
+    it("팔 불편을 고른 답으로 저장해도 저장 값에 팔 불편·답 원문·점수가 없다", () => {
+      saveAnswers({ ...beginner, arm: "yes" });
+      render(<Result paddles={PADDLES} />);
+      fireEvent.click(screen.getByRole("button", { name: "결과 저장" }));
+      const text = window.localStorage.getItem(SAVED_KEY)!;
+      expect(text).not.toMatch(/arm|팔|불편|under_1y|experience|score|점수|label/);
+    });
+
+    it("저장소가 막히면 안내가 나오고 화면은 그대로다", () => {
+      saveAnswers(beginner);
+      render(<Result paddles={PADDLES} />);
+      const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+        throw new Error("blocked");
+      });
+      try {
+        fireEvent.click(screen.getByRole("button", { name: "결과 저장" }));
+      } finally {
+        spy.mockRestore();
+      }
+      expect(screen.getByTestId("save-result-status").textContent).toBe("이 브라우저에서는 저장할 수 없습니다");
+      expect(screen.queryByTestId("saved-link")).toBeNull();
+      expect(screen.getByTestId("result-title")).toBeDefined();
+    });
   });
 });
