@@ -19,11 +19,14 @@ export function AffiliatePageNotice({ programs, note = NOTICE.ranking }: { progr
   if (programs.size === 0) return null;
   return (
     <div className="rounded-lg border-2 border-navy bg-card p-4" data-testid="affiliate-page-notice">
-      <p className="text-sm font-bold text-navy">광고</p>
+      {/* "광고"와 표시 문구는 본문(text-body)보다 큰 글자(D-022 (1), T-054). 크기 비교는 affiliate-notice.test.tsx */}
+      <p className="text-heading font-bold text-navy" data-testid="affiliate-page-notice-label">
+        광고
+      </p>
       {(["coupang", "other"] as const)
         .filter((program) => programs.has(program))
         .map((program) => (
-          <p key={program} className="mt-1 text-base font-semibold leading-relaxed text-navy">
+          <p key={program} className="mt-1 text-heading font-semibold text-navy" data-testid="affiliate-page-notice-text">
             {DISCLOSURE[program]}
           </p>
         ))}

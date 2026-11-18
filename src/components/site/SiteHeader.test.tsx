@@ -30,6 +30,7 @@ beforeAll(() => {
 afterEach(() => {
   cleanup();
   window.sessionStorage.clear();
+  window.localStorage.clear();
 });
 
 const today = todayLocal();
@@ -136,5 +137,8 @@ describe("대가 표시 순서: 헤더 → 대가 표시 → 제목(T-040, 기�
     const h1 = screen.getByRole("heading", { level: 1 });
     expect(isBefore(header, notice)).toBe(true);
     expect(isBefore(notice, h1)).toBe(true);
+    // 접힌 영역 밖(T-054, 기준 5): details 안이나 hidden 속성 조상 아래에 두지 않는다
+    expect(notice.closest("details")).toBeNull();
+    expect(notice.closest("[hidden]")).toBeNull();
   });
 });
