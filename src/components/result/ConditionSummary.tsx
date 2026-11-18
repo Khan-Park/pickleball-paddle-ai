@@ -8,6 +8,9 @@ import { BottomSheet } from "@/components/ui/BottomSheet";
 import { buttonClass } from "@/components/ui/Button";
 import { ConditionChips } from "./parts";
 
+/** 목록에 없는 답(팔 불편 등)도 반영했다는 안내. 어떤 답이든 같은 문장이다 */
+export const CRITERIA_OTHER = "그 밖의 답도 추천에 반영했습니다.";
+
 /**
  * 가로 조건 요약 줄(D-037, T-045). 답변 칩 + "고치기"(질문으로) + "추천 기준 보기"(시트).
  * 시트는 답변이 어떤 스펙 기준이 됐는지 한 줄씩 보여 준다(criteria.ts). 팔 불편 답은 칩·시트 모두에 없다.
@@ -30,7 +33,11 @@ export function ConditionSummary({ answers, profile }: { answers: QuizAnswers | 
             </li>
           ))}
         </ul>
-        <p className="pt-3 text-caption text-muted">
+        {/* 팔 불편 답은 개인정보라 목록에 쓰지 않는다. 답과 관계없이 늘 같은 문장을 보여 줘 답이 드러나지 않게 한다(T-053 사용자 결정) */}
+        <p className="pt-3 text-small text-ink" data-testid="criteria-other">
+          {CRITERIA_OTHER}
+        </p>
+        <p className="pt-1 text-caption text-muted">
           조건들을 함께 따져 맞는 정도를 정합니다. 구매 링크나 수수료는 반영하지 않습니다. 기준은 일반적으로 알려진 설명에서 가져온 것이라 실제 타구감과 다를 수 있습니다.
         </p>
       </BottomSheet>

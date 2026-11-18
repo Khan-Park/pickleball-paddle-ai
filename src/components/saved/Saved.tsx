@@ -187,7 +187,8 @@ export function Saved({ paddles }: { paddles: PaddleDisplay[] }) {
         )}
 
         <div className="flex flex-col items-start gap-3">
-          <StartButton label="지금 조건으로 다시 받기" />
+          {/* 이전 답을 지우고 처음부터 묻는다(StartButton). 문구를 동작에 맞췄다(T-053 사용자 결정) */}
+          <StartButton label="질문 다시 하기" />
           <Link href="/browse" className="text-base font-semibold text-accent underline underline-offset-4">
             전체 둘러보기
           </Link>

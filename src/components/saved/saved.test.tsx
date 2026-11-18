@@ -51,13 +51,13 @@ describe("저장한 추천 화면(T-050)", () => {
     expect(entries[1]!.textContent).toContain("조건을 바꿔서 다시 찾은 결과");
   });
 
-  it("안내 두 줄과 '지금 조건으로 다시 받기'가 있고, 적합도 라벨·점수는 없다", () => {
+  it("안내 두 줄과 '질문 다시 하기'가 있고, 적합도 라벨·점수는 없다", () => {
     writeSaved([entry({})]);
     render(<Saved paddles={PADDLES} />);
     expect(screen.getByText(SAVED_NOTICE.basis)).toBeDefined();
     expect(screen.getByText(SAVED_NOTICE.device)).toBeDefined();
     expect(SAVED_NOTICE.basis).toBe("저장 당시 추천된 제품입니다. 가격·승인은 지금 기준입니다.");
-    expect(screen.getByRole("link", { name: "지금 조건으로 다시 받기" }).getAttribute("href")).toBe("/quiz");
+    expect(screen.getByRole("link", { name: "질문 다시 하기" }).getAttribute("href")).toBe("/quiz");
     const text = screen.getByTestId("saved-list").textContent ?? "";
     expect(text).not.toMatch(/매우 잘 맞음|잘 맞음|보통|점수|추천 이유/);
   });
@@ -95,7 +95,7 @@ describe("저장한 추천 화면(T-050)", () => {
   it("저장한 것이 없으면 빈 화면 안내와 질문 시작 버튼이 있다", () => {
     render(<Saved paddles={PADDLES} />);
     expect(screen.getByTestId("saved-empty")).toBeDefined();
-    expect(screen.getByRole("link", { name: "지금 조건으로 다시 받기" })).toBeDefined();
+    expect(screen.getByRole("link", { name: "질문 다시 하기" })).toBeDefined();
     expect(screen.queryByTestId("saved-clear")).toBeNull();
   });
 

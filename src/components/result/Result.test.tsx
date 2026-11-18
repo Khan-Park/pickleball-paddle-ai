@@ -9,6 +9,7 @@ import type { QuizAnswers } from "@/lib/quiz/questions";
 import { saveAnswers } from "@/lib/quiz/storage";
 import { affiliateProgram, DISCLOSURE, NOTICE, todayLocal } from "./labels";
 import { Result } from "./Result";
+import { CRITERIA_OTHER } from "./ConditionSummary";
 import { SAVED_FIELDS, SAVED_KEY } from "@/lib/shared/saved";
 
 const replace = vi.fn();
@@ -453,5 +454,16 @@ describe("결과 카드 데스크톱 3열(T-046)", () => {
       expect(screen.queryByTestId("saved-link")).toBeNull();
       expect(screen.getByTestId("result-title")).toBeDefined();
     });
+  });
+
+  it("추천 기준 시트에는 팔 불편 답과 관계없이 같은 '그 밖의 답' 안내가 있다(T-053 결정)", () => {
+    for (const arm of ["yes", "no"] as const) {
+      saveAnswers({ ...beginner, arm });
+      render(<Result paddles={PADDLES} />);
+      const other = screen.getByTestId("criteria-other");
+      expect(other.textContent).toBe(CRITERIA_OTHER);
+      expect(other.textContent).not.toMatch(/팔|불편|통증/);
+      cleanup();
+    }
   });
 });
