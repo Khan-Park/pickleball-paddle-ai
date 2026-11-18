@@ -8,6 +8,7 @@ import { metadata as browseMetadata } from "./browse/page";
 import { metadata as rootMetadata } from "./layout";
 import { metadata as resultMetadata } from "./result/page";
 import { metadata as sharedMetadata } from "./shared/page";
+import { metadata as savedMetadata } from "./saved/page";
 import robots from "./robots";
 import sitemap from "./sitemap";
 
@@ -32,6 +33,11 @@ describe("사이트 정보(T-027)", () => {
     expect(resultMetadata.robots).toMatchObject({ index: false });
     expect(sharedMetadata.robots).toMatchObject({ index: false });
     expect(SITEMAP_PATHS).not.toContain("/shared");
+  });
+
+  it("저장 화면도 검색 색인에서 빼고 sitemap에 넣지 않는다(T-050)", () => {
+    expect(savedMetadata.robots).toMatchObject({ index: false });
+    expect(SITEMAP_PATHS).not.toContain("/saved");
   });
 });
 

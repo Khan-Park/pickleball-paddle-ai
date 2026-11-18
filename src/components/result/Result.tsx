@@ -26,6 +26,8 @@ import { useReducedMotion } from "@/components/ui/useReducedMotion";
 import { ProductCatalogContext, type ProductCatalog } from "@/components/product/catalog";
 import { ProductSheet } from "@/components/product/ProductSheet";
 import { ShareButtons } from "@/components/share/ShareButtons";
+import { SaveResultButton } from "./SaveResultButton";
+import { conditionChips } from "./parts";
 
 const subscribe = () => () => {};
 /** 1순위 카드의 구매 묶음 id. 하단 고정 버튼이 이 요소가 보이는지 본다 */
@@ -309,7 +311,20 @@ export function Result({ paddles }: { paddles: PaddleDisplay[] }) {
         <p>{NOTICE.price}</p>
       </footer>
 
-      {/* 아래 행동 줄. "결과 저장"은 T-050에서 넣는다 */}
+      {/* 결과 저장(T-050). 이 기기에만, 제품 id·조건 칩 문구만 저장한다(팔 불편·답 원문·점수 없음). 조건 완화로 추천이 바뀌면 key로 상태를 처음으로 */}
+      {result.items.length > 0 ? (
+        <SaveResultButton
+          key={`${result.items.map((item) => item.paddle_id).join(",")}|${relaxed ? 1 : 0}`}
+          today={today}
+          input={{
+            paddle_ids: result.items.map((item) => item.paddle_id),
+            conditions: answers ? conditionChips(answers) : [],
+            relaxed: relaxed !== null,
+            scoring_version: result.scoring_version,
+          }}
+        />
+      ) : null}
+      {/* 아래 행동 줄 */}
       <div className="flex flex-wrap gap-x-6 gap-y-2" data-testid="result-actions">
         <Link href="/quiz" className="text-base font-semibold text-accent underline underline-offset-4">
           답변 고치기
