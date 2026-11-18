@@ -91,6 +91,21 @@ function storage(): Storage | null {
   }
 }
 
+/**
+ * 이 브라우저에서 저장소를 쓸 수 있는지(T-054). 저장소 객체를 얻고 읽기가 예외 없이 되는지만 본다.
+ * 시험 쓰기는 하지 않는다(저장소에 다른 키를 남기지 않는다). 쓰기 실패는 writeSaved가 따로 알려 준다
+ */
+export function savedStorageAvailable(): boolean {
+  try {
+    const s = storage();
+    if (!s) return false;
+    s.getItem(SAVED_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** 읽기. 기간이 지났거나 깨진 건을 버렸으면 저장소도 정리한다. 못 읽으면 빈 목록 */
 export function loadSaved(today: string): SavedEntry[] {
   try {

@@ -1,4 +1,6 @@
 // @vitest-environment jsdom
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { loadTray, sanitizeTray, saveTray, toggleTray, TRAY_KEY, TRAY_MAX } from "./compare-tray";
 
@@ -33,5 +35,12 @@ describe("비교함(T-049)", () => {
   it("값이 깨져 있으면 빈 목록이다", () => {
     window.sessionStorage.setItem(TRAY_KEY, "{not json");
     expect(loadTray(VALID)).toEqual([]);
+  });
+});
+
+describe("비교함 소스 검사(T-054, 완료 기준 9)", () => {
+  it("구매·제휴·가격 비교 필드를 읽지 않는다", () => {
+    const text = readFileSync(join(process.cwd(), "src/lib/shared/compare-tray.ts"), "utf8");
+    expect(text).not.toMatch(/purchase|affiliate|compare_query|price_krw/);
   });
 });
