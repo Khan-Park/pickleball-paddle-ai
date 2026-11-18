@@ -133,4 +133,37 @@ describe("공유받은 화면(T-025)", () => {
     fireEvent.click(link);
     expect(loadAnswersRaw()).toBeNull();
   });
+
+  describe("새 모양(T-051)", () => {
+    it("제목이 읽은 제품 수를 반영한다", () => {
+      search = new URLSearchParams("p=a-1,b-2,gone-9");
+      render(<Shared paddles={PADDLES} />);
+      expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("공유받은 추천 패들 2개");
+      cleanup();
+      search = new URLSearchParams("p=gone-9");
+      render(<Shared paddles={PADDLES} />);
+      expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("공유받은 추천 패들");
+    });
+
+    it("1개면 '비교하기'가 없다", () => {
+      search = new URLSearchParams("p=a-1");
+      render(<Shared paddles={PADDLES} />);
+      expect(screen.queryByRole("button", { name: "비교하기" })).toBeNull();
+    });
+
+    it("'비교하기'는 담은 제품 모드(적합도 없음)로 열리고, 이름을 누르면 비교를 닫은 뒤 상세를 연다", () => {
+      search = new URLSearchParams("p=a-1,b-2,c-3");
+      render(<Shared paddles={PADDLES} />);
+      fireEvent.click(screen.getByRole("button", { name: "비교하기" }));
+      const table = screen.getByTestId("compare-table");
+      expect(table.dataset.mode).toBe("picked");
+      expect(table.querySelectorAll("[data-row]")).toHaveLength(7);
+      expect(table.textContent).not.toContain("적합도");
+      fireEvent.click(within(table).getByRole("button", { name: "가짜 b-2. 자세히 보기" }));
+      expect(table.closest("dialog")!.hasAttribute("open")).toBe(false);
+      const open = [...document.querySelectorAll("dialog[open]")];
+      expect(open).toHaveLength(1);
+      expect(within(open[0] as HTMLElement).getByTestId("product-detail").dataset.paddleId).toBe("b-2");
+    });
+  });
 });

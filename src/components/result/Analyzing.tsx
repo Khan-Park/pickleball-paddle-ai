@@ -2,20 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { ShapeIcon } from "@/components/ShapeIcon";
+import { BallIcon } from "@/components/BallIcon";
 import { analyzeTotalMs, STEP_MS, type AnalyzeMode } from "./analyzing-flag";
 
-/** 패들이 공을 치는 단순한 선 그림. 직접 그린 장식이라 화면 낭독기에는 숨긴다 */
+/**
+ * 패들이 공을 치는 그림. 질문·홈과 같은 패들 그림(ShapeIcon, T-041)과 공 그림(BallIcon)을 움직인다(T-051).
+ * 장식이라 화면 낭독기에는 숨긴다(두 그림 부품이 aria-hidden)
+ */
 function PaddleSwing() {
   return (
-    // 시작 화면·질문 화면의 형태 그림(ShapeIcon)과 같은 선 두께 비율·모서리로 그린다(T-023)
-    <svg viewBox="0 0 160 128" width="160" height="128" aria-hidden="true" focusable="false" className="text-navy">
-      <g className="origin-[58px_112px] animate-paddle-swing">
-        <rect x="38" y="16" width="40" height="58" rx="13" fill="none" stroke="currentColor" strokeWidth="5" />
-        <rect x="52" y="74" width="12" height="38" rx="3" fill="currentColor" />
-      </g>
-      <circle cx="122" cy="52" r="10" className="animate-ball-bounce fill-accent-bright" />
-      <circle cx="122" cy="52" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="animate-ball-bounce" />
-    </svg>
+    <div className="flex h-32 w-40 items-end justify-center gap-6 text-navy" data-testid="analyzing-art">
+      {/* 손잡이 끝을 축으로 흔든다 */}
+      <div className="origin-bottom animate-paddle-swing">
+        <ShapeIcon shape="standard" size="lg" />
+      </div>
+      <div className="mb-14 animate-ball-bounce">
+        <BallIcon size="md" />
+      </div>
+    </div>
   );
 }
 

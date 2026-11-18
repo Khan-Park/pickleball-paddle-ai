@@ -149,4 +149,14 @@ describe("결과 화면을 읽는 동안", () => {
     expect(screen.getByRole("status").textContent).toContain("답변을 확인하고 있습니다");
     expect(container.querySelectorAll("[data-skeleton]").length).toBeGreaterThan(0);
   });
+
+  it("새 패들 그림과 공 그림을 쓰고, 화면 낭독기에는 숨긴다(T-051)", () => {
+    markSubmitted();
+    render(<Result paddles={PADDLES} />);
+    const art = screen.getByTestId("analyzing-art");
+    expect(art.querySelector("svg[data-shape='standard']")).not.toBeNull();
+    expect(art.querySelector("[data-testid='ball-icon']")).not.toBeNull();
+    for (const svg of art.querySelectorAll("svg")) expect(svg.getAttribute("aria-hidden")).toBe("true");
+    expect(art.querySelectorAll("svg")).toHaveLength(2);
+  });
 });
