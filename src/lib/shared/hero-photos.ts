@@ -14,7 +14,10 @@ export type HeroPhoto = {
 };
 
 export const HERO_PHOTOS: Record<HeroSlot, HeroPhoto | null> = {
-  "home-wide": null,
+  // Pexels 29821186(Frank Schrader), 원본 2400x1800을 1600px WebP로. 기록: docs/design/assets.md
+  "home-wide": { src: "/hero/home-wide.webp", width: 1600, height: 1200 },
+  // 코드에서 쓰는 곳이 없어 비워 둔다(홈은 모든 폭에서 home-wide를 쓴다)
   "home-tall": null,
-  result: null,
+  // Pexels 17299531(Mason Tuttle), 원본 2400x1600을 1600px WebP로
+  result: { src: "/hero/result.webp", width: 1600, height: 1067 },
 };
