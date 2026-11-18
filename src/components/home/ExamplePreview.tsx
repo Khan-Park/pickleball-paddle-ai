@@ -1,6 +1,7 @@
 import type { Shape } from "../../../data/schema";
 import type { MatchLabel } from "@/lib/recommend/recommend";
 import { WEIGHT_BAND } from "@/lib/recommend/scoring-config";
+import type { WeightBand } from "@/lib/recommend/axes";
 import { ShapeIcon } from "@/components/ShapeIcon";
 import { SHAPE_LABEL } from "@/lib/shared/shape-labels";
 
@@ -9,10 +10,21 @@ import { SHAPE_LABEL } from "@/lib/shared/shape-labels";
  * 실제 제품이 추천처럼 보이지 않게 브랜드·모델 없이 형태 그림과 스펙 칩만 쓴다. 근거 없는 특성 태그(파워·스핀 등)와 점수 숫자는 넣지 않는다.
  * 무게대 경계는 추천 엔진의 기준(WEIGHT_BAND)에서 읽는다.
  */
-const EXAMPLES: { shape: Shape; weight: string; core: string; label: MatchLabel }[] = [
-  { shape: "hybrid", weight: `중간 무게(${WEIGHT_BAND.lightBelowOz}~${WEIGHT_BAND.heavyAboveOz}oz)`, core: "코어 16mm", label: "매우 잘 맞음" },
-  { shape: "widebody", weight: `가벼운 편(${WEIGHT_BAND.lightBelowOz}oz 미만)`, core: "코어 16mm", label: "잘 맞음" },
-  { shape: "elongated", weight: `무거운 편(${WEIGHT_BAND.heavyAboveOz}oz 초과)`, core: "코어 14mm", label: "잘 맞음" },
+/** 무게대 칩 문구. 경계는 엔진 기준(WEIGHT_BAND)에서 읽는다 */
+const WEIGHT_CHIP: Record<WeightBand, string> = {
+  light: `가벼운 편(${WEIGHT_BAND.lightBelowOz}oz 미만)`,
+  medium: `중간 무게(${WEIGHT_BAND.lightBelowOz}~${WEIGHT_BAND.heavyAboveOz}oz)`,
+  heavy: `무거운 편(${WEIGHT_BAND.heavyAboveOz}oz 초과)`,
+};
+
+/**
+ * 예시 조합. 지금 데이터(data/paddles.json)에서 실제로 나올 수 있는 형태·무게대·코어여야 한다(기획 3.2, T-054).
+ * home.test.tsx가 데이터와 대조하므로, 데이터가 바뀌어 범위를 벗어나면 테스트가 실패한다
+ */
+export const EXAMPLES: { shape: Shape; band: WeightBand; core_mm: number; label: MatchLabel }[] = [
+  { shape: "hybrid", band: "medium", core_mm: 16, label: "매우 잘 맞음" },
+  { shape: "widebody", band: "heavy", core_mm: 16, label: "잘 맞음" },
+  { shape: "elongated", band: "medium", core_mm: 14, label: "잘 맞음" },
 ];
 
 export function ExamplePreview() {
@@ -34,7 +46,7 @@ export function ExamplePreview() {
                 <span className="rounded-control bg-accent-soft px-2 py-0.5 text-caption font-bold text-accent-ink">{ex.label}</span>
               </span>
               <span className="flex flex-wrap gap-1">
-                {[SHAPE_LABEL[ex.shape], ex.weight, ex.core].map((chip) => (
+                {[SHAPE_LABEL[ex.shape], WEIGHT_CHIP[ex.band], `코어 ${ex.core_mm}mm`].map((chip) => (
                   <span key={chip} className="rounded-control bg-surface px-2 py-0.5 text-caption text-muted">
                     {chip}
                   </span>

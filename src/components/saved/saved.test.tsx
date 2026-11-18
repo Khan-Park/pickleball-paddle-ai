@@ -104,4 +104,78 @@ describe("저장한 추천 화면(T-050)", () => {
     render(<Saved paddles={PADDLES} />);
     expect(screen.getByTestId("saved-empty")).toBeDefined();
   });
+
+  describe("검수 보완(T-054)", () => {
+    it("조건 칩은 '조건' 목록으로 낭독기에 읽힌다", () => {
+      writeSaved([entry({})]);
+      render(<Saved paddles={PADDLES} />);
+      const list = screen.getByRole("list", { name: "조건" });
+      const chips = within(list).getAllByRole("listitem").map((li) => li.textContent);
+      expect(chips).toEqual(["입문(1년 미만)", "대회용"]);
+      expect(list.closest("[aria-hidden='true']")).toBeNull();
+      expect(list.querySelector("[aria-hidden='true']")).toBeNull();
+    });
+
+    it("저장소를 못 쓰면 빈 목록 대신 그 사실을 알린다", () => {
+      const spy = vi.spyOn(window, "localStorage", "get").mockImplementation(() => {
+        throw new Error("SecurityError");
+      });
+      try {
+        render(<Saved paddles={PADDLES} />);
+        expect(screen.getByTestId("saved-unavailable").textContent).toBe(SAVED_NOTICE.unavailable);
+        expect(screen.queryByTestId("saved-empty")).toBeNull();
+      } finally {
+        spy.mockRestore();
+      }
+    });
+
+    it("지우기에 실패하면 목록을 그대로 두고 실패를 알린다", () => {
+      writeSaved([entry({ id: "one" }), entry({ id: "two", paddle_ids: ["b"] })]);
+      render(<Saved paddles={PADDLES} />);
+      const set = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+        throw new Error("blocked");
+      });
+      const remove = vi.spyOn(Storage.prototype, "removeItem").mockImplementation(() => {
+        throw new Error("blocked");
+      });
+      try {
+        fireEvent.click(screen.getAllByRole("button", { name: /저장 지우기$/ })[0]!);
+        expect(screen.getAllByTestId("saved-entry")).toHaveLength(2);
+        expect(screen.getByTestId("saved-write-failed").textContent).toBe(SAVED_NOTICE.writeFailed);
+        expect(screen.getByTestId("saved-status").textContent).toBe(SAVED_NOTICE.writeFailed);
+        const clear = screen.getByTestId("saved-clear");
+        fireEvent.click(within(clear).getByRole("button", { name: "모두 지우기" }));
+        fireEvent.click(within(screen.getByTestId("saved-clear")).getByRole("button", { name: "모두 지우기" }));
+        expect(screen.getAllByTestId("saved-entry")).toHaveLength(2);
+      } finally {
+        set.mockRestore();
+        remove.mockRestore();
+      }
+    });
+
+    it("지우기 뒤 포커스가 다음 항목, 마지막이면 앞 항목, 다 지우면 제목으로 간다", () => {
+      writeSaved([entry({ id: "one" }), entry({ id: "two", paddle_ids: ["b"] }), entry({ id: "three", paddle_ids: ["c"] })]);
+      render(<Saved paddles={PADDLES} />);
+      const buttons = () => screen.getAllByRole("button", { name: /저장 지우기$/ });
+      fireEvent.click(buttons()[0]!);
+      expect(document.activeElement?.getAttribute("data-focus-key")).toBe("entry-two");
+      fireEvent.click(buttons()[1]!);
+      expect(document.activeElement?.getAttribute("data-focus-key")).toBe("entry-two");
+      fireEvent.click(buttons()[0]!);
+      expect(document.activeElement).toBe(screen.getByRole("heading", { level: 1 }));
+    });
+
+    it("모두 지우기: 확인 버튼으로, 취소하면 다시 '모두 지우기'로, 확인하면 제목으로 포커스", () => {
+      writeSaved([entry({ id: "one" })]);
+      render(<Saved paddles={PADDLES} />);
+      const clear = () => screen.getByTestId("saved-clear");
+      fireEvent.click(within(clear()).getByRole("button", { name: "모두 지우기" }));
+      expect(document.activeElement?.getAttribute("data-focus-key")).toBe("clear-confirm");
+      fireEvent.click(within(clear()).getByRole("button", { name: "취소" }));
+      expect(document.activeElement?.getAttribute("data-focus-key")).toBe("clear-open");
+      fireEvent.click(within(clear()).getByRole("button", { name: "모두 지우기" }));
+      fireEvent.click(within(clear()).getByRole("button", { name: "모두 지우기" }));
+      expect(document.activeElement).toBe(screen.getByRole("heading", { level: 1 }));
+    });
+  });
 });

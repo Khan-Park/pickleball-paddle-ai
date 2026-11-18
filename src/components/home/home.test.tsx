@@ -6,6 +6,8 @@ import { paddlesSchema } from "../../../data/schema";
 import { EMPTY_FILTER, filterAndSort } from "@/lib/shared/browse";
 import Home from "@/app/page";
 import { SHOWCASE_INTERVAL_MS, SHOWCASE_ROUNDS, ShapeShowcase } from "./ShapeShowcase";
+import { EXAMPLES } from "./ExamplePreview";
+import { weightBand } from "@/lib/recommend/axes";
 
 const activeShape = () => document.querySelector("[data-active='true'] svg")?.getAttribute("data-shape");
 
@@ -174,6 +176,16 @@ describe("등록 제품 띠(D-040, T-043)", () => {
       expect(items(screen.getByTestId("marquee-static"))).toHaveLength(ALL.length);
     } finally {
       window.matchMedia = original;
+    }
+  });
+});
+
+describe("결과 미리보기 예시(T-054)", () => {
+  it("예시마다 지금 데이터에 같은 형태·무게대·코어 제품이 있다(기획 3.2)", () => {
+    const paddles = paddlesSchema.parse(paddlesJson);
+    for (const ex of EXAMPLES) {
+      const match = paddles.filter((p) => p.shape === ex.shape && weightBand(p.weight_oz) === ex.band && p.core_mm === ex.core_mm);
+      expect(match.length, `${ex.shape}·${ex.band}·${ex.core_mm}mm`).toBeGreaterThan(0);
     }
   });
 });

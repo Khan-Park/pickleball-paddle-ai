@@ -39,6 +39,11 @@ describe("라임 색 규칙(T-039)", () => {
     expect(hitsOf(/\btext-lime/)).toEqual([]);
   });
 
+  it("임의 값·인라인 스타일로도 라임을 글자색으로 쓰지 않는다(T-054)", () => {
+    // text-[var(--lime)]·text-(--lime)·text-[#c5f23a] 같은 임의 값과 style의 color: var(--lime)
+    expect(hitsOf(/\btext-(\[[^\]]*(lime|#c5f23a|#b8e62e)|\(--lime)|\bcolor:\s*["'`]?var\(--lime/i)).toEqual([]);
+  });
+
   it("라임 바탕에 밝은 글자(text-on-accent·text-on-hero)를 함께 쓰지 않는다", () => {
     // 같은 class 문자열 안에서 본다. 라임 위 글자는 text-on-lime만 쓴다
     const classStrings = SOURCES.flatMap(({ path, text }) => [...text.matchAll(/["'`]([^"'`]*\bbg-lime\b[^"'`]*)["'`]/g)].map((m) => `${path}: ${m[1]}`));
