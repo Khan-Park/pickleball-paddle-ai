@@ -101,6 +101,15 @@ describe("hardFilter: 예산 값 검증", () => {
     expect(ids(result)).toEqual(["no-price", "a"]);
   });
 
+  it("min_krw만 지정하면 하한 이상(경계 포함)만 통과하고 가격 없는 제품은 제외한다", () => {
+    const noPrice = paddle({ id: "no-price", price_krw: undefined });
+    const under = paddle({ id: "under", price_krw: 79999 });
+    const edge = paddle({ id: "edge", price_krw: 80000 });
+    const over = paddle({ id: "over", price_krw: 200000 });
+    const result = hardFilter([noPrice, under, edge, over], { ...anyone, budget: { min_krw: 80000 } });
+    expect(ids(result)).toEqual(["edge", "over"]);
+  });
+
   it("min_krw 0과 max_krw를 함께 주면 상한은 적용되고 가격 없는 제품은 제외한다", () => {
     const noPrice = paddle({ id: "no-price", price_krw: undefined });
     const result = hardFilter([noPrice, ...list], { ...anyone, budget: { min_krw: 0, max_krw: 150000 } });
@@ -164,6 +173,19 @@ describe("hardFilter: 대회 인증 확인일 유효기간", () => {
   it("확인일 형식이 올바르지 않으면 제외한다", () => {
     const broken = paddle({ id: "b", certification: { usa_pickleball: "approved", checked_at: "어제" } });
     expect(at("2026-06-01", needs, [broken])).toEqual([]);
+  });
+
+  it("확인일이 기준일과 같은 날(0일째)이면 통과한다", () => {
+    expect(at("2026-01-01")).toEqual(["v"]);
+  });
+
+  it("달력에 없는 확인일은 제외한다", () => {
+    const impossible = paddle({ id: "x", certification: { usa_pickleball: "approved", checked_at: "2026-02-30" } });
+    expect(at("2026-06-01", needs, [impossible])).toEqual([]);
+  });
+
+  it("달력에 없는 기준일은 RangeError를 던진다", () => {
+    expect(() => hardFilterAt([verified], needs, { today: "2026-02-30" })).toThrow(RangeError);
   });
 
   it("인증이 필요 없으면 오래된 확인일도 통과한다", () => {
